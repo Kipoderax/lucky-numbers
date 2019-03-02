@@ -1,9 +1,8 @@
 package kipoderax.virtuallotto.game.controllers;
 
-import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
-import kipoderax.virtuallotto.game.entity.Game;
+import kipoderax.virtuallotto.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.service.GameService;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ public class BetController {
     }
 
     @GetMapping("/zaklad")
-    public String bet(Model model, Game game, User user) {
+    public String bet(Model model, UserDto user) {
         GameModel gameModel = new GameModel();
 
         if (!userSession.isUserLogin()) {
@@ -36,8 +35,8 @@ public class BetController {
 
         model.addAttribute("target", gameService.showTarget());
         model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
-        model.addAttribute("trafione", gameService.addGoalNumber(gameModel, user.getLogin(), game.getSaldo()));
-        model.addAttribute("saldo", userService.getSaldo(user.getLogin(), game.getSaldo()));
+        model.addAttribute("trafione", gameService.addGoalNumber(gameModel, user.getLogin()));
+        model.addAttribute("saldo", userService.getSaldo());
 
         return "game/bet";
     }

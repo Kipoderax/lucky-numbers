@@ -106,11 +106,10 @@ public class UserService {
     }
 
     //AFTER LOGIN
-
-    public int getSaldo(String login, int saldo) {
+    public int getSaldo() {
         List<UserDto> userDto = new ArrayList<>();
 
-        gameService.updateSaldo(login, saldo);
+//        gameService.updateSaldo(login, saldo);
         for (User u : userRepository.findAll()) {
 
             userDto.add(mapper.map(u));

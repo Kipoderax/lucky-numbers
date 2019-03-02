@@ -42,7 +42,7 @@ public class GameService {
     }
 
     //GOAL NUMBER
-    public List<Integer> addGoalNumber(GameModel gameModel, String login, int saldo) {
+    public List<Integer> addGoalNumber(GameModel gameModel, String login) {
 //        gameModel.getAddGoalNumbers().clear();
 //        Game game = new Game();
 
@@ -62,8 +62,11 @@ public class GameService {
         if (gameModel.getCount() > 0) {
 
             int money = game.getSaldo();
+            System.out.println("Przed: " + money);
             game.setSaldo(money - 25);
-            updateSaldo(login, saldo);
+            int actualSaldo = game.getSaldo();
+            updateSaldo(login, game.getSaldo(), actualSaldo);
+            System.out.println("Po: " + money);
         }
 
         return gameModel.getAddGoalNumbers();
@@ -77,7 +80,7 @@ public class GameService {
     }
 
     //UPDATE SALDO
-    public boolean updateSaldo(String login, int saldo) {
+    public boolean updateSaldo(String login, int saldo, int actualSaldo) {
 
         Optional<User> userOptional = userRepository.findByLogin(login);
 
@@ -86,6 +89,7 @@ public class GameService {
             Optional<Game> gameOptional = gameRepository.findBySaldo(saldo);
 
             if (gameOptional.isPresent()) {
+                userOptional.get().getGame().setSaldo(actualSaldo);
 
                 userRepository.save(userOptional.get());
                 gameRepository.save(game);
