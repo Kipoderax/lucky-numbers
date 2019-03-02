@@ -1,0 +1,115 @@
+.par {
+    color: #005cbf;
+    font-size: 40px;
+}
+
+.mybut {
+    background-color: green;
+    color: blue;
+}
+
+.pad {
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.main-header{
+    width: 1200px;
+    height: 100px;
+    background: linear-gradient(white, yellow);
+    padding: 20px 20px;
+    /*border: 1px solid blue;*/
+    /*margin-left: 250px;*/
+}
+
+.header-left{
+    float: left;
+    padding-top: 0px;
+}
+
+.header-left p{
+    font-size: 40px;
+    text-shadow: 2px 2px orange;
+}
+
+.header-right{
+    float: right;
+    width: 600px;
+    padding-right: 0px;
+    text-align: right;
+    padding-top: 20px;
+}
+
+.header-right p{
+    font-size: 25px;
+    padding-top: 30px;
+}
+
+.centre a{
+    text-decoration: none;
+}
+
+.createForm{
+    border: 5px double green;
+    padding: 10px;
+    background-color: aliceblue;
+}
+
+.createForm input{
+    margin: 3px;
+}
+
+.submit{
+    background-color: dodgerblue;
+    color: white;
+
+}
+
+.menu{
+    float: left;
+    width: 220px;
+    height: 220px;
+    background: linear-gradient(yellow, red);
+    /*margin-left: 250px;*/
+    margin-top: 10px;
+}
+
+
+.main{
+    list-style-image: url(images/house.jpg);
+}
+.zaklady{
+    list-style-image: url(images/lotto.png);
+}
+.staty{
+    list-style-image: url(images/staty.jpg);
+}
+.pgry{
+    list-style-image: url(images/ask.png);
+}
+.konto{
+    list-style-image: url(images/konto.jpg)
+}
+
+.menu ul li{
+    text-align: left;
+    padding: 5px;
+}
+
+.menu ul li a{
+    text-decoration: none;
+    color: #fff;
+    transition: font-size 0.3s;
+}
+
+.menu ul li a:hover{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.centre{
+    float: right;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+}

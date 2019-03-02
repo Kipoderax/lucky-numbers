@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<div class="container">
+
+    <div class="main-header" th:replace="fragments/header :: header"></div>
+    <div class="menu" th:replace="fragments/menu :: menu"></div>
+
+    <div class="centre">
+
+        <form class="form-control" method="post"
+              th:action="@{/register}" th:object="${registerForm}">
+
+            <label for="login">Login</label>
+            <input id="login" type="text" th:field="*{login}" required="true"> <br />
+
+            <label for="password">Hasło</label>
+            <input id="password" type="password" th:field="*{password}" required="true"> <br/>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}"> <br/>
+
+            <button class="btn-light" type="submit">Zarejestruj</button>
+        </form>
+
+        <div>
+            <a href="/login" class="pad">
+                <button class="btn btn-primary">Logowanie</button>
+            </a>
+        </div>
+
+    </div>
+
+    <!--<br/><br/><br/><br/>-->
+
+    <!--<div class="row">-->
+
+        <!--<a href="/login" class="pad">-->
+            <!--<button class="btn btn-primary">Logowanie</button>-->
+        <!--</a>-->
+
+    <!--</div>-->
+
+</div>
+
+</body>
+</html>
