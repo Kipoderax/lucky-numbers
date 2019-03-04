@@ -1,6 +1,6 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.auth.entity.User;
+import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.model.GameModel;
@@ -8,7 +8,10 @@ import kipoderax.virtuallotto.game.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class GameService {
@@ -19,6 +22,8 @@ public class GameService {
 
     private GameModel gameModel = new GameModel();
     private Game game;
+
+    private LoginForm loginForm;
 
     public GameService(GameRepository gameRepository, UserRepository userRepository) {
         this.randomNumber = new SecureRandom();
@@ -49,7 +54,7 @@ public class GameService {
         int count = 0;
         for (int value : gameModel.getNumberSet()) {
 
-            for(int i = 0; i < gameModel.getNumberSet().size(); i++) {
+            for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
                 if (value == gameModel.getTarget()[i]) {
                     gameModel.getAddGoalNumbers().add(gameModel.getTarget()[i]);
@@ -60,13 +65,7 @@ public class GameService {
         gameModel.setCount(count);
 
         if (gameModel.getCount() > 0) {
-
-            int money = game.getSaldo();
-            System.out.println("Przed: " + money);
-            game.setSaldo(money - 25);
-            int actualSaldo = game.getSaldo();
-            updateSaldo(login, game.getSaldo(), actualSaldo);
-            System.out.println("Po: " + money);
+            game.setSaldo(100);
         }
 
         return gameModel.getAddGoalNumbers();
@@ -74,31 +73,10 @@ public class GameService {
 
     //SHOW TARGET
     public List<Integer> showTarget() {
-        List<Integer> target = new ArrayList<>(Arrays.asList(gameModel.getTarget()));
 
-        return target;
+        return new ArrayList<>(Arrays.asList(gameModel.getTarget()));
     }
 
     //UPDATE SALDO
-    public boolean updateSaldo(String login, int saldo, int actualSaldo) {
-
-        Optional<User> userOptional = userRepository.findByLogin(login);
-
-        if (userOptional.isPresent()) {
-
-            Optional<Game> gameOptional = gameRepository.findBySaldo(saldo);
-
-            if (gameOptional.isPresent()) {
-                userOptional.get().getGame().setSaldo(actualSaldo);
-
-                userRepository.save(userOptional.get());
-                gameRepository.save(game);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
 
 }

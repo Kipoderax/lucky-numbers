@@ -16,7 +16,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private int saldo = 10000;
+    private int saldo;
 
     @OneToOne(mappedBy = "game", cascade = {
             CascadeType.PERSIST,
