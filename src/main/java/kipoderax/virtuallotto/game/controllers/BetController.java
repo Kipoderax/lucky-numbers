@@ -40,7 +40,7 @@ public class BetController {
         model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
         model.addAttribute("trafione", gameService.addGoalNumber(gameModel));
         model.addAttribute("saldo", gameService.getSaldo());
-//        model.addAttribute("winMoney", gameService.upgradeCurrentSaldo());
+        model.addAttribute("winMoney", gameService.getMyWin());
 
         System.out.println(gameService.getSaldo());
 

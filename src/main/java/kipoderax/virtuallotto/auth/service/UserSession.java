@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.auth.service;
 
 import kipoderax.virtuallotto.auth.entity.User;
+import kipoderax.virtuallotto.game.entity.Game;
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -14,5 +15,6 @@ public class UserSession {
     private String login;
     private boolean isUserLogin;
     private User user;
+    private Game game;
 
 }

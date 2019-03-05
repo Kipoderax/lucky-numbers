@@ -89,6 +89,7 @@ public class UserService {
 
         userSession.setUserLogin(true);
         userSession.setUser(userOptional.get());
+//        userSession.setGame(gameRepository.getGameBySaldo(loginForm.getLogin()));
 
         return LoginResponse.SUCCESS;
     }
@@ -109,13 +110,13 @@ public class UserService {
     public int getSaldo() {
         List<UserDto> userDto = new ArrayList<>();
 
-//        gameService.updateSaldo(login, saldo);
+//        Optional<User> userOptional = userRepository.findByLogin(loginForm.getLogin());
+
         for (User u : userRepository.findAll()) {
 
             userDto.add(mapper.map(u));
         }
 
-//        return gameRepository.findBySaldo(saldo);
         return userDto.get(3).getSaldo();
     }
 }

@@ -15,6 +15,7 @@ import java.util.*;
 public class GameService {
     private int currentSaldo;
     private int count;
+    private int myWin;
 
     private SecureRandom randomNumber;
 
@@ -26,6 +27,7 @@ public class GameService {
     private GameNoEntity games;
 
     private LoginForm loginForm;
+
     public GameService(GameRepository gameRepository, UserRepository userRepository,
                        GameNoEntity games) {
         this.randomNumber = new SecureRandom();
@@ -39,9 +41,17 @@ public class GameService {
 //        this.gameModel = new GameModel();
     }
 
+    //SHOW TARGET
+    public List<Integer> showTarget() {
+
+        return new ArrayList<>(Arrays.asList(gameModel.getTarget()));
+    }
+
     //GENERATE NUMBER
     public Set<Integer> generateNumber(GameModel gameModel) {
+
         while (gameModel.getNumberSet().size() != 6) {
+
             gameModel.setNumber(randomNumber.nextInt(49) + 1);
             gameModel.getNumberSet().add(gameModel.getNumber());
         }
@@ -55,13 +65,13 @@ public class GameService {
 //        Game game = new Game();
 
         currentSaldo = games.getSaldo();
-
         count = 0;
         for (int value : gameModel.getNumberSet()) {
 
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
                 if (value == gameModel.getTarget()[i]) {
+
                     gameModel.getAddGoalNumbers().add(gameModel.getTarget()[i]);
                     count++;
                 }
@@ -73,20 +83,17 @@ public class GameService {
         return gameModel.getAddGoalNumbers();
     }
 
-    //SHOW TARGET
-    public List<Integer> showTarget() {
-
-        return new ArrayList<>(Arrays.asList(gameModel.getTarget()));
-    }
-
     //UPGRADE SALDO
     public void upgradeCurrentSaldo() {
+        myWin = 0;
+
         for (int i = 3; i <= games.getRewards().length; i++) {
 
             if (count == i) {
 
                 currentSaldo += games.getRewards()[i - 2] + games.getRewards()[0];
                 games.setSaldo(currentSaldo);
+                myWin = games.getRewards()[i-2];
             }
         }
 
@@ -104,6 +111,12 @@ public class GameService {
         return currentSaldo;
     }
 
+    //GET ACTUAL WIN
+    public int getMyWin() {
+
+        return myWin;
+    }
+
     //INPUT NUMBERS
     public void inputNumbers() {
 
@@ -111,5 +124,4 @@ public class GameService {
         numbersSet.add(gameModel.getNumber());
 
     }
-
 }
