@@ -9,10 +9,7 @@ import kipoderax.virtuallotto.game.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GameService {
@@ -45,7 +42,7 @@ public class GameService {
     //GENERATE NUMBER
     public Set<Integer> generateNumber(GameModel gameModel) {
         while (gameModel.getNumberSet().size() != 6) {
-            gameModel.setNumber(randomNumber.nextInt(19) + 1);
+            gameModel.setNumber(randomNumber.nextInt(49) + 1);
             gameModel.getNumberSet().add(gameModel.getNumber());
         }
 
@@ -88,7 +85,7 @@ public class GameService {
 
             if (count == i) {
 
-                currentSaldo += games.getRewards()[i - 2];
+                currentSaldo += games.getRewards()[i - 2] + games.getRewards()[0];
                 games.setSaldo(currentSaldo);
             }
         }
@@ -105,6 +102,14 @@ public class GameService {
     public int getSaldo() {
 
         return currentSaldo;
+    }
+
+    //INPUT NUMBERS
+    public void inputNumbers() {
+
+        Set<Integer> numbersSet = new TreeSet<>();
+        numbersSet.add(gameModel.getNumber());
+
     }
 
 }
