@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameNoEntity {
 
-    private int[] rewards = {-3, 24, 120, 4800, 2_000_000};
+    private int[] rewards = {-3, 24, 120, 4_800, 2_000_000};
     private int saldo = 100;
     private int count = 0;
 

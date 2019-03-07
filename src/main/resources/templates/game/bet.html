@@ -11,44 +11,50 @@
 
     <div class="centre">
 
-        <table>
+        <!--<table>-->
 
-            <tr>
-                <td>targecik: </td>
-                <td th:text="${target}">tu liczby ktore wypadly</td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>targecik: </td>-->
+                <!--<td th:text="${target}">tu liczby ktore wypadly</td>-->
+            <!--</tr>-->
 
-            <tr>
-                <td>wylosowane: </td>
-                <td th:text="${wylosowane}">tu znajda sie wylosowane liczby</td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>wylosowane: </td>-->
+                <!--<td th:text="${wylosowane}">tu znajda sie wylosowane liczby</td>-->
+            <!--</tr>-->
 
-            <tr>
-                <td>Trafione liczby: </td>
-                <td th:text="${trafione}">lista liczb ktore trafilem</td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>Trafione liczby: </td>-->
+                <!--<td th:text="${trafione}">lista liczb ktore trafilem</td>-->
+            <!--</tr>-->
 
-            <tr>
-                <td>Wygrywasz: </td>
-                <td th:text="${winMoney}"></td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>Wygrywasz: </td>-->
+                <!--<td th:text="${winMoney}"></td>-->
+            <!--</tr>-->
 
-            <tr>
-                <td>Saldo: </td>
-                <td th:text="${saldo}">aktualne saldo</td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>Saldo: </td>-->
+                <!--<td th:text="${saldo}">aktualne saldo</td>-->
+            <!--</tr>-->
 
-        </table>
+        <!--</table>-->
 
-        <form action="/zaklad" method="get">
+
+        <form action="/zaklad/szybkagra" method="get">
+            <a href="/zaklad/szybkagra">
+                <button class="btn btn-light">Przejdź do szybkiej gry</button>
+            </a>
 
             <!--<input type="button" value="Typuje swoje liczby"> <br />-->
 
-            <a href="/zaklad" style="text-decoration: none">
-                <input type="button" value="Generuj liczby">
-            </a>
+            <!--<a href="/zaklad" style="text-decoration: none">-->
+                <!--<input type="button" value="Generuj liczby">-->
+            <!--</a>-->
 
         </form>
+
+
 
     </div>
 </div>

@@ -44,7 +44,7 @@ public class GameService {
     //SHOW TARGET
     public List<Integer> showTarget() {
 
-        return new ArrayList<>(Arrays.asList(gameModel.getTarget()));
+        return new ArrayList<>(Arrays.asList(gameModel.getTargetRealVersion()));
     }
 
     //GENERATE NUMBER
@@ -70,9 +70,9 @@ public class GameService {
 
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
-                if (value == gameModel.getTarget()[i]) {
+                if (value == gameModel.getTargetRealVersion()[i]) {
 
-                    gameModel.getAddGoalNumbers().add(gameModel.getTarget()[i]);
+                    gameModel.getAddGoalNumbers().add(gameModel.getTargetRealVersion()[i]);
                     count++;
                 }
             }
@@ -103,6 +103,8 @@ public class GameService {
             games.setSaldo(currentSaldo);
         }
 
+//        System.out.println(gameRepository.findAllBySaldo(10000));
+
     }
 
     //GET SALDO
@@ -118,9 +120,10 @@ public class GameService {
     }
 
     //INPUT NUMBERS
-    public void inputNumbers() {
+    public void inputNumbers(int number) {
 
         Set<Integer> numbersSet = new TreeSet<>();
+        gameModel.setNumber(number);
         numbersSet.add(gameModel.getNumber());
 
     }

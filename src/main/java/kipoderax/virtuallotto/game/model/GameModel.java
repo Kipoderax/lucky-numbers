@@ -14,7 +14,9 @@ import java.util.TreeSet;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class GameModel {
 
-    private Integer[] target = {3, 16, 17, 20 ,25 ,36};
+    private Integer[] targetRealVersion = {3, 16, 17, 20 ,25 ,36};
+    private Integer[] targetEasyVersion = {2, 5, 8, 10, 12, 18};
+
     private int number;
     private Set<Integer> numberSet = new TreeSet<>(); //zbior 6 wylosowanych liczb
     private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb

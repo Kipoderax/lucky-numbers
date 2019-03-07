@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<div class="container">
+
+    <div class="main-header" th:replace="fragments/header :: header"></div>
+    <div class="menu" th:replace="fragments/menu :: menu"></div>
+
+    <div class="centre">
+
+        <table>
+
+            <tr>
+                <td>targecik: </td>
+                <td th:text="${target}">tu liczby ktore wypadly</td>
+            </tr>
+
+            <tr>
+                <td>wylosowane: </td>
+                <td th:text="${wylosowane}">tu znajda sie wylosowane liczby</td>
+            </tr>
+
+            <tr>
+                <td>Trafione liczby: </td>
+                <td th:text="${trafione}">lista liczb ktore trafilem</td>
+            </tr>
+
+            <tr>
+                <td>Wygrywasz: </td>
+                <td th:text="${winMoney}"></td>
+            </tr>
+
+            <tr>
+                <td>Saldo: </td>
+                <td th:if="${saldo > 2}" th:text="${saldo}">aktualne saldo</td>
+                <td th:text="${info}"></td>
+            </tr>
+
+        </table>
+
+        <form action="/zaklad/szybkagra" method="get">
+
+            <!--<input type="button" value="Typuje swoje liczby"> <br />-->
+
+            <a href="/zaklad/szybkagra" style="text-decoration: none">
+                <input type="button" value="Generuj liczby">
+            </a>
+
+        </form>
+
+
+
+    </div>
+</div>
+
+</body>
+</html>

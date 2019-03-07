@@ -107,7 +107,7 @@ public class UserService {
     }
 
     //AFTER LOGIN
-    public int getSaldo() {
+    public UserDto userDto() {
         List<UserDto> userDto = new ArrayList<>();
 
 //        Optional<User> userOptional = userRepository.findByLogin(loginForm.getLogin());
@@ -117,6 +117,8 @@ public class UserService {
             userDto.add(mapper.map(u));
         }
 
-        return userDto.get(3).getSaldo();
+        return new UserDto();
     }
+
+//    public int
 }

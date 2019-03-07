@@ -1,0 +1,1 @@
+select saldo from user

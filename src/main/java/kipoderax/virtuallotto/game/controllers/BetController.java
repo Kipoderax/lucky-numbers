@@ -27,7 +27,7 @@ public class BetController {
         this.games = games;
     }
 
-    @GetMapping("/zaklad")
+    @GetMapping("/zaklad/szybkagra")
     public String bet(Model model) {
         GameModel gameModel = new GameModel();
 
@@ -36,14 +36,31 @@ public class BetController {
 //            return "redirect:/login";
 //        }
 
-        model.addAttribute("target", gameService.showTarget());
-        model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
-        model.addAttribute("trafione", gameService.addGoalNumber(gameModel));
-        model.addAttribute("saldo", gameService.getSaldo());
-        model.addAttribute("winMoney", gameService.getMyWin());
+        if (games.getSaldo() > 2) {
+            model.addAttribute("target", gameService.showTarget());
+            model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
+            model.addAttribute("trafione", gameService.addGoalNumber(gameModel));
+            model.addAttribute("saldo", gameService.getSaldo());
+            model.addAttribute("winMoney", gameService.getMyWin());
+        }
+        else {
+            model.addAttribute("info", "Brak kasy na kolejny zakład");
+        }
 
-        System.out.println(gameService.getSaldo());
+            return "game/withoutauth";
+//        System.out.println(gameService.getSaldo());
+    }
+
+
+    @GetMapping("/zaklad")
+    public String choice() {
 
         return "game/bet";
     }
+
+//    @PostMapping("/zaklad")
+//    public String bet(Model model, @RequestParam int number) {
+//
+//        return "game/bet";
+//    }
 }

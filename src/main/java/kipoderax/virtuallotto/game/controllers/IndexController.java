@@ -26,7 +26,7 @@ public class IndexController {
             return "redirect:/login";
         }
 
-        model.addAttribute("saldo", userService.getSaldo());
+        model.addAttribute("saldo", userService.userDto().getSaldo());
 
         return "index";
     }
