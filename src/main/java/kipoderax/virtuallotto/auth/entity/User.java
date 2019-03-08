@@ -1,6 +1,5 @@
 package kipoderax.virtuallotto.auth.entity;
 
-import kipoderax.virtuallotto.game.entity.Game;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,13 +20,15 @@ public class User {
 
     private String email;
 
-    @OneToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH
-    })
-    @JoinColumn(name = "saldo")
-    private Game game;
+    private int saldo;
+
+//    @OneToOne(cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE,
+//            CascadeType.DETACH,
+//            CascadeType.REFRESH
+//    })
+//    @JoinColumn(name = "saldo")
+//    private Game game;
 
 }

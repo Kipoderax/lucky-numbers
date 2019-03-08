@@ -6,12 +6,14 @@ import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.model.GameNoEntity;
 import kipoderax.virtuallotto.game.repository.GameRepository;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.*;
 
 @Service
+@Data
 public class GameService {
     private int currentSaldo;
     private int count;
@@ -25,11 +27,12 @@ public class GameService {
     private GameModel gameModel = new GameModel();
     private Game game;
     private GameNoEntity games;
+    private GameVersionService gameVersionService;
 
     private LoginForm loginForm;
 
     public GameService(GameRepository gameRepository, UserRepository userRepository,
-                       GameNoEntity games) {
+                       GameNoEntity games, GameVersionService gameVersionService) {
         this.randomNumber = new SecureRandom();
 
         this.gameRepository = gameRepository;
@@ -37,6 +40,7 @@ public class GameService {
 
         this.game = new Game();
         this.games = games;
+        this.gameVersionService = gameVersionService;
 
 //        this.gameModel = new GameModel();
     }
@@ -102,9 +106,6 @@ public class GameService {
             currentSaldo += games.getRewards()[0];
             games.setSaldo(currentSaldo);
         }
-
-//        System.out.println(gameRepository.findAllBySaldo(10000));
-
     }
 
     //GET SALDO

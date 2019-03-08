@@ -13,7 +13,7 @@ public class UserMapper implements Mapper<User, UserDto> {
                 from.getLogin(),
                 from.getPassword(),
                 from.getEmail(),
-                from.getGame().getSaldo());
+                from.getSaldo());
 
     }
 }

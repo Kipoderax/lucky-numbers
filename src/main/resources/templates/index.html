@@ -10,7 +10,8 @@
     <div class="menu" th:replace="fragments/menu :: menu"></div>
 
     <div class="centre">
-        <p th:text="${saldo}">1</p>
+        Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
+        Saldo: <p th:text="${saldo}"></p>
     </div>
 
 </div>

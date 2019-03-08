@@ -57,11 +57,12 @@ public class UserService {
         user.setLogin(registerForm.getLogin());
         user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         user.setEmail(registerForm.getEmail());
+        user.setSaldo(5000);
 
-        game.setSaldo(10000);
-        user.setGame(game);
+//        game.setSaldo(10000);
+//        user.setGame(game);
 
-        gameRepository.save(game);
+//        gameRepository.save(game);
         userRepository.save(user);
 
         return true;
@@ -106,19 +107,24 @@ public class UserService {
         return new BCryptPasswordEncoder();
     }
 
-    //AFTER LOGIN
-    public UserDto userDto() {
+    public List<UserDto> getuserDto(String login) {
         List<UserDto> userDto = new ArrayList<>();
 
 //        Optional<User> userOptional = userRepository.findByLogin(loginForm.getLogin());
 
-        for (User u : userRepository.findAll()) {
+        for (User u : userRepository.findAllByLogin(login)) {
 
             userDto.add(mapper.map(u));
         }
 
-        return new UserDto();
+        return userDto;
     }
 
-//    public int
+    public int getSaldo(int saldo, LoginForm loginForm) {
+        userRepository.findAllByLogin(loginForm.getLogin());
+
+        return saldo;
+    }
+
+
 }
