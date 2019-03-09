@@ -9,7 +9,9 @@
     <div class="main-header" th:replace="fragments/header :: header"></div>
     <div class="menu" th:replace="fragments/menu :: menu"></div>
 
-    <div class="centre">
+    <!--to co tutaj wyswietlam bedzie wyswietlane w templatce konta uzytkownika
+        dorobic wylogowywanie się -->
+    <div class="row">
         Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
         Saldo: <p th:text="${saldo}"></p>
     </div>

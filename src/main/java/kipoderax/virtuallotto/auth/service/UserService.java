@@ -110,7 +110,6 @@ public class UserService {
     public List<UserDto> getuserDto(String login) {
         List<UserDto> userDto = new ArrayList<>();
 
-//        Optional<User> userOptional = userRepository.findByLogin(loginForm.getLogin());
 
         for (User u : userRepository.findAllByLogin(login)) {
 
@@ -119,12 +118,5 @@ public class UserService {
 
         return userDto;
     }
-
-    public int getSaldo(int saldo, LoginForm loginForm) {
-        userRepository.findAllByLogin(loginForm.getLogin());
-
-        return saldo;
-    }
-
 
 }

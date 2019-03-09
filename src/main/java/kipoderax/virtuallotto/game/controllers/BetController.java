@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.controllers;
 
+import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
@@ -14,14 +15,16 @@ public class BetController {
 
      private GameService gameService;
      private UserService userService;
+     private UserRepository userRepository;
 
      private UserSession userSession;
      private GameNoEntity games;
 
     public BetController(GameService gameService, UserService userService, UserSession userSession,
-                         GameNoEntity games) {
+                         GameNoEntity games, UserRepository userRepository) {
         this.gameService = gameService;
         this.userService = userService;
+        this.userRepository = userRepository;
 
         this.userSession = userSession;
         this.games = games;
@@ -31,17 +34,22 @@ public class BetController {
     public String bet(Model model) {
         GameModel gameModel = new GameModel();
 
-//        if (!userSession.isUserLogin()) {
-//
-//            return "redirect:/login";
-//        }
+        if (!userSession.isUserLogin()) {
 
+            return "redirect:/login";
+        }
+
+        //todo gameService.getSaldo() <- bedzie pobierać ciągle 100 bo tyle na sztywno ustawiłem.
+        // Z repozytorium pobierać właściwą kwotę
         if (games.getSaldo() > 2) {
             model.addAttribute("target", gameService.showTarget());
             model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
             model.addAttribute("trafione", gameService.addGoalNumber(gameModel));
             model.addAttribute("saldo", gameService.getSaldo());
             model.addAttribute("winMoney", gameService.getMyWin());
+
+            userRepository.updateUserSaldoByLogin(
+                    gameService.getSaldo(), userSession.getUser().getLogin());
         }
         else {
             model.addAttribute("info", "Brak kasy na kolejny zakład");

@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.game.service;
 
 import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.model.GameNoEntity;
@@ -23,6 +24,7 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
+    private UserSession userSession;
 
     private GameModel gameModel = new GameModel();
     private Game game;
@@ -32,11 +34,13 @@ public class GameService {
     private LoginForm loginForm;
 
     public GameService(GameRepository gameRepository, UserRepository userRepository,
-                       GameNoEntity games, GameVersionService gameVersionService) {
+                       GameNoEntity games, GameVersionService gameVersionService,
+                       UserSession userSession) {
         this.randomNumber = new SecureRandom();
 
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
+        this.userSession = userSession;
 
         this.game = new Game();
         this.games = games;
@@ -118,6 +122,15 @@ public class GameService {
     public int getMyWin() {
 
         return myWin;
+    }
+
+    //CHARGE SALDO
+    public void chargeSaldo(int saldo) {
+
+       userRepository.updateUserSaldoByLogin(
+               saldo + userSession.getUser().getSaldo(), userSession.getUser().getLogin());
+
+//       return userSession.getUser().getSaldo();
     }
 
     //INPUT NUMBERS
