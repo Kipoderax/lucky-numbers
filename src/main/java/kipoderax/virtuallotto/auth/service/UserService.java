@@ -54,6 +54,7 @@ public class UserService {
             return false;
         }
 
+        user.setUsername(registerForm.getUsername());
         user.setLogin(registerForm.getLogin());
         user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         user.setEmail(registerForm.getEmail());

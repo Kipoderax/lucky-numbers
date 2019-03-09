@@ -21,14 +21,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllByLogin(String Login);
 
     @Query("select saldo from User where login=:login")
-    Optional<Integer> findSaldoByLogin(@Param("login") String login);
+    Integer findSaldoByLogin(@Param("login") String login);
 
     @Transactional
     @Modifying
     @Query("update User set saldo=:saldo where login=:login")
     void updateUserSaldoByLogin(@Param("saldo") int saldo,
                                 @Param("login") String login);
-
-//    Optional<UserSession> findSaldoByLogin(@Param("login"), )
 
 }

@@ -18,19 +18,19 @@ public class BetController {
      private UserRepository userRepository;
 
      private UserSession userSession;
-     private GameNoEntity games;
+     private GameNoEntity gameNoEntity;
 
     public BetController(GameService gameService, UserService userService, UserSession userSession,
-                         GameNoEntity games, UserRepository userRepository) {
+                         GameNoEntity gameNoEntity, UserRepository userRepository) {
         this.gameService = gameService;
         this.userService = userService;
         this.userRepository = userRepository;
 
         this.userSession = userSession;
-        this.games = games;
+        this.gameNoEntity = gameNoEntity;
     }
 
-    @GetMapping("/zaklad/szybkagra")
+    @GetMapping("/zaklad")
     public String bet(Model model) {
         GameModel gameModel = new GameModel();
 
@@ -41,30 +41,34 @@ public class BetController {
 
         //todo gameService.getSaldo() <- bedzie pobierać ciągle 100 bo tyle na sztywno ustawiłem.
         // Z repozytorium pobierać właściwą kwotę
-        if (games.getSaldo() > 2) {
+
+        gameNoEntity.setSaldo(userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
+
+        if (gameNoEntity.getSaldo() > 2) {
+
             model.addAttribute("target", gameService.showTarget());
             model.addAttribute("wylosowane", gameService.generateNumber(gameModel));
-            model.addAttribute("trafione", gameService.addGoalNumber(gameModel));
-            model.addAttribute("saldo", gameService.getSaldo());
+            model.addAttribute("trafione", gameService.addGoalNumber(gameModel, gameNoEntity));
+            userRepository.updateUserSaldoByLogin(
+                    gameService.getSaldo(gameNoEntity), userSession.getUser().getLogin());
+            model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
             model.addAttribute("winMoney", gameService.getMyWin());
 
-            userRepository.updateUserSaldoByLogin(
-                    gameService.getSaldo(), userSession.getUser().getLogin());
         }
         else {
             model.addAttribute("info", "Brak kasy na kolejny zakład");
         }
 
-            return "game/withoutauth";
+            return "game/bet";
 //        System.out.println(gameService.getSaldo());
     }
 
-
-    @GetMapping("/zaklad")
-    public String choice() {
-
-        return "game/bet";
-    }
+//
+//    @GetMapping("/zaklad")
+//    public String choice() {
+//
+//        return "game/bet";
+//    }
 
 //    @PostMapping("/zaklad")
 //    public String bet(Model model, @RequestParam int number) {

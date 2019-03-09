@@ -28,13 +28,13 @@ public class GameService {
 
     private GameModel gameModel = new GameModel();
     private Game game;
-    private GameNoEntity games;
+    private GameNoEntity gameNoEntity;
     private GameVersionService gameVersionService;
 
     private LoginForm loginForm;
 
     public GameService(GameRepository gameRepository, UserRepository userRepository,
-                       GameNoEntity games, GameVersionService gameVersionService,
+                       GameNoEntity gameNoEntity, GameVersionService gameVersionService,
                        UserSession userSession) {
         this.randomNumber = new SecureRandom();
 
@@ -43,7 +43,7 @@ public class GameService {
         this.userSession = userSession;
 
         this.game = new Game();
-        this.games = games;
+        this.gameNoEntity = gameNoEntity;
         this.gameVersionService = gameVersionService;
 
 //        this.gameModel = new GameModel();
@@ -52,7 +52,7 @@ public class GameService {
     //SHOW TARGET
     public List<Integer> showTarget() {
 
-        return new ArrayList<>(Arrays.asList(gameModel.getTargetRealVersion()));
+        return new ArrayList<>(Arrays.asList(gameModel.getTargetEasyVersion()));
     }
 
     //GENERATE NUMBER
@@ -60,7 +60,7 @@ public class GameService {
 
         while (gameModel.getNumberSet().size() != 6) {
 
-            gameModel.setNumber(randomNumber.nextInt(49) + 1);
+            gameModel.setNumber(randomNumber.nextInt(25) + 1);
             gameModel.getNumberSet().add(gameModel.getNumber());
         }
 
@@ -68,54 +68,54 @@ public class GameService {
     }
 
     //GOAL NUMBER
-    public List<Integer> addGoalNumber(GameModel gameModel) {
+    public List<Integer> addGoalNumber(GameModel gameModel, GameNoEntity gameNoEntity) {
 //        gameModel.getAddGoalNumbers().clear();
 //        Game game = new Game();
 
-        currentSaldo = games.getSaldo();
+        currentSaldo = gameNoEntity.getSaldo();
         count = 0;
         for (int value : gameModel.getNumberSet()) {
 
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
-                if (value == gameModel.getTargetRealVersion()[i]) {
+                if (value == gameModel.getTargetEasyVersion()[i]) {
 
-                    gameModel.getAddGoalNumbers().add(gameModel.getTargetRealVersion()[i]);
+                    gameModel.getAddGoalNumbers().add(gameModel.getTargetEasyVersion()[i]);
                     count++;
                 }
             }
         }
 
-        upgradeCurrentSaldo();
+        upgradeCurrentSaldo(gameNoEntity);
 
         return gameModel.getAddGoalNumbers();
     }
 
     //UPGRADE SALDO
-    public void upgradeCurrentSaldo() {
+    public void upgradeCurrentSaldo(GameNoEntity gameNoEntity) {
         myWin = 0;
 
-        for (int i = 3; i <= games.getRewards().length; i++) {
+        for (int i = 3; i <= gameNoEntity.getRewards().length; i++) {
 
             if (count == i) {
 
-                currentSaldo += games.getRewards()[i - 2] + games.getRewards()[0];
-                games.setSaldo(currentSaldo);
-                myWin = games.getRewards()[i-2];
+                currentSaldo += gameNoEntity.getRewards()[i - 2] + gameNoEntity.getRewards()[0];
+                gameNoEntity.setSaldo(currentSaldo);
+                myWin = gameNoEntity.getRewards()[i-2];
             }
         }
 
         if (count < 3) {
 
-            currentSaldo += games.getRewards()[0];
-            games.setSaldo(currentSaldo);
+            currentSaldo += gameNoEntity.getRewards()[0];
+            gameNoEntity.setSaldo(currentSaldo);
         }
     }
 
     //GET SALDO
-    public int getSaldo() {
+    public int getSaldo(GameNoEntity gameNoEntity) {
 
-        return currentSaldo;
+        return gameNoEntity.getSaldo();
     }
 
     //GET ACTUAL WIN

@@ -11,9 +11,12 @@
 
     <!--to co tutaj wyswietlam bedzie wyswietlane w templatce konta uzytkownika
         dorobic wylogowywanie się -->
-    <div class="row">
+    <div class="centre">
         Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
         Saldo: <p th:text="${saldo}"></p>
+    </div>
+    <div class="row">
+        <a href="/logout">Wyloguj</a>
     </div>
 
 </div>

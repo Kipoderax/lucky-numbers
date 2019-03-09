@@ -15,7 +15,10 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private int saldo;
+    private @Column(name = "count_of_three") int countOfThree;
+    private @Column(name = "count_of_four") int countOfFour;
+    private @Column(name = "count_of_five") int countOfFive;
+    private @Column(name = "count_of_six") int countOfSix;
 
 //    @OneToOne(mappedBy = "game", cascade = {
 //            CascadeType.PERSIST,

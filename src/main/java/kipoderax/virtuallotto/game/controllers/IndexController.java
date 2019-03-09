@@ -38,12 +38,19 @@ public class IndexController {
 
             return "redirect:/login";
         }
-        //todo wyswietlac saldo prosto z bazy danych
-        model.addAttribute("currentUser", userSession.getUser().getLogin());
-        model.addAttribute("saldo", userSession.getUser().getSaldo());
+
+        model.addAttribute("currentUser", userSession.getUser().getUsername());
+        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
 
         return "index";
     }
+
+//    @GetMapping("/logout")
+//    public String logout() {
+//        userService.logout();
+//
+//        return "redirect:/login";
+//    }
 
     @PostMapping("/")
     public String charge(@RequestParam int saldo, Model model) {

@@ -17,7 +17,7 @@ public class GameNoEntity {
     }
 
     private int[] rewards = {-3, 24, 120, 4_800, 2_000_000};
-    private int saldo = 100;
+    private int saldo;
     private int count = 0;
 
 }
