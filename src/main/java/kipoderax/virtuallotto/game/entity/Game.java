@@ -20,6 +20,7 @@ public class Game {
     private @Column(name = "count_of_five") int countOfFive;
     private @Column(name = "count_of_six") int countOfSix;
 
+    //todo utworzyć relacje z tabelą user
 //    @OneToOne(mappedBy = "game", cascade = {
 //            CascadeType.PERSIST,
 //            CascadeType.MERGE,

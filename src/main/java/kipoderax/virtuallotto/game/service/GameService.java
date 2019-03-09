@@ -1,12 +1,8 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserSession;
-import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.model.GameNoEntity;
-import kipoderax.virtuallotto.game.repository.GameRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -16,37 +12,20 @@ import java.util.*;
 @Service
 @Data
 public class GameService {
-    private int currentSaldo;
-    private int count;
-    private int myWin;
+    private final SecureRandom randomNumber;
 
-    private SecureRandom randomNumber;
-
-    private final GameRepository gameRepository;
     private final UserRepository userRepository;
-    private UserSession userSession;
+    private final UserSession userSession;
+    private final GameModel gameModel = new GameModel();
 
-    private GameModel gameModel = new GameModel();
-    private Game game;
-    private GameNoEntity gameNoEntity;
-    private GameVersionService gameVersionService;
-
-    private LoginForm loginForm;
-
-    public GameService(GameRepository gameRepository, UserRepository userRepository,
-                       GameNoEntity gameNoEntity, GameVersionService gameVersionService,
+    public GameService(UserRepository userRepository,
                        UserSession userSession) {
+
         this.randomNumber = new SecureRandom();
 
-        this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.userSession = userSession;
 
-        this.game = new Game();
-        this.gameNoEntity = gameNoEntity;
-        this.gameVersionService = gameVersionService;
-
-//        this.gameModel = new GameModel();
     }
 
     //SHOW TARGET
@@ -68,65 +47,78 @@ public class GameService {
     }
 
     //GOAL NUMBER
-    public List<Integer> addGoalNumber(GameModel gameModel, GameNoEntity gameNoEntity) {
-//        gameModel.getAddGoalNumbers().clear();
-//        Game game = new Game();
+    public List<Integer> addGoalNumber(GameModel gameModel) {
 
-        currentSaldo = gameNoEntity.getSaldo();
-        count = 0;
+        int currentSaldo = gameModel.getSaldo();
+        int count = 0; //licznik trafien
+
+        //przejdz po liczbach wygenerowanych
         for (int value : gameModel.getNumberSet()) {
 
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
+                //jesli ktoras wartosc liczb losowo wygenerowanych znajduje sie w tablicy
                 if (value == gameModel.getTargetEasyVersion()[i]) {
 
-                    gameModel.getAddGoalNumbers().add(gameModel.getTargetEasyVersion()[i]);
+                    //dodaj ja do listy liczb trafionych
+                    gameModel.getAddGoalNumbers().add(
+                            gameModel.getTargetEasyVersion()[i]);
+
                     count++;
                 }
             }
         }
 
-        upgradeCurrentSaldo(gameNoEntity);
+        //zaktualizuj konto na podstawie ilości powyższych trafień
+        upgradeCurrentSaldo(gameModel, count, currentSaldo);
 
         return gameModel.getAddGoalNumbers();
     }
 
     //UPGRADE SALDO
-    public void upgradeCurrentSaldo(GameNoEntity gameNoEntity) {
-        myWin = 0;
+    private void upgradeCurrentSaldo(GameModel gameModel, int count, int currentSaldo) {
+        gameModel.setWinPerOneGame(0);
 
-        for (int i = 3; i <= gameNoEntity.getRewards().length; i++) {
+        for (int i = 3; i <= gameModel.getRewards().length; i++) {
 
+            //jeśli ilość trafień jest co najmniej i
             if (count == i) {
 
-                currentSaldo += gameNoEntity.getRewards()[i - 2] + gameNoEntity.getRewards()[0];
-                gameNoEntity.setSaldo(currentSaldo);
-                myWin = gameNoEntity.getRewards()[i-2];
+                //powiększ saldo zgodnie z ilością trafień uwzględniając koszt zakładu
+                currentSaldo += gameModel.getRewards()[i - 2] + gameModel.getRewards()[0];
+
+                //ustaw aktualne saldo
+                gameModel.setSaldo(currentSaldo);
+
+                //przypisz odpowiednią wygraną do wyświetlenia
+                gameModel.setWinPerOneGame(gameModel.getRewards()[i-2]);
             }
         }
 
         if (count < 3) {
 
-            currentSaldo += gameNoEntity.getRewards()[0];
-            gameNoEntity.setSaldo(currentSaldo);
+            //odejmuj saldo o kosztu zakładu
+            currentSaldo += gameModel.getRewards()[0];
+            gameModel.setSaldo(currentSaldo);
         }
     }
 
     //GET SALDO
-    public int getSaldo(GameNoEntity gameNoEntity) {
+    public int getSaldo(GameModel gameModel) {
 
-        return gameNoEntity.getSaldo();
+        return gameModel.getSaldo();
     }
 
     //GET ACTUAL WIN
-    public int getMyWin() {
+    public int getMyWin(GameModel gameModel) {
 
-        return myWin;
+        return gameModel.getWinPerOneGame();
     }
 
     //CHARGE SALDO
     public void chargeSaldo(int saldo) {
-
+        //todo dokończyć
+        //powiększ saldo o kwotę wpisaną przez użytkownika
        userRepository.updateUserSaldoByLogin(
                saldo + userSession.getUser().getSaldo(), userSession.getUser().getLogin());
 
@@ -134,6 +126,7 @@ public class GameService {
     }
 
     //INPUT NUMBERS
+    //todo dokończyć opcje ręcznego wpisywania 6 liczb
     public void inputNumbers(int number) {
 
         Set<Integer> numbersSet = new TreeSet<>();
