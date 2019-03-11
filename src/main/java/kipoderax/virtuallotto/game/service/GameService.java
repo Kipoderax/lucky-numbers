@@ -1,45 +1,40 @@
 package kipoderax.virtuallotto.game.service;
 
+import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.model.GameModel;
-import lombok.Data;
+import kipoderax.virtuallotto.game.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.*;
 
 @Service
-@Data
 public class GameService {
-    private final SecureRandom randomNumber;
+    private SecureRandom randomNumber;
 
+    private final GameRepository gameRepository;
     private final UserRepository userRepository;
-    private final UserSession userSession;
-    private final GameModel gameModel = new GameModel();
 
-    public GameService(UserRepository userRepository,
-                       UserSession userSession) {
+    private GameModel gameModel = new GameModel();
+    private Game game;
 
+    public GameService(GameRepository gameRepository, UserRepository userRepository) {
         this.randomNumber = new SecureRandom();
 
+        this.gameRepository = gameRepository;
         this.userRepository = userRepository;
-        this.userSession = userSession;
 
-    }
+        this.game = new Game();
 
-    //SHOW TARGET
-    public List<Integer> showTarget() {
-
-        return new ArrayList<>(Arrays.asList(gameModel.getTargetEasyVersion()));
+//        this.gameModel = new GameModel();
     }
 
     //GENERATE NUMBER
     public Set<Integer> generateNumber(GameModel gameModel) {
-
         while (gameModel.getNumberSet().size() != 6) {
-
-            gameModel.setNumber(randomNumber.nextInt(25) + 1);
+            gameModel.setNumber(randomNumber.nextInt(19) + 1);
             gameModel.getNumberSet().add(gameModel.getNumber());
         }
 
@@ -47,81 +42,59 @@ public class GameService {
     }
 
     //GOAL NUMBER
-    public List<Integer> addGoalNumber(GameModel gameModel) {
+    public List<Integer> addGoalNumber(GameModel gameModel, String login, int saldo) {
+//        gameModel.getAddGoalNumbers().clear();
+//        Game game = new Game();
 
-        int currentSaldo = gameModel.getSaldo();
-        int count = 0; //licznik trafien
-
-        //przejdz po liczbach wygenerowanych
+        int count = 0;
         for (int value : gameModel.getNumberSet()) {
 
-            for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
+            for(int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
-                //jesli ktoras wartosc liczb losowo wygenerowanych znajduje sie w tablicy
-                if (value == gameModel.getTargetEasyVersion()[i]) {
-
-                    //dodaj ja do listy liczb trafionych
-                    gameModel.getAddGoalNumbers().add(
-                            gameModel.getTargetEasyVersion()[i]);
-
+                if (value == gameModel.getTarget()[i]) {
+                    gameModel.getAddGoalNumbers().add(gameModel.getTarget()[i]);
                     count++;
                 }
             }
         }
+        gameModel.setCount(count);
 
-        //zaktualizuj konto na podstawie ilości powyższych trafień
-        upgradeCurrentSaldo(gameModel, count, currentSaldo);
+        if (gameModel.getCount() > 0) {
+
+            int money = game.getSaldo();
+            game.setSaldo(money - 25);
+            updateSaldo(login, saldo);
+        }
 
         return gameModel.getAddGoalNumbers();
     }
 
-    //UPGRADE SALDO
-    private void upgradeCurrentSaldo(GameModel gameModel, int count, int currentSaldo) {
-        gameModel.setWinPerOneGame(0);
+    //SHOW TARGET
+    public List<Integer> showTarget() {
+        List<Integer> target = new ArrayList<>(Arrays.asList(gameModel.getTarget()));
 
-        for (int i = 3; i <= gameModel.getRewards().length; i++) {
+        return target;
+    }
 
-            //jeśli ilość trafień jest co najmniej i
-            if (count == i) {
+    //UPDATE SALDO
+    public boolean updateSaldo(String login, int saldo) {
 
-                //powiększ saldo zgodnie z ilością trafień uwzględniając koszt zakładu
-                currentSaldo += gameModel.getRewards()[i - 2] + gameModel.getRewards()[0];
+        Optional<User> userOptional = userRepository.findByLogin(login);
 
-                //ustaw aktualne saldo
-                gameModel.setSaldo(currentSaldo);
+        if (userOptional.isPresent()) {
 
-                //przypisz odpowiednią wygraną do wyświetlenia
-                gameModel.setWinPerOneGame(gameModel.getRewards()[i-2]);
+            Optional<Game> gameOptional = gameRepository.findBySaldo(saldo);
+
+            if (gameOptional.isPresent()) {
+
+                userRepository.save(userOptional.get());
+                gameRepository.save(game);
             }
+
+            return true;
         }
 
-        if (count < 3) {
-
-            //odejmuj saldo o kosztu zakładu
-            currentSaldo += gameModel.getRewards()[0];
-            gameModel.setSaldo(currentSaldo);
-        }
+        return false;
     }
 
-    //GET SALDO
-    public int getSaldo(GameModel gameModel) {
-
-        return gameModel.getSaldo();
-    }
-
-    //GET ACTUAL WIN
-    public int getMyWin(GameModel gameModel) {
-
-        return gameModel.getWinPerOneGame();
-    }
-
-    //INPUT NUMBERS
-    //todo dokończyć opcje ręcznego wpisywania 6 liczb
-    public void inputNumbers(int number) {
-
-        Set<Integer> numbersSet = new TreeSet<>();
-        gameModel.setNumber(number);
-        numbersSet.add(gameModel.getNumber());
-
-    }
 }
