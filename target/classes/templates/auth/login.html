@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+<div class="container">
+
+    <div class="main-header" th:replace="fragments/header :: header"></div>
+    <div class="menu" th:replace="fragments/menu :: menu"></div>
+
+    <div class="centre">
+
+        <div class="form-group">
+            <div>
+
+                <form class="form-control" method="post"
+                      th:action="@{/login}" th:object="${loginForm}">
+
+                    <label for="login">Login</label>
+                    <input id="login" type="text" th:field="*{login}"> <br />
+
+                    <label for="password">Hasło</label>
+                    <input id="password" type="password" th:field="*{password}"> <br/>
+
+                    <button class="btn btn-primary" type="submit">Zaloguj</button>
+                </form>
+
+            </div>
+
+            <div class="row" style="margin-top: 25px; margin-left: 100px">
+                <a href="/register" class="pad">
+                    <button class="btn btn-primary">Rejestracja</button>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

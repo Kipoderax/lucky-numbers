@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<div class="container">
+
+    <div class="main-header" th:replace="fragments/header :: header"></div>
+    <div class="menu" th:replace="fragments/menu :: menu"></div>
+
+    <!--to co tutaj wyswietlam bedzie wyswietlane w templatce konta uzytkownika-->
+    <div class="centre">
+        Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
+        Saldo: <p th:text="${saldo}"></p>
+
+        <form th:action="@{/addMoney}" method="post">
+            Dodaje: <input type="text" name="saldo">
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+        </form>
+
+    </div>
+    <div class="row">
+        <a href="/logout">Wyloguj</a>
+    </div>
+
+</div>
+
+</body>
+</html>
