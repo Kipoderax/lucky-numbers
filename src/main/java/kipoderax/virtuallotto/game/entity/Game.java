@@ -1,6 +1,5 @@
 package kipoderax.virtuallotto.game.entity;
 
-import kipoderax.virtuallotto.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,14 +15,18 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private int saldo = 10000;
+    private @Column(name = "count_of_three") int countOfThree;
+    private @Column(name = "count_of_four") int countOfFour;
+    private @Column(name = "count_of_five") int countOfFive;
+    private @Column(name = "count_of_six") int countOfSix;
 
-    @OneToOne(mappedBy = "game", cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH
-    })
-    private User user;
+    //todo utworzyć relacje z tabelą user
+//    @OneToOne(mappedBy = "game", cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE,
+//            CascadeType.DETACH,
+//            CascadeType.REFRESH
+//    })
+//    private User user;
 
 }

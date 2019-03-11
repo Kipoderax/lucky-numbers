@@ -15,6 +15,9 @@
         <form class="form-control" method="post"
               th:action="@{/register}" th:object="${registerForm}">
 
+            <label for="username">Username</label>
+            <input id="username" type="text" th:field="*{username}" required="true"> <br />
+
             <label for="login">Login</label>
             <input id="login" type="text" th:field="*{login}" required="true"> <br />
 
@@ -22,12 +25,12 @@
             <input id="password" type="password" th:field="*{password}" required="true"> <br/>
 
             <label for="email">Email</label>
-            <input id="email" type="email" th:field="*{email}"> <br/>
+            <input id="email" type="email" th:field="*{email}" required="true"> <br/>
 
             <button class="btn-light" type="submit">Zarejestruj</button>
         </form>
 
-        <div>
+        <div class="row" style="margin-top: 80px; margin-left: 150px">
             <a href="/login" class="pad">
                 <button class="btn btn-primary">Logowanie</button>
             </a>
