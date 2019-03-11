@@ -14,10 +14,13 @@
         Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
         Saldo: <p th:text="${saldo}"></p>
 
-        <form th:action="@{/addMoney}" method="post">
-            Dodaje: <input type="text" name="saldo">
-            <button type="submit" class="btn btn-primary">Dodaj</button>
-        </form>
+        <label for="add">
+            <p>Możesz doładować kwote z zakresu 0-200</p>
+            <form id="add" th:action="@{/addMoney}" method="post">
+                Dodaje: <input type="text" name="chargeSaldo">
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </form>
+        </label>
 
     </div>
     <div class="row">

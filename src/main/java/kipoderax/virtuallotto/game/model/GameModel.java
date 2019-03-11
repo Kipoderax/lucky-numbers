@@ -11,6 +11,9 @@ import java.util.TreeSet;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class GameModel {
+    //todo jak to uwzglednic w PostMappingu, w templatce?
+//    @Min(0) @Max(0)
+//    private int chargeSaldo;
 
     private int number; //komponent numberSet
     private int[] rewards = {-3, 24, 120, 4_800, 2_000_000};
