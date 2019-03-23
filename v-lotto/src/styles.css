@@ -1,0 +1,40 @@
+.container{
+  margin-top: 30px;
+}
+
+.col-xs-2 {
+  background: linear-gradient(blanchedalmond, white);
+}
+
+.nav :hover {
+  background: linear-gradient(white, blanchedalmond);
+}
+
+.header {
+  height: 100px;
+  background: linear-gradient(white, yellow);
+}
+
+.par-header {
+  font-size: 40px;
+  text-shadow: 2px 2px orange;
+}
+
+.menu {
+  margin-top: 2px;
+  padding: 10px;
+}
+
+.dropdown li{
+  text-decoration: none;
+}
+
+.dropdown li a{
+  color: white;
+}
+
+.navbar-header p{
+  text-shadow: 2px 2px orange;
+  font-size: 25px;
+  color: yellow;
+}
