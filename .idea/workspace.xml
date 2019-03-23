@@ -2,81 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf061bd4-8f64-4066-903a-faa09a04afeb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/v-lotto/.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/angular.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/e2e/protractor.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/e2e/src/app.e2e-spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/e2e/src/app.po.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/e2e/tsconfig.e2e.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/src/app/service/gameService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/v-lotto/tslint.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3684bd4d-0378-44e4-b040-be7ed9c9e85f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3684bd4d-0378-44e4-b040-be7ed9c9e85f.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/5/152b9f850b324723acdd4bd3ed5eebe2875e72e9" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/5/152b9f850b324723acdd4bd3ed5eebe2875e72e9" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/9/196c8d97a5364e51d3de4ec17195ccb63d893388" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/9/196c8d97a5364e51d3de4ec17195ccb63d893388" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/e/6e3e21f7666c978d43176f5495321b61c105fba9" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/6/e/6e3e21f7666c978d43176f5495321b61c105fba9" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/2/929e6c33c0cf48e910a1dafb30294d2ee8ad0093" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/2/929e6c33c0cf48e910a1dafb30294d2ee8ad0093" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/d/9d319f10730d0e71b74b50669f5c89150335f0e2" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/d/9d319f10730d0e71b74b50669f5c89150335f0e2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/9/d90a11a5b881443e8aa00774acffa5656d8929d9" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/9/d90a11a5b881443e8aa00774acffa5656d8929d9" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/9/d90f7b4805f0ca0dbdb41ea94ee34bd99293e042" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/9/d90f7b4805f0ca0dbdb41ea94ee34bd99293e042" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/controllers/BetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/controllers/BetController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/service/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/service/GameService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-grid.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-grid.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-grid.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-grid.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-reboot.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-reboot.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bootstrap-4.3.1-dist/js/bootstrap.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-grid.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-grid.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-grid.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-grid.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-reboot.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-reboot.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/css/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bootstrap-4.3.1-dist/js/bootstrap.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/v-lotto/src/app/service/game-servuce.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/v-lotto/src/app/zaklady/zaklady.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/v-lotto/src/app/zaklady/zaklady.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virtual-lotto.iml" beforeDir="false" afterPath="$PROJECT_DIR$/virtual-lotto.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -167,20 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/controllers/BetController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+            <state relative-caret-position="189">
+              <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -189,10 +105,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+        <entry file="file://$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/controllers/BetController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="405">
+              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -270,8 +189,8 @@
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/v-lotto/angular.json" />
-        <option value="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java" />
         <option value="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/game/controllers/BetController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
@@ -524,7 +443,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553358187244" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553358809410" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Projekty/phonebookapp" />
@@ -688,7 +607,7 @@
       <workItem from="1553039146720" duration="333000" />
       <workItem from="1553200907693" duration="9000" />
       <workItem from="1553297830157" duration="1841000" />
-      <workItem from="1553350583063" duration="1537000" />
+      <workItem from="1553350583063" duration="2434000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1551544246358</created>
@@ -852,7 +771,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179835000" />
+    <option name="totallyTimeSpent" value="180732000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -865,7 +784,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49945828" visible="true" weight="0.14392324" />
       <window_info id="Structure" order="1" sideWeight="0.5005417" side_tool="true" weight="0.25" />
@@ -1270,21 +1188,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/HELP.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/kipoderax/virtuallotto/auth/controllers/LoginController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+        <state relative-caret-position="189">
+          <caret line="16" column="53" selection-start-line="16" selection-start-column="53" selection-end-line="16" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HELP.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
         </state>
       </provider>
     </entry>
@@ -1295,13 +1220,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>

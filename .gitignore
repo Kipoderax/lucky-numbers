@@ -28,3 +28,5 @@ hs_err_pid*
 .idea/sonarlint/issuestore/f/
 node_modules/
 package-lock.json
+.idea/workspace.xml
+
