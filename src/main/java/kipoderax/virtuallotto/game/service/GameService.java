@@ -124,4 +124,8 @@ public class GameService {
         numbersSet.add(gameModel.getNumber());
 
     }
+
+    //todo opcja generowania n zestawow liczb. Dla kazdego zestawu zwrócić obok liczbe trafień, wygraną
+
+    //todo opcja wyboru poziomu trudności gry
 }

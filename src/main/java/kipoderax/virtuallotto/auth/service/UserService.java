@@ -41,7 +41,7 @@ public class UserService {
         user.setLogin(registerForm.getLogin());
         user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         user.setEmail(registerForm.getEmail());
-        user.setSaldo(5000);
+        user.setSaldo(100);
 
         userRepository.save(user);
 

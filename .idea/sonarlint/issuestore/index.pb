@@ -43,3 +43,13 @@ n
 mvnw,5\d\5d837c4ed85ecaaf932c506e80ff5d7b9f3d590d
 y
 Isrc/main/java/kipoderax/virtuallotto/game/service/GameVersionService.java,3\4\345220d70b40db9e4ad81a5eb55a898882e841a1
+D
+v-lotto/package.json,8\b\8ba2bda01ac74aade9dcd8e50fa013cf63ce90ff
+D
+v-lotto/angular.json,9\b\9b4e0420df49116ca557032c8cabc4e5681ae702
+U
+%v-lotto/src/app/app-routing.module.ts,9\e\9eec8e09caa86851649f1ee320df97529e352206
+M
+v-lotto/src/app/app.module.ts,8\a\8a22ca324e6b65f9cdbbe0704fcbb35c2f8a37aa
+A
+package-lock.json,f\a\fa288d1472d29beccb489a676f68739ad365fc47
