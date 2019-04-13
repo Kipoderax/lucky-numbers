@@ -35,7 +35,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserSaldoByLogin(@Param("saldo") int saldo,
                                 @Param("login") String login);
 
-
     //Zlicza wszystkich aktualnie zarejestrowanych użytkowników
     //todo podmienić na zapytanie które zlicza ilość rekordów w tabeli user,
     // na wypadek wdrożenia opcji kasowania swojego konta

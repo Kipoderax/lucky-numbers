@@ -1,10 +1,12 @@
 package kipoderax.virtuallotto.auth.entity;
 
+import kipoderax.virtuallotto.game.entity.Game;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -25,13 +27,7 @@ public class User {
     private int saldo;
 
     //todo powiązać z tabelą user, do przechowywania i strzałów (i = 3, ..., 6) z n gier
-//    @OneToOne(cascade = {
-//            CascadeType.PERSIST,
-//            CascadeType.MERGE,
-//            CascadeType.DETACH,
-//            CascadeType.REFRESH
-//    })
-//    @JoinColumn(name = "")
-//    private Game game;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Game> game;
 
 }

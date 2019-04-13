@@ -4,10 +4,14 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.game.entity.Game;
+import kipoderax.virtuallotto.game.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,17 +24,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserSession userSession;
 
+    private final GameRepository gameRepository;
+
     @Autowired
     public UserService(UserRepository userRepository,
-                       UserSession userSession) {
+                       UserSession userSession,
+                       GameRepository gameRepository) {
 
         this.userRepository = userRepository;
         this.userSession = userSession;
+        this.gameRepository = gameRepository;
 
     }
 
     public boolean register(RegisterForm registerForm) {
         User user = new User();
+        Game game = new Game();
+        List<Game> games = new ArrayList<>();
 
         if (isLoginFree(registerForm.getLogin())){
 
@@ -43,7 +53,18 @@ public class UserService {
         user.setEmail(registerForm.getEmail());
         user.setSaldo(100);
 
+        game.setNumberGame(0);
+        game.setCountOfThree(0);
+        game.setCountOfFour(0);
+        game.setCountOfFive(0);
+        game.setCountOfSix(0);
+
+        game.setUser(user);
+        user.setGame(games);
+
+        gameRepository.save(game);
         userRepository.save(user);
+
 
         return true;
     }
