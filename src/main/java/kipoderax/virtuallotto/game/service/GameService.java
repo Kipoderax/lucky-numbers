@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.service;
 
+import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import lombok.Data;
@@ -15,8 +16,11 @@ public class GameService {
     private final GameModel gameModel = new GameModel();
     private final GameRepository gameRepository;
 
-    public GameService(GameRepository gameRepository) {
+    private final UserSession userSession;
+
+    public GameService(GameRepository gameRepository, UserSession userSession) {
         this.gameRepository = gameRepository;
+        this.userSession = userSession;
     }
 
     public List<Integer> showTarget() {
@@ -40,7 +44,7 @@ public class GameService {
         int currentSaldo = gameModel.getSaldo();
         int success = 0;
 
-        int currentNumberGame = gameRepository.findNumberGame();
+        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getLogin());
 
         //przejdz po liczbach wygenerowanych
         for (int value : gameModel.getNumberSet()) {
@@ -97,31 +101,31 @@ public class GameService {
 
     public void upgradeNumberGame(int currentNumberGame) {
         currentNumberGame++;
-        gameRepository.updateNumberGame(currentNumberGame);
+        gameRepository.updateNumberGame(currentNumberGame, userSession.getUser().getId());
     }
 
     public void upgradeAmountFRom3To6(int count) {
-        int currentAmountOfThree = gameRepository.findCountOfThree();
-        int currentAmountOfFour = gameRepository.findCountOfFour();
-        int currentAmountOfFive = gameRepository.findCountOfFive();
-        int currentAmountOfSix = gameRepository.findCountOfSix();
+        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin());
+        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin());
+        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin());
+        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin());
 
         switch (count) {
             case 3:
                 currentAmountOfThree++;
-                gameRepository.updateAmountOfThree(currentAmountOfThree);
+                gameRepository.updateAmountOfThree(currentAmountOfThree, userSession.getUser().getId());
                 break;
             case 4:
                 currentAmountOfFour++;
-                gameRepository.updateAmountOfFour(currentAmountOfFour);
+                gameRepository.updateAmountOfFour(currentAmountOfFour, userSession.getUser().getId());
                 break;
             case 5:
                 currentAmountOfFive++;
-                gameRepository.updateAmountOfFive(currentAmountOfFive);
+                gameRepository.updateAmountOfFive(currentAmountOfFive, userSession.getUser().getId());
                 break;
             case 6:
                 currentAmountOfSix++;
-                gameRepository.updateAmountOfSix(currentAmountOfSix);
+                gameRepository.updateAmountOfSix(currentAmountOfSix, userSession.getUser().getId());
                 break;
         }
     }

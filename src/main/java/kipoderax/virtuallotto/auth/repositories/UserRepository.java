@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,12 +16,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     //wyszukaj użytkownika po loginie
     Optional<User> findByLogin(String login);
 
+    @Query("select username from User")
+    String getAllLogin();
+
     //sprawdź czy użytkownik istnieje po loginie
     boolean existsByLogin(String login);
-
-    //używane w UserService do przekonwertowania Z User na UserDto
-    @Query(value = "select * from user where login = ?1", nativeQuery = true)
-    List<User> findAllByLogin(String Login);
 
     //pobiera saldo do widoku na koncie użytkownika
     @Query("select saldo from User where login=:login")

@@ -36,16 +36,16 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        gameModel.setNumberGame(gameRepository.findNumberGame());
+        gameModel.setNumberGame(gameRepository.findNumberGameByLogin(userSession.getUser().getLogin()));
 
         model.addAttribute("currentUser", userSession.getUser().getUsername());
         model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
 
-        model.addAttribute("numberGame", gameRepository.findNumberGame());
-        model.addAttribute("amountOfThree", gameRepository.findCountOfThree());
-        model.addAttribute("amountOfFour", gameRepository.findCountOfFour());
-        model.addAttribute("amountOfFive", gameRepository.findCountOfFive());
-        model.addAttribute("amountOfSix", gameRepository.findCountOfSix());
+        model.addAttribute("numberGame", gameRepository.findNumberGameByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("amountOfThree", gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("amountOfFour", gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("amountOfFive", gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("amountOfSix", gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin()));
 
         return "auth/myaccount";
     }

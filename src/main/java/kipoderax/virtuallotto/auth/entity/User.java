@@ -26,7 +26,6 @@ public class User {
 
     private int saldo;
 
-    //todo powiązać z tabelą user, do przechowywania i strzałów (i = 3, ..., 6) z n gier
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Game> game;
 

@@ -65,7 +65,6 @@ public class UserService {
         gameRepository.save(game);
         userRepository.save(user);
 
-
         return true;
     }
 

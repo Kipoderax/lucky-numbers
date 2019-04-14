@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">
+
+
+    <title th:text="Logowanie">Logowanie</title>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="main-header" th:replace="fragments/header :: header"></div>
+    <div class="menu" th:replace="fragments/menu :: menu"></div>
+
+    <div class="centre">
+
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th>Ranking</th>
+                    <th>Name</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>
