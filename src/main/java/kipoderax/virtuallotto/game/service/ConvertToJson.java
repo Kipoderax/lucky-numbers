@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
 @Data
 @Service
 public class ConvertToJson {
-
-    //todo naprawic powielanie się JSONA
 
     private List<Integer> lastLottoNumbers = new ArrayList<>();
 
@@ -48,10 +45,7 @@ public class ConvertToJson {
                         try {
                             lottoNumber = Integer.parseInt(line);
                         }
-                        catch (NumberFormatException e)
-                        {
-                            continue;
-                        }
+                        catch (NumberFormatException e) { continue; }
 
                         lastLottoNumbers.add(lottoNumber);
                     }
@@ -60,8 +54,6 @@ public class ConvertToJson {
                     return sb.toString();
             }
 
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -78,7 +70,7 @@ public class ConvertToJson {
 
     public List<Integer> getNumbers(List<Integer> list) {
         getJSON("https://app.lotto.pl/wyniki/?type=dl");
+
         return list;
     }
-
 }

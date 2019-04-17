@@ -7,13 +7,16 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 @Data
 public class GameService {
     private final SecureRandom randomNumber = new SecureRandom();
     private final GameModel gameModel = new GameModel();
+    private final ConvertToJson convertToJson = new ConvertToJson();
     private final GameRepository gameRepository;
 
     private final UserSession userSession;
@@ -25,14 +28,14 @@ public class GameService {
 
     public List<Integer> showTarget() {
 
-        return new ArrayList<>(Arrays.asList(gameModel.getTargetEasyVersion()));
+        return gameModel.getTestRealNumbers();
     }
 
     public Set<Integer> generateNumber(GameModel gameModel) {
 
         while (gameModel.getNumberSet().size() != 6) {
 
-            gameModel.setNumber(randomNumber.nextInt(20) + 1);
+            gameModel.setNumber(randomNumber.nextInt(49) + 1);
             gameModel.getNumberSet().add(gameModel.getNumber());
         }
 
@@ -52,11 +55,11 @@ public class GameService {
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
                 //jesli ktoras wartosc liczb losowo wygenerowanych znajduje sie w tablicy
-                if (value == gameModel.getTargetEasyVersion()[i]) {
+                if (value == gameModel.getTestRealNumbers().get(i)) {
 
                     //dodaj ja do listy liczb trafionych
                     gameModel.getAddGoalNumbers().add(
-                            gameModel.getTargetEasyVersion()[i]);
+                            gameModel.getTestRealNumbers().get(i));
 
                     success++;
                 }

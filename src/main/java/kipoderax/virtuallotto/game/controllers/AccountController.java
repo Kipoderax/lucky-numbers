@@ -36,8 +36,6 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        gameModel.setNumberGame(gameRepository.findNumberGameByLogin(userSession.getUser().getLogin()));
-
         model.addAttribute("currentUser", userSession.getUser().getUsername());
         model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
 
