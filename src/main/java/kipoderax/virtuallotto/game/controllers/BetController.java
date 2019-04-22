@@ -42,7 +42,7 @@ public class BetController {
             return "redirect:/login";
 
         }
-
+        model.addAttribute("numbersForm", new NumbersForm());
         //Pobierz saldo z bazy danych zalogowanego użytkownika
         gameModel.setSaldo(
                 userRepository.findSaldoByLogin(
@@ -70,19 +70,16 @@ public class BetController {
             return "game/bet";
     }
 
-    @GetMapping("/saveNumber")
-    public String saveInputNumbers(Model model) {
-
-        model.addAttribute("numbersForm", new NumbersForm());
-
-        return "game/bet";
-    }
-
     @PostMapping("/zaklad")
-    public String saveInputNumbers(@ModelAttribute NumbersForm numbersForm, Model model) {
+    public String saveInputNumbers(@ModelAttribute("numbersForm") NumbersForm numbersForm, Model model) {
 
-        gameService.saveUserInputNumbers(numbersForm);
+        if (userSession.getUser() == null) {
+            model.addAttribute("info", "Musisz być zalogowany");
 
-        return "redirect:/zaklad";
+            return "auth/login";
+        }
+        gameService.saveUserInputNumbers(numbersForm, userSession.getUser().getId());
+
+        return "redirect:/konto";
     }
 }

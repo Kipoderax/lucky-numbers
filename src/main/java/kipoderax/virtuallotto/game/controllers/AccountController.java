@@ -2,8 +2,8 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserSession;
-import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
+import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +17,21 @@ public class AccountController {
     private UserSession userSession;
     private UserRepository userRepository;
     private GameRepository gameRepository;
+    private UserBetsRepository userBetsRepository;
 
     public AccountController(UserSession userSession,
                              UserRepository userRepository,
-                             GameRepository gameRepository){
+                             GameRepository gameRepository,
+                             UserBetsRepository userBetsRepository){
+
         this.userSession = userSession;
         this.userRepository = userRepository;
-
         this.gameRepository = gameRepository;
+        this.userBetsRepository = userBetsRepository;
     }
 
     @GetMapping({"/konto"})
     public String index(Model model) {
-        GameModel gameModel = new GameModel();
 
         if (!userSession.isUserLogin()) {
 
@@ -44,6 +46,14 @@ public class AccountController {
         model.addAttribute("amountOfFour", gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin()));
         model.addAttribute("amountOfFive", gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin()));
         model.addAttribute("amountOfSix", gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin()));
+
+        //todo dokonczyc poprzez petle pobranie wszystkich zapisanych obstawien
+        model.addAttribute("number1", userBetsRepository.findUserNumber1ByLogin(userSession.getUser().getLogin(), 6));
+        model.addAttribute("number2", userBetsRepository.findUserNumber2ByLogin(userSession.getUser().getLogin(), 6));
+        model.addAttribute("number3", userBetsRepository.findUserNumber3ByLogin(userSession.getUser().getLogin(), 6));
+        model.addAttribute("number4", userBetsRepository.findUserNumber4ByLogin(userSession.getUser().getLogin(), 6));
+        model.addAttribute("number5", userBetsRepository.findUserNumber5ByLogin(userSession.getUser().getLogin(), 6));
+        model.addAttribute("number6", userBetsRepository.findUserNumber6ByLogin(userSession.getUser().getLogin(), 6));
 
         return "auth/myaccount";
     }

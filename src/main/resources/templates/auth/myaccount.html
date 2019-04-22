@@ -18,13 +18,37 @@
         <div class="menu" th:replace="fragments/menu :: menu"></div>
 
         <div class="centre">
-            Zalogowany użytkownik: <p th:text="${currentUser}">1</p>
-            Saldo: <p th:text="${saldo}"></p>
-            Rozegranych gier: <p th:text="${numberGame}"></p>
-            Ilość trójek: <p th:text="${amountOfThree}"></p>
-            Ilość czwórek: <p th:text="${amountOfFour}"></p>
-            Ilość piątek: <p th:text="${amountOfFive}"></p>
-            Ilość szóstek: <p th:text="${amountOfSix}"></p>
+
+            <table>
+                <tr>
+                    <td>Zalogowany użytkownik </td>
+                    <td th:text="${currentUser}"></td>
+                </tr>
+                <tr>
+                    <td>Saldo </td>
+                    <td th:text="${saldo}"></td>
+                </tr>
+                <tr>
+                    <td>Rozegranych gier </td>
+                    <td th:text="${numberGame}"></td>
+                </tr>
+                <tr>
+                    <td>Ilosc trojek</td>
+                    <td th:text="${amountOfThree}"></td>
+                </tr>
+                <tr>
+                    <td>Ilosc czworek</td>
+                    <td th:text="${amountOfFour}"></td>
+                </tr>
+                <tr>
+                    <td>Ilosc czworek</td>
+                    <td th:text="${amountOfFive}"></td>
+                </tr>
+                <tr>
+                    <td>Ilosc szostek</td>
+                    <td th:text="${amountOfSix}"></td>
+                </tr>
+            </table>
 
             <label for="add">
                 <p>Możesz doładować kwote z zakresu 0-200</p>
@@ -34,6 +58,18 @@
                 </form>
             </label>
 
+
+        </div>
+
+        <div class="centre col-xs-3">
+<!--            <table>-->
+<!--                <tr>-->
+<!--                    <td>1 liczba: </td>-->
+<!--                    <td th:text="${number1}"></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+            <p th:text="${number1} + ', ' + ${number2} + ', ' + ${number3} +
+                        ', ' + ${number4} + ', ' + ${number5} + ', ' + ${number6}"></p>
         </div>
 
     </div>

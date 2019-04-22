@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class UserBets {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Column(name = "id-bets") int idBets;
+    private @Column(name = "id_bets") int idBets;
 
     private int number1;
     private int number2;
