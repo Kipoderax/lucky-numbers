@@ -1,12 +1,16 @@
 package kipoderax.virtuallotto.game.controllers;
 
+import kipoderax.virtuallotto.auth.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
+import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.service.GameService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -14,16 +18,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BetController {
 
      private GameService gameService;
-     private UserRepository userRepository;
      private UserSession userSession;
+     private UserRepository userRepository;
+     private UserBetsRepository userBetsRepository;
 
     public BetController(GameService gameService,
                          UserSession userSession,
-                         UserRepository userRepository) {
+                         UserRepository userRepository,
+                         UserBetsRepository userBetsRepository) {
 
         this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
+        this.userBetsRepository = userBetsRepository;
     }
 
     @GetMapping("/zaklad")
@@ -61,5 +68,21 @@ public class BetController {
         }
 
             return "game/bet";
+    }
+
+    @GetMapping("/saveNumber")
+    public String saveInputNumbers(Model model) {
+
+        model.addAttribute("numbersForm", new NumbersForm());
+
+        return "game/bet";
+    }
+
+    @PostMapping("/zaklad")
+    public String saveInputNumbers(@ModelAttribute NumbersForm numbersForm, Model model) {
+
+        gameService.saveUserInputNumbers(numbersForm);
+
+        return "redirect:/zaklad";
     }
 }

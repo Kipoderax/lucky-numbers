@@ -1,15 +1,17 @@
 package kipoderax.virtuallotto.game.service;
 
+import kipoderax.virtuallotto.auth.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.game.entity.UserBets;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
+import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Service
 @Data
@@ -18,10 +20,14 @@ public class GameService {
     private final GameModel gameModel = new GameModel();
     private final ConvertToJson convertToJson = new ConvertToJson();
     private final GameRepository gameRepository;
+    private final UserBetsRepository userBetsRepository;
 
     private final UserSession userSession;
 
-    public GameService(GameRepository gameRepository, UserSession userSession) {
+    public GameService(GameRepository gameRepository, UserSession userSession,
+                       UserBetsRepository userBetsRepository) {
+
+        this.userBetsRepository = userBetsRepository;
         this.gameRepository = gameRepository;
         this.userSession = userSession;
     }
@@ -29,6 +35,10 @@ public class GameService {
     public List<Integer> showTarget() {
 
         return gameModel.getTestRealNumbers();
+    }
+    public List<Integer> showWins() {
+
+        return gameModel.getWins();
     }
 
     public Set<Integer> generateNumber(GameModel gameModel) {
@@ -144,12 +154,30 @@ public class GameService {
     }
 
     //todo dokończyć opcje ręcznego wpisywania 6 liczb
-    public void inputNumbers(int number) {
+    public void saveUserInputNumbers(NumbersForm numbersForm) {
+        UserBets userBets = new UserBets();
 
-        Set<Integer> numbersSet = new TreeSet<>();
-        gameModel.setNumber(number);
-        numbersSet.add(gameModel.getNumber());
+        userBets.setNumber1(numbersForm.getNumber1());
+        userBets.setNumber2(numbersForm.getNumber2());
+        userBets.setNumber3(numbersForm.getNumber3());
+        userBets.setNumber4(numbersForm.getNumber4());
+        userBets.setNumber5(numbersForm.getNumber5());
+        userBets.setNumber6(numbersForm.getNumber6());
 
+        userBetsRepository.save(userBets);
+    }
+
+    public boolean isUniqueNumers(int i, int j) {
+
+        for (i = 1; i < 7; i++) {
+            for (j = 1; j < 7; j++) {
+                if (i == j) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     //todo opcja generowania n zestawow liczb. Dla kazdego zestawu zwrócić obok liczbe trafień, wygraną

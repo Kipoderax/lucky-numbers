@@ -18,6 +18,13 @@
     <div class="main-header" th:replace="fragments/header :: header"></div>
     <div class="menu" th:replace="fragments/menu :: menu"></div>
 
+    <div class="centre">
+        W ostatnim losowaniu padło: <br>
+        <p th:text="${result}"></p>
+<!--        <p th:text="${wins}"></p>-->
+
+    </div>
+
     <!--to co tutaj wyswietlam bedzie wyswietlane w templatce konta uzytkownika-->
 <!--    <div class="centre">-->
 <!--        Zalogowany użytkownik: <p th:text="${currentUser}">1</p>-->

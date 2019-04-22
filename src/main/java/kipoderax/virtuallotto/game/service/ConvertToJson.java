@@ -17,7 +17,10 @@ import java.util.logging.Logger;
 @Service
 public class ConvertToJson {
 
+    //todo zmienne lokalne w metodzie getJSON wyniesc na zewnatrz by moc je pobrac bardziej globalnie
+
     private List<Integer> lastLottoNumbers = new ArrayList<>();
+    private Integer[] lastln = new Integer[15];
 
     public String getJSON(String url) {
         HttpURLConnection c = null;
@@ -48,6 +51,7 @@ public class ConvertToJson {
                         catch (NumberFormatException e) { continue; }
 
                         lastLottoNumbers.add(lottoNumber);
+
                     }
                     br.close();
 
@@ -68,8 +72,20 @@ public class ConvertToJson {
         return null;
     }
 
-    public List<Integer> getNumbers(List<Integer> list) {
+    public List<Integer> getLastNumbers(List<Integer> list) {
         getJSON("https://app.lotto.pl/wyniki/?type=dl");
+
+        return list;
+    }
+
+    //todo sprobowac za pomocą mapy
+    public List<Integer> getLastWins(List<Integer> list) {
+//        getJSON("https://app.lotto.pl/wyniki/?type=dl");
+
+//        List<Integer> amountOfWinner = new ArrayList<>();
+//        for (int i = 0; i < lastLottoNumbers.size(); i += 2) {
+//            amountOfWinner.add(list.get(i));
+//        }
 
         return list;
     }

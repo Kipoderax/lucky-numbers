@@ -21,7 +21,8 @@ public class GameModel {
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
-    private List<Integer> testRealNumbers = convertToJson.getNumbers(convertToJson.getLastLottoNumbers());
+    private List<Integer> wins = convertToJson.getLastWins(convertToJson.getLastLottoNumbers());
+    private List<Integer> testRealNumbers = convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
     private Integer[] targetEasyVersion = {2, 5, 8, 10, 12, 18}; //losowanie z 25
 
     private Set<Integer> numberSet = new TreeSet<>(); //zbior 6 wylosowanych liczb

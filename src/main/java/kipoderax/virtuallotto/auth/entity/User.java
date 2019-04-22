@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.auth.entity;
 
 import kipoderax.virtuallotto.game.entity.Game;
+import kipoderax.virtuallotto.game.entity.UserBets;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Game> game;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserBets> userBets;
 
 }

@@ -20,7 +20,7 @@ public class GameRestController {
     @GetMapping("last-result")
     public List<Integer> getLastResult() {
 
-        return convertToJson.getNumbers(convertToJson.getLastLottoNumbers());
+        return convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
     }
 
     @GetMapping("last-wins")
