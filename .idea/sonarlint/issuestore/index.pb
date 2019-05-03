@@ -53,3 +53,14 @@ M
 v-lotto/src/app/app.module.ts,8\a\8a22ca324e6b65f9cdbbe0704fcbb35c2f8a37aa
 A
 package-lock.json,f\a\fa288d1472d29beccb489a676f68739ad365fc47
+7
+HELP.md,1\a\1a273f73b7a477b0745593641bd708a6182c7ad5
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+]
+-node_modules/bootstrap/dist/css/bootstrap.css,e\8\e8c013fcfded732ee49760d53402479eede330ec
+F
+v-lotto/src/styles.css,f\5\f5154801fafc11759cc285b9e8f79422a55278e8
+f
+6v-lotto/src/app/header-menu/header-menu.component.html,4\1\41a59b441d70012ba53ca88542af634d677cf917
