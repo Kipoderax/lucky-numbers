@@ -4,81 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!--    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">-->
-    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
 
-
-    <title th:text="Logowanie">Logowanie</title>
+    <title th:text="Logowanie">Strona główna</title>
 
 </head>
+
 <body>
 
-<div class="container">
+<div id="page">
+    <div id="header">Wirtualna gra o miliony</div>
+    <div id="cnt-container">
 
-    <div class="main-header" th:replace="fragments/header :: header"></div>
-    <div class="menu" th:replace="fragments/menu :: menu"></div>
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-    <div class="centre">
+        <div class="cnt-center" th:replace="fragments/custom-bets :: custom-bet"></div>
 
-        <table>
-
-            <tr>
-                <td>wyniki ostatniego losowania: </td>
-                <td th:text="${target}">tu liczby ktore wypadly</td>
-            </tr>
-
-            <tr>
-                <td>wylosowane: </td>
-                <td th:text="${wylosowane}">tu znajda sie wylosowane liczby</td>
-            </tr>
-
-            <tr>
-                <td>Trafione liczby: </td>
-                <td th:text="${trafione}">lista liczb ktore trafilem</td>
-            </tr>
-
-            <tr>
-                <td>Wygrywasz: </td>
-                <td th:text="${winMoney}"></td>
-            </tr>
-
-            <tr>
-                <td>Saldo: </td>
-                <td th:if="${saldo > 0}" th:text="${saldo}">aktualne saldo</td>
-                <td th:text="${info}"></td>
-            </tr>
-
-        </table>
-
-        <form action="/zaklad" method="get">
-
-            <!--<input type="button" value="Typuje swoje liczby"> <br />-->
-
-            <a href="/zaklad" style="text-decoration: none">
-                <input type="button" value="Generuj liczby">
-            </a>
-
-        </form>
-
-        <form class="form-control" method="post"
-              th:action="@{/zaklad}" th:object="${numbersForm}">
-
-            <input style="width: 100px" type="number" th:field="*{number1}" required="true">
-
-            <input style="width: 100px" type="number" th:field="*{number2}" required="true">
-
-            <input style="width: 100px" type="number" th:field="*{number3}" required="true">
-
-            <input style="width: 100px" type="number" th:field="*{number4}" required="true">
-
-            <input style="width: 100px" type="number" th:field="*{number5}" required="true">
-
-            <input style="width: 100px" type="number" th:field="*{number6}" required="true">
-
-            <button class="btn-light" type="submit">Dodaj</button>
-        </form>
-
+        <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 
     </div>
 </div>

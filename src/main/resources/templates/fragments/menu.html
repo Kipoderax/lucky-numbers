@@ -1,9 +1,88 @@
-<div class="menu" th:fragment="menu" xmlns:th="http://www.thymeleaf.org">
-    <ul>
-        <li class="main"><a th:href="@{/}">Do głównej</a></li>
-        <li class="zaklady"><a th:href="@{/zaklad}">Zakłady</a></li>
-        <li class="staty"><a th:href="@{/statystyki}">Statystyki</a></li>
-        <!--<li class="pgry"><a href="#">Przeznaczenie gry</a></li>-->
-        <li class="konto"><a href="/konto">Konto</a></li>
-    </ul>
+<div id="cnt-left" th:fragment="cnt-left" xmlns:th="http://www.thymeleaf.org">
+    <div id="menu">
+
+        <div class="menu-top">
+            <div class="menu-exten"></div>
+            <div class="menu-text">News</div>
+        </div>
+        <div class="menu-cnt">
+            <ul><li><a th:href="@{/}">Ostatnie newsy</a></li></ul>
+            <ul><li class="last"><a href="#">Archiwum</a></li></ul>
+        </div>
+        <div class="menu-bottom">&nbsp;</div>
+
+        <div class="menu-top">
+            <div class="menu-exten"></div>
+            <div class="menu-text">Konto</div>
+        </div>
+        <div class="menu-cnt">
+            <ul>
+                <li><a th:href="@{/login}">Logowanie</a></li>
+                <li><a th:href="@{/register}">Tworzenie konta</a></li>
+                <li><a th:href="@{/konto}">Moje konto</a></li>
+                <li class="last"><a href="#">Utracone konto?</a></li>
+            </ul>
+        </div>
+        <div class="menu-bottom">&nbsp;</div>
+
+        <div class="menu-top">
+            <div class="menu-exten"></div>
+            <div class="menu-text">Panel gry</div>
+        </div>
+        <div class="menu-cnt">
+            <ul>
+                <li><a th:href="@{/zaklad}">Zakłady</a></li>
+                <li class="last"><a th:href="@{/statistics}">Statystyki</a></li>
+            </ul>
+        </div>
+        <div class="menu-bottom">&nbsp;</div>
+
+    </div>
+</div>
+
+<div id="cnt-right" th:fragment="cnt-right" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="menu-top">
+        <div class="menu-exten"></div>
+        <div class="menu-text">Status</div>
+    </div>
+    <div class="menu-cnt">
+        <ul>
+            <li>
+                <span class="font_lightgreen"> 34 zarejestrowanych</span>
+            </li>
+        </ul>
+        <ul>
+            <li class="last">
+                <span class="font_lightgreen"> 7 online</span>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-bottom"></div>
+
+    <div class="menu-top">
+        <div class="menu-exten"></div>
+        <div class="menu-text">Top 5</div>
+    </div>
+    <div class="menu-cnt">
+        <ul>
+            <li>Player 1
+                <span class="pull-right">Poziom 14</span>
+            </li>
+            <li>Player 2
+                <span class="pull-right">Poziom 11</span>
+            </li>
+            <li>Player 3
+                <span class="pull-right">Poziom 8</span>
+            </li>
+            <li>Player 4
+                <span class="pull-right">Poziom 8</span>
+            </li>
+            <li>Player 5
+                <span class="pull-right">Poziom 5</span>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-bottom"></div>
+
 </div>

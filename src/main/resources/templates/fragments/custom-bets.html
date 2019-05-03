@@ -1,0 +1,61 @@
+<div class="cnt-center" th:fragment="custom-bet" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="content-top">
+        <div class="title">Typowanie liczb</div>
+    </div>
+
+    <div class="content-bg">
+        <div class="content-txt">
+                <table width="100%" cellspacing="1" cellpadding="4" border="0">
+                    <tbody>
+                    <tr style="background-color: #505050">
+                        <td class="white" colspan="2">
+                            <b>Informacje główne</b>
+                        </td>
+                    </tr>
+                    <tr style="background-color: #d4c0a1">
+                        <td class="table-desc">Liczby do trafienia:</td>
+                        <td style="width:90%" th:text="${target}">[6, 11, 18, 24, 31, 42]</td>
+                    </tr>
+                    <tr style="background-color: #f1e0c6">
+                        <td class="table-desc">Wygenerowano: </td>
+                        <td th:text="${wylosowane}">[8, 11, 13, 24, 38, 42]</td>
+                    </tr>
+                    <tr style="background-color: #d4c0a1">
+                        <td class="table-desc">Trafione liczby:</td>
+                        <td th:text="${trafione}">24 pln</td>
+                    </tr>
+                    <tr style="background-color: #f1e0c6">
+                        <td class="table-desc">Wygrywasz</td>
+                        <td><b><font color="green" th:text="${winMoney}">315 pln</font></b></td>
+                    </tr>
+                    <tr style="background-color: #d4c0a1">
+                        <td class="table-desc">Saldo</td>
+                        <td th:text="${saldo}">24 pln</td>
+                    </tr>
+                    <tr>
+                        <form th:action="@{/zaklad}" method="get">
+                        <td>
+                            <table width="100%" style="margin-left: 100px">
+                                <tbody>
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="@{/zaklad}" style="text-decoration: none">
+                                            <input type="image" src="images/button-loss.png" width="120" height="35">
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        </form>
+                    </tr>
+
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+    <div class="content-bot"></div>
+
+</div>

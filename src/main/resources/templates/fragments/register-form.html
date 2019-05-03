@@ -1,0 +1,75 @@
+<div class="cnt-center" th:fragment="register-form" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="content-top">
+        <div class="title">Rejestracja</div>
+    </div>
+
+    <div class="content-bg">
+        <div class="content-txt">
+            <form th:action="@{/register}" onsubmit="" method="post" th:object="${registerForm}">
+                <table width="100%" cellspacing="1" cellpadding="4" border="0">
+                    <tbody>
+
+                    <tr>
+                        <td class="white" colspan="2" bgcolor="#505050">
+                            <b>Utwórz konto w grze o wirtualne miliony</b>
+                        </td>
+                    </tr>
+
+                    <tr bgcolor="#d4c0a1">
+                        <td width="150" valign="top"><b>Nazwa użytkownika</b></td>
+                        <td colspan="2">
+                            <input type="text" value="" size="30" maxlength="16" th:field="*{username}">
+                        </td>
+                    </tr>
+
+                    <tr bgcolor="#f1e0c6">
+                        <td width="150" valign="top">
+                            <b>Login</b>
+                        </td>
+                        <td colspan="2">
+                            <input type="text" value="" size="30" maxlength="50" th:field="*{login}">
+                        </td>
+                    </tr>
+
+                    <tr bgcolor="#d4c0a1">
+                        <td width="150" valign="top">
+                            <b>Hasło</b>
+                        </td>
+                        <td colspan="2">
+                            <input type="password" value="" size="30" maxlength="50" th:field="*{password}">
+                        </td>
+                    </tr>
+
+                    <tr bgcolor="#f1e0c6">
+                        <td width="150" valign="top">
+                            <b>Email</b>
+                        </td>
+                        <td colspan="2">
+                            <input type="email" value="" size="30" maxlength="50" th:field="*{email}">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <br>
+
+                <table width="100%" border="0">
+                    <tbody>
+                    <tr>
+                        <td valign="top" align="center">
+                            <input type="image" name="I Agree" src="images/login-button.png" width="120" height="36" border="0">
+                        </td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="content-bot"></div>
+
+</div>

@@ -1,3 +1,70 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+<!--    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">-->
+<!--    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">-->
+
+
+<!--    <title th:text="Logowanie">Logowanie</title>-->
+
+<!--</head>-->
+<!--<body>-->
+
+<!--    <div class="container">-->
+<!--        <div class="main-header" th:replace="fragments/header :: header"></div>-->
+<!--        <div class="menu" th:replace="fragments/menu :: menu"></div>-->
+
+<!--        <div class="centre">-->
+
+<!--            <table>-->
+<!--                <tr>-->
+<!--                    <td>Zalogowany użytkownik </td>-->
+<!--                    <td th:text="${currentUser}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Saldo </td>-->
+<!--                    <td th:text="${saldo}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Rozegranych gier </td>-->
+<!--                    <td th:text="${numberGame}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Ilosc trojek</td>-->
+<!--                    <td th:text="${amountOfThree}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Ilosc czworek</td>-->
+<!--                    <td th:text="${amountOfFour}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Ilosc czworek</td>-->
+<!--                    <td th:text="${amountOfFive}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>Ilosc szostek</td>-->
+<!--                    <td th:text="${amountOfSix}"></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+
+<!--            <label for="add">-->
+<!--                <p>Możesz doładować kwote z zakresu 0-200</p>-->
+<!--                <form id="add" th:action="@{/addMoney}" method="post">-->
+<!--                    Dodaje: <input type="text" name="chargeSaldo" required>-->
+<!--                    <button type="submit" class="btn btn-primary">Dodaj</button>-->
+<!--                </form>-->
+<!--            </label>-->
+
+
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,74 +72,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">
 
-
-    <title th:text="Logowanie">Logowanie</title>
+    <title th:text="Logowanie">Strona główna</title>
 
 </head>
+
 <body>
 
-    <div class="container">
-        <div class="main-header" th:replace="fragments/header :: header"></div>
-        <div class="menu" th:replace="fragments/menu :: menu"></div>
+<div id="page">
+    <div id="header">Wirtualna gra o miliony</div>
+    <div id="cnt-container">
 
-        <div class="centre">
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-            <table>
-                <tr>
-                    <td>Zalogowany użytkownik </td>
-                    <td th:text="${currentUser}"></td>
-                </tr>
-                <tr>
-                    <td>Saldo </td>
-                    <td th:text="${saldo}"></td>
-                </tr>
-                <tr>
-                    <td>Rozegranych gier </td>
-                    <td th:text="${numberGame}"></td>
-                </tr>
-                <tr>
-                    <td>Ilosc trojek</td>
-                    <td th:text="${amountOfThree}"></td>
-                </tr>
-                <tr>
-                    <td>Ilosc czworek</td>
-                    <td th:text="${amountOfFour}"></td>
-                </tr>
-                <tr>
-                    <td>Ilosc czworek</td>
-                    <td th:text="${amountOfFive}"></td>
-                </tr>
-                <tr>
-                    <td>Ilosc szostek</td>
-                    <td th:text="${amountOfSix}"></td>
-                </tr>
-            </table>
+        <div class="cnt-center" th:replace="fragments/account-management :: account-management"></div>
 
-            <label for="add">
-                <p>Możesz doładować kwote z zakresu 0-200</p>
-                <form id="add" th:action="@{/addMoney}" method="post">
-                    Dodaje: <input type="text" name="chargeSaldo" required>
-                    <button type="submit" class="btn btn-primary">Dodaj</button>
-                </form>
-            </label>
-
-
-        </div>
-
-        <div class="centre col-xs-3">
-<!--            <table>-->
-<!--                <tr>-->
-<!--                    <td>1 liczba: </td>-->
-<!--                    <td th:text="${number1}"></td>-->
-<!--                </tr>-->
-<!--            </table>-->
-            <p th:text="${number1} + ', ' + ${number2} + ', ' + ${number3} +
-                        ', ' + ${number4} + ', ' + ${number5} + ', ' + ${number6}"></p>
-        </div>
+        <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 
     </div>
+</div>
 
 </body>
 </html>

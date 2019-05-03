@@ -48,12 +48,15 @@ public class AccountController {
         model.addAttribute("amountOfSix", gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin()));
 
         //todo dokonczyc poprzez petle pobranie wszystkich zapisanych obstawien
-        model.addAttribute("number1", userBetsRepository.findUserNumber1ByLogin(userSession.getUser().getLogin(), 6));
-        model.addAttribute("number2", userBetsRepository.findUserNumber2ByLogin(userSession.getUser().getLogin(), 6));
-        model.addAttribute("number3", userBetsRepository.findUserNumber3ByLogin(userSession.getUser().getLogin(), 6));
-        model.addAttribute("number4", userBetsRepository.findUserNumber4ByLogin(userSession.getUser().getLogin(), 6));
-        model.addAttribute("number5", userBetsRepository.findUserNumber5ByLogin(userSession.getUser().getLogin(), 6));
-        model.addAttribute("number6", userBetsRepository.findUserNumber6ByLogin(userSession.getUser().getLogin(), 6));
+        for (int i = 3; i < 5; i++) {
+            //Optional i warunek do wyciagania
+            model.addAttribute("number1", userBetsRepository.findUserNumber1ByLogin(userSession.getUser().getLogin(), i));
+            model.addAttribute("number2", userBetsRepository.findUserNumber2ByLogin(userSession.getUser().getLogin(), i));
+            model.addAttribute("number3", userBetsRepository.findUserNumber3ByLogin(userSession.getUser().getLogin(), i));
+            model.addAttribute("number4", userBetsRepository.findUserNumber4ByLogin(userSession.getUser().getLogin(), i));
+            model.addAttribute("number5", userBetsRepository.findUserNumber5ByLogin(userSession.getUser().getLogin(), i));
+            model.addAttribute("number6", userBetsRepository.findUserNumber6ByLogin(userSession.getUser().getLogin(), i));
+        }
 
         return "auth/myaccount";
     }

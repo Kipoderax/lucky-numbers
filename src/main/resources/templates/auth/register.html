@@ -5,48 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
-    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">
 
-
-    <title th:text="Logowanie">Logowanie</title>
+    <title th:text="Logowanie">Strona główna</title>
 
 </head>
 
 <body>
 
-<div class="container">
+<div id="page">
+    <div id="header">Wirtualna gra o miliony</div>
+    <div id="cnt-container">
 
-    <div class="main-header" th:replace="fragments/header :: header"></div>
-    <div class="menu" th:replace="fragments/menu :: menu"></div>
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-    <div class="centre">
+        <div class="cnt-center" th:replace="fragments/register-form :: register-form"></div>
 
-        <form class="form-control" method="post"
-              th:action="@{/register}" th:object="${registerForm}">
-
-            <label for="username">Username</label>
-            <input id="username" type="text" th:field="*{username}" required="true"> <br />
-
-            <label for="login">Login</label>
-            <input id="login" type="text" th:field="*{login}" required="true"> <br />
-
-            <label for="password">Hasło</label>
-            <input id="password" type="password" th:field="*{password}" required="true"> <br/>
-
-            <label for="email">Email</label>
-            <input id="email" type="email" th:field="*{email}" required="true"> <br/>
-
-            <button class="btn-light" type="submit">Zarejestruj</button>
-        </form>
-
-        <div class="row" style="margin-top: 80px; margin-left: 150px">
-            <a href="/login" class="pad">
-                <button class="btn btn-primary">Logowanie</button>
-            </a>
-        </div>
+        <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 
     </div>
-
 </div>
 
 </body>
