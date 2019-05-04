@@ -27,7 +27,7 @@
 
                             <tr>
                                 <td>
-                                <form th:action="@{/logout}" method="post">
+                                <form th:action="@{/logout}" method="get">
                                     <input class="buttonText" type="image" name="Logout" alt="wyloguj" src="images/logout-button.png">
                                 </form>
                                 </td>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Saldo</td>
-                    <td><b><font color="green" th:text="${saldo}">315 pln</font></b></td>
+                    <td><b><font color="green" th:text="${saldo}"></font></b></td>
                 </tr>
                 </tbody>
             </table>
@@ -77,23 +77,23 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">trafionych 3:</td>
-                    <td style="width:90%" th:text="${amountOfThree}">7</td>
+                    <td style="width:90%" th:text="${amountOfThree}"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">trafionych 4:</td>
-                    <td th:text="${amountOfFour}">1</td>
+                    <td th:text="${amountOfFour}"></td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">trafionych 5:</td>
-                    <td th:text="${amountOfFive}">0</td>
+                    <td th:text="${amountOfFive}"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">trafionych 6:</td>
-                    <td th:text="${amountOfSix}">0</td>
+                    <td th:text="${amountOfSix}"></td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">rozegranych gier:</td>
-                    <td th:text="${numberGame}">184</td>
+                    <td th:text="${numberGame}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -107,16 +107,16 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Na gry wydano:</td>
-                    <td style="width:90%">552 pln</td>
+                    <td style="width:90%" th:text="${expense} + ' pln'">552 pln</td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Z trafionych liczb uzbierano</td>
-                    <td>305,60 pln</td>
+                    <td th:text="${addup} + ' pln'">305,60 pln</td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Rezultat:</td>
                     <td><b>
-                        <font color="red">Stracono 246,40 pln</font>
+                        <font color="red" th:text="'Stracono ' + ${result} + ' pln'">Stracono 246,40 pln</font>
                     </b></td>
                 </tr>
                 </tbody>

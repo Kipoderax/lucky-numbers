@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AccountController {
 
     private UserSession userSession;
+    private UserService userService;
     private UserRepository userRepository;
     private GameRepository gameRepository;
     private UserBetsRepository userBetsRepository;
 
     public AccountController(UserSession userSession,
+                             UserService userService,
                              UserRepository userRepository,
                              GameRepository gameRepository,
                              UserBetsRepository userBetsRepository){
 
         this.userSession = userSession;
+        this.userService = userService;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userBetsRepository = userBetsRepository;
@@ -38,25 +42,26 @@ public class AccountController {
             return "redirect:/login";
         }
 
+        int numberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getLogin());
+        int three = gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin());
+        int four = gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin());
+        int five = gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin());
+        int six = gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin());
+        int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+
+
         model.addAttribute("currentUser", userSession.getUser().getUsername());
         model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
 
-        model.addAttribute("numberGame", gameRepository.findNumberGameByLogin(userSession.getUser().getLogin()));
-        model.addAttribute("amountOfThree", gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin()));
-        model.addAttribute("amountOfFour", gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin()));
-        model.addAttribute("amountOfFive", gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin()));
-        model.addAttribute("amountOfSix", gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("numberGame", numberGame);
+        model.addAttribute("amountOfThree", three);
+        model.addAttribute("amountOfFour", four);
+        model.addAttribute("amountOfFive", five);
+        model.addAttribute("amountOfSix", six);
 
-        //todo dokonczyc poprzez petle pobranie wszystkich zapisanych obstawien
-        for (int i = 3; i < 5; i++) {
-            //Optional i warunek do wyciagania
-            model.addAttribute("number1", userBetsRepository.findUserNumber1ByLogin(userSession.getUser().getLogin(), i));
-            model.addAttribute("number2", userBetsRepository.findUserNumber2ByLogin(userSession.getUser().getLogin(), i));
-            model.addAttribute("number3", userBetsRepository.findUserNumber3ByLogin(userSession.getUser().getLogin(), i));
-            model.addAttribute("number4", userBetsRepository.findUserNumber4ByLogin(userSession.getUser().getLogin(), i));
-            model.addAttribute("number5", userBetsRepository.findUserNumber5ByLogin(userSession.getUser().getLogin(), i));
-            model.addAttribute("number6", userBetsRepository.findUserNumber6ByLogin(userSession.getUser().getLogin(), i));
-        }
+        model.addAttribute("expense", numberGame * 3);
+        model.addAttribute("addup", addUp);
+        model.addAttribute("result", Math.abs(addUp - (numberGame * 3)));
 
         return "auth/myaccount";
     }
@@ -81,5 +86,13 @@ public class AccountController {
         }
 
         return "redirect:/konto";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+
+        userService.logout();
+
+        return "redirect:/login";
     }
 }

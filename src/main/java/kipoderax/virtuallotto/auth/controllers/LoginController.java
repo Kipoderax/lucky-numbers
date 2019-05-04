@@ -41,12 +41,4 @@ public class LoginController {
 
         return "redirect:/konto";
     }
-
-    @GetMapping("/logout")
-    public String logout() {
-
-        userService.logout();
-
-        return "redirect:/login";
-    }
 }
