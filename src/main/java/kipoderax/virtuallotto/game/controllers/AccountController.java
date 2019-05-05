@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Date;
 
 
 @Controller
@@ -49,6 +52,7 @@ public class AccountController {
         int six = gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin());
         int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
 
+        userRepository.updateLastLoginByLogin(new Date(), userSession.getUser().getLogin());
 
         model.addAttribute("currentUser", userSession.getUser().getUsername());
         model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
@@ -62,6 +66,11 @@ public class AccountController {
         model.addAttribute("expense", numberGame * 3);
         model.addAttribute("addup", addUp);
         model.addAttribute("result", Math.abs(addUp - (numberGame * 3)));
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
+        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(userSession.getUser().getLogin()));
+        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(userSession.getUser().getLogin()));
 
         return "auth/myaccount";
     }

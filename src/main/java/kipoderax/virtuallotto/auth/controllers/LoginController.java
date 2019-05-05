@@ -1,6 +1,8 @@
 package kipoderax.virtuallotto.auth.controllers;
 
 import kipoderax.virtuallotto.auth.forms.LoginForm;
+import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,16 +15,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private final UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/login")
     public String getLogin(Model model) {
 
         model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         return "auth/login";
     }

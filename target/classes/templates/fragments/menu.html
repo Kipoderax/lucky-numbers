@@ -49,12 +49,12 @@
     <div class="menu-cnt">
         <ul>
             <li>
-                <span class="font_lightgreen"> 34 zarejestrowanych</span>
+                <span class="font_lightgreen" th:text="${amountRegisterPlayers} + ' zarejestrowanych'"></span>
             </li>
         </ul>
         <ul>
             <li class="last">
-                <span class="font_lightgreen"> 7 online</span>
+                <span class="font_lightgreen" th:text="${sessionCounter} + ' online'"> 7 online</span>
             </li>
         </ul>
     </div>

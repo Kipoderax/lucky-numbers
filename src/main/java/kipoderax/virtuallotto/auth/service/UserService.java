@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,7 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         user.setEmail(registerForm.getEmail());
         user.setSaldo(100);
+        user.setDateOfCreatedAccount(new Date());
 
         game.setNumberGame(0);
         game.setCountOfThree(0);
@@ -106,12 +108,15 @@ public class UserService {
         return new BCryptPasswordEncoder();
     }
 
-    //todo przygotować jakoś templatke,
-    // controllera by na każdej podstronie
-    // wyświetlało ilość zarejestrowanych użytkowników
     public int getCountPlayers() {
 
-       return userRepository.getCountPlayers();
+       return userRepository.getAllRegisterUsers();
     }
 
+//    public String getDateOfRegisterUser(String login) {
+//        userRepository.findDateOfCreateAccountByLogin(login);
+//
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.GERMAN);
+//        return dateFormat.format(userRepository.findDateOfCreateAccountByLogin(login));
+//    }
 }
