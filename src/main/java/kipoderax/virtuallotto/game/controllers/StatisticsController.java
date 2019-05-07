@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,8 @@ public class StatisticsController {
     @GetMapping("/statystyki")
     public String statistics(Model model) {
 
-//        model.addAttribute("name", userRepository.getAllLogin());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         return "game/statistics";
     }

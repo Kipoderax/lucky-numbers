@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.auth.entity;
 
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserBets;
+import kipoderax.virtuallotto.game.entity.UserExperience;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -36,5 +37,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserBets> userBets;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_exp_id")
+    private UserExperience userExperience;
 
 }

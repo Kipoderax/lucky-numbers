@@ -1,15 +1,12 @@
 package kipoderax.virtuallotto.game.entity;
 
 import kipoderax.virtuallotto.auth.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "game")
+@Data
 public class Game {
 
     @Id
@@ -22,7 +19,6 @@ public class Game {
     private @Column(name = "count_of_six") int countOfSix;
     private @Column(name = "number_game") int numberGame;
 
-    //todo utworzyć relacje z tabelą user
     @ManyToOne(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,

@@ -7,13 +7,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper implements Mapper<User, UserDto> {
 
+//    @Override
+//    public UserDto map(User from) {
+//        return new UserDto(
+//                from.getUsername(),
+//
+//
+//    }
+
+
     @Override
     public UserDto map(User from) {
-        return new UserDto(
-                from.getLogin(),
-                from.getPassword(),
-                from.getEmail(),
-                from.getSaldo());
-
+        return null;
     }
 }

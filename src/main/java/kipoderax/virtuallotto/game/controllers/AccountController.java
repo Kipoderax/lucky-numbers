@@ -6,6 +6,7 @@ import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
+import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,18 +24,21 @@ public class AccountController {
     private UserRepository userRepository;
     private GameRepository gameRepository;
     private UserBetsRepository userBetsRepository;
+    private UserExperienceRepository userExperienceRepository;
 
     public AccountController(UserSession userSession,
                              UserService userService,
                              UserRepository userRepository,
                              GameRepository gameRepository,
-                             UserBetsRepository userBetsRepository){
+                             UserBetsRepository userBetsRepository,
+                             UserExperienceRepository userExperienceRepository){
 
         this.userSession = userSession;
         this.userService = userService;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userBetsRepository = userBetsRepository;
+        this.userExperienceRepository = userExperienceRepository;
     }
 
     @GetMapping({"/konto"})
@@ -45,32 +49,42 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        int numberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getLogin());
-        int three = gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin());
-        int four = gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin());
-        int five = gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin());
-        int six = gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin());
+        String login = userSession.getUser().getLogin();
+        int numberGame = gameRepository.findNumberGameByLogin(login);
+        int three = gameRepository.findCountOfThreeByLogin(login);
+        int four = gameRepository.findCountOfFourByLogin(login);
+        int five = gameRepository.findCountOfFiveByLogin(login);
+        int six = gameRepository.findCountOfSixByLogin(login);
         int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
 
         userRepository.updateLastLoginByLogin(new Date(), userSession.getUser().getLogin());
 
         model.addAttribute("currentUser", userSession.getUser().getUsername());
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
 
-        model.addAttribute("numberGame", numberGame);
+        //MAIN INFORMATION CONTENT
+        model.addAttribute("email", userRepository.findEmailByLogin(login));
+        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(login));
+        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(login));
+        model.addAttribute("saldo", userRepository.findSaldoByLogin(login));
+        model.addAttribute("level", userExperienceRepository.findLevelByLogin(login));
+
+        //GAME CONTENT
         model.addAttribute("amountOfThree", three);
         model.addAttribute("amountOfFour", four);
         model.addAttribute("amountOfFive", five);
         model.addAttribute("amountOfSix", six);
+        model.addAttribute("numberGame", numberGame);
+        model.addAttribute("exp", userExperienceRepository.findExpByLogin(login));
 
+        //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
         model.addAttribute("addup", addUp);
         model.addAttribute("result", Math.abs(addUp - (numberGame * 3)));
+
+        //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
-        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(userSession.getUser().getLogin()));
-        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(userSession.getUser().getLogin()));
 
         return "auth/myaccount";
     }

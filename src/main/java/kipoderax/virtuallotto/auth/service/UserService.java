@@ -5,7 +5,9 @@ import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.game.entity.Game;
+import kipoderax.virtuallotto.game.entity.UserExperience;
 import kipoderax.virtuallotto.game.repository.GameRepository;
+import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,25 +24,29 @@ public class UserService {
         SUCCESS, FAILED
     }
 
-    private final UserRepository userRepository;
     private final UserSession userSession;
 
+    private final UserRepository userRepository;
     private final GameRepository gameRepository;
+    private final UserExperienceRepository userExperienceRepository;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        UserSession userSession,
-                       GameRepository gameRepository) {
+                       GameRepository gameRepository,
+                       UserExperienceRepository userExperienceRepository) {
 
-        this.userRepository = userRepository;
         this.userSession = userSession;
+        this.userRepository = userRepository;
         this.gameRepository = gameRepository;
+        this.userExperienceRepository = userExperienceRepository;
 
     }
 
     public boolean register(RegisterForm registerForm) {
         User user = new User();
         Game game = new Game();
+        UserExperience userExperience = new UserExperience();
         List<Game> games = new ArrayList<>();
 
         if (isLoginFree(registerForm.getLogin())){
@@ -61,11 +67,16 @@ public class UserService {
         game.setCountOfFive(0);
         game.setCountOfSix(0);
 
+        userExperience.setLevel(1);
+        userExperience.setExperience(0);
+
         game.setUser(user);
         user.setGame(games);
+        userExperience.setUser(user);
 
         gameRepository.save(game);
         userRepository.save(user);
+        userExperienceRepository.save(userExperience);
 
         return true;
     }

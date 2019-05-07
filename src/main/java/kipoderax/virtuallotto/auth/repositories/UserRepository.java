@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     boolean existsByLogin(String login);
 
+    @Query("select email from User where login=:login")
+    String findEmailByLogin(@Param("login") String login);
+
     @Query("select saldo from User where login=:login")
     Integer findSaldoByLogin(@Param("login") String login);
 
@@ -36,7 +39,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Modifying
     @Query("update User set lastLogin=:last_login where login=:login")
-    void updateLastLoginByLogin(@Param("last_login") Date last_login,
+    void updateLastLoginByLogin(@Param("last_login") Date lastLogin,
                           @Param("login") String login);
 
     @Query("select lastLogin from User where login=:login")

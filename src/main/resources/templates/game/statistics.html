@@ -4,41 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!--    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">-->
-    <link th:href="@{mystyles.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
 
-
-    <title th:text="Logowanie">Logowanie</title>
+    <title th:text="Statystyki">Strona główna</title>
 
 </head>
+
 <body>
 
-<div class="container">
+<div id="page">
+    <div id="header">Wirtualna gra o miliony</div>
+    <div id="cnt-container">
 
-    <div class="main-header" th:replace="fragments/header :: header"></div>
-    <div class="menu" th:replace="fragments/menu :: menu"></div>
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-    <div class="centre">
+        <div class="cnt-center" th:replace="fragments/table-statistics :: statistics"></div>
 
-        <table class="table table-striped">
-
-            <thead>
-                <tr>
-                    <th>Ranking</th>
-                    <th>Name</th>
-                    <th>Saldo</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            </tbody>
-
-        </table>
+        <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 
     </div>
 </div>
