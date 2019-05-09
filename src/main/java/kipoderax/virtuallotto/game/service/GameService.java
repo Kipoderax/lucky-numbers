@@ -5,6 +5,7 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
+import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +21,18 @@ public class GameService {
     private final ConvertToJson convertToJson = new ConvertToJson();
     private final GameRepository gameRepository;
     private final UserBetsRepository userBetsRepository;
+    private final UserExperienceRepository userExperienceRepository;
 
     private final UserSession userSession;
 
     public GameService(GameRepository gameRepository, UserSession userSession,
-                       UserBetsRepository userBetsRepository) {
+                       UserBetsRepository userBetsRepository,
+                       UserExperienceRepository userExperienceRepository) {
 
         this.userBetsRepository = userBetsRepository;
         this.gameRepository = gameRepository;
         this.userSession = userSession;
+        this.userExperienceRepository = userExperienceRepository;
     }
 
     public List<Integer> showTarget() {
@@ -57,6 +61,7 @@ public class GameService {
         int success = 0;
 
         int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getLogin());
+        int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getLogin());
 
         //przejdz po liczbach wygenerowanych
         for (int value : gameModel.getNumberSet()) {
@@ -76,37 +81,40 @@ public class GameService {
         }
 
         //zaktualizuj konto na podstawie ilości powyższych trafień
-        upgradeCurrentSaldo(gameModel, success, currentSaldo);
+        upgradeCurrentSaldo(gameModel, success, currentSaldo, currentExperience);
         upgradeNumberGame(currentNumberGame);
         upgradeAmountFRom3To6(success);
 
         return gameModel.getAddGoalNumbers();
     }
 
-    private void upgradeCurrentSaldo(GameModel gameModel, int count, int currentSaldo) {
+    private void upgradeCurrentSaldo(GameModel gameModel, int count, int currentSaldo, int currentExperience) {
         gameModel.setWinPerOneGame(0);
 
-        for (int i = 3; i <= gameModel.getRewards().length; i++) {
+        for (int i = 3; i <= gameModel.getRewardsMoney().length; i++) {
 
             //jeśli ilość trafień jest co najmniej i
             if (count == i) {
 
                 //powiększ saldo zgodnie z ilością trafień uwzględniając koszt zakładu
-                currentSaldo += gameModel.getRewards()[i - 2] + gameModel.getRewards()[0];
+                currentSaldo += gameModel.getRewardsMoney()[i - 2] + gameModel.getRewardsMoney()[0];
 
                 //ustaw aktualne saldo
                 gameModel.setSaldo(currentSaldo);
 
                 //przypisz odpowiednią wygraną do wyświetlenia
-                gameModel.setWinPerOneGame(gameModel.getRewards()[i-2]);
+                gameModel.setWinPerOneGame(gameModel.getRewardsMoney()[i-2]);
 
+                //dodaj expa
+                currentExperience += gameModel.getRewardsExperience()[i-3];
+                gameModel.setExperience(currentExperience);
             }
         }
 
         if (count < 3) {
 
             //odejmuj saldo o kosztu zakładu
-            currentSaldo += gameModel.getRewards()[0];
+            currentSaldo += gameModel.getRewardsMoney()[0];
             gameModel.setSaldo(currentSaldo);
         }
     }

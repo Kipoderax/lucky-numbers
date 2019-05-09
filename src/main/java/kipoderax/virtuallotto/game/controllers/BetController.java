@@ -6,6 +6,8 @@ import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
+import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.GameService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,21 +24,25 @@ public class BetController {
      private UserSession userSession;
      private UserRepository userRepository;
      private UserBetsRepository userBetsRepository;
+     private UserExperienceRepository userExperienceRepository;
 
     public BetController(GameService gameService,
                          UserSession userSession,
                          UserRepository userRepository,
-                         UserBetsRepository userBetsRepository) {
+                         UserBetsRepository userBetsRepository,
+                         UserExperienceRepository userExperienceRepository) {
 
         this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
         this.userBetsRepository = userBetsRepository;
+        this.userExperienceRepository = userExperienceRepository;
     }
 
     @GetMapping("/zaklad")
     public String bet(Model model) {
         GameModel gameModel = new GameModel();
+        Experience experience = new Experience();
 
         if (!userSession.isUserLogin()) {
 
@@ -51,6 +57,12 @@ public class BetController {
         gameModel.setSaldo(
                 userRepository.findSaldoByLogin(
                         userSession.getUser().getLogin()));
+        gameModel.setExperience(
+                userExperienceRepository.findExpByLogin(
+                        userSession.getUser().getLogin()));
+        gameModel.setLevel(
+                userExperienceRepository.findExpByLogin(
+                        userSession.getUser().getLogin()));
 
         if (gameModel.getSaldo() > 0) {
 
@@ -61,6 +73,9 @@ public class BetController {
             //Aktualizuj po ilości trafionych liczb
             userRepository.updateUserSaldoByLogin(
                     gameService.getSaldo(gameModel), userSession.getUser().getLogin());
+            userExperienceRepository.updateExperienceById(userSession.getUser().getId(), gameModel.getExperience());
+            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel.getExperience()));
+
 
             model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
             model.addAttribute("winMoney", gameService.getMyWin(gameModel));

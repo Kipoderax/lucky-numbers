@@ -17,7 +17,10 @@ public class GameModel {
     private ConvertToJson convertToJson = new ConvertToJson();
 
     private int number; //komponent numberSet
-    private int[] rewards = {-3, 24, 120, 4_800, 2_000_000};
+    private int experience;
+    private int level;
+    private int[] rewardsMoney = {-3, 24, 120, 4_800, 2_000_000};
+    private int[] rewardsExperience = {8, 42, 477, 15134};
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
