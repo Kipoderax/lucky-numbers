@@ -20,7 +20,7 @@ public class GameModel {
     private int experience;
     private int level;
     private int[] rewardsMoney = {-3, 24, 120, 4_800, 2_000_000};
-    private int[] rewardsExperience = {8, 42, 477, 15134};
+    private int[] rewardsExperience = {1, 3, 21, 186, 1985, 15134};
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
@@ -31,4 +31,13 @@ public class GameModel {
     private Set<Integer> numberSet = new TreeSet<>(); //zbior 6 wylosowanych liczb
     private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb
 
+    public int getLevel(int level) {
+
+        return level;
+    }
+
+//    public double getLevel(double level) {
+//
+//        return level;
+//    }
 }

@@ -74,7 +74,7 @@ public class BetController {
             userRepository.updateUserSaldoByLogin(
                     gameService.getSaldo(gameModel), userSession.getUser().getLogin());
             userExperienceRepository.updateExperienceById(userSession.getUser().getId(), gameModel.getExperience());
-            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel.getExperience()));
+            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel));
 
 
             model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));

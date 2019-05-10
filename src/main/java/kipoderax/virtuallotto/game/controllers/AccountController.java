@@ -7,6 +7,7 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,7 @@ public class AccountController {
 
     @GetMapping({"/konto"})
     public String index(Model model) {
+        Experience experience = new Experience();
 
         if (!userSession.isUserLogin()) {
 
@@ -67,6 +69,8 @@ public class AccountController {
         model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(login));
         model.addAttribute("saldo", userRepository.findSaldoByLogin(login));
         model.addAttribute("level", userExperienceRepository.findLevelByLogin(login));
+        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(login),
+                userExperienceRepository.findExpByLogin(login)));
 
         //GAME CONTENT
         model.addAttribute("amountOfThree", three);

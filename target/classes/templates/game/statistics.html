@@ -6,7 +6,7 @@
 
     <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
 
-    <title th:text="Zaklady">Strona główna</title>
+    <title th:text="Statystyki">Strona główna</title>
 
 </head>
 
@@ -18,7 +18,7 @@
 
         <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-        <div class="cnt-center" th:replace="fragments/custom-bets :: custom-bet"></div>
+        <div class="cnt-center" th:replace="fragments/table-statistics :: statistics"></div>
 
         <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 

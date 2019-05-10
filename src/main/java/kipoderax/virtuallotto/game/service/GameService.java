@@ -104,9 +104,15 @@ public class GameService {
 
                 //przypisz odpowiednią wygraną do wyświetlenia
                 gameModel.setWinPerOneGame(gameModel.getRewardsMoney()[i-2]);
+            }
+        }
+        for (int i = 1; i <= gameModel.getRewardsMoney().length; i++) {
+
+            //jeśli ilość trafień jest co najmniej i
+            if (count == i) {
 
                 //dodaj expa
-                currentExperience += gameModel.getRewardsExperience()[i-3];
+                currentExperience += gameModel.getRewardsExperience()[i-1];
                 gameModel.setExperience(currentExperience);
             }
         }

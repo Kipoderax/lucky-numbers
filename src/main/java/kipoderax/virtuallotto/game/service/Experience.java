@@ -1,35 +1,18 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
-import lombok.NoArgsConstructor;
+import kipoderax.virtuallotto.game.model.GameModel;
 import org.springframework.stereotype.Service;
 
-/**
- *  Exp formula: 5 * (1,03) ^ lvl (exp need to reach next lv)
- */
-
-@Service @NoArgsConstructor
+@Service
 public class Experience {
 
-    private GameService gameService;
-    private UserExperienceRepository userExperienceRepository;
+    public int reachNextLevel(GameModel gameModel) {
 
-    public Experience(GameService gameService,
-                      UserExperienceRepository userExperienceRepository) {
-
-        this.gameService = gameService;
-        this.userExperienceRepository = userExperienceRepository;
+        return (int) (2 * Math.pow(gameModel.getExperience(), 0.4));
     }
 
-    public int reachNextLevel(int experience) {
-//        formulaLevel(experience, level);
+    public int needExpToNextLevel(int level, int exp) {
 
-        return experience / 5;
+        return (int) ((0.176777 * Math.pow(level + 1, 2.5)) + 1) - (exp);
     }
-
-    //todo cdn
-    public void formulaLevel(int experience, int level) {
-        level = experience / 5;
-    }
-
 }
