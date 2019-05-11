@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     private String username;
-    private String numberGame;
-    private String amountOfThree;
-    private String amountOfFour;
-    private String amountOfFive;
-    private String amountOfSix;
-    private String level;
+    private int amountOfThree;
+    private int amountOfFour;
+    private int amountOfFive;
+    private int amountOfSix;
+    private int numberGame;
+    private int level;
+    private int experience;
 
 }

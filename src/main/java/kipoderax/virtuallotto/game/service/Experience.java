@@ -20,8 +20,4 @@ public class Experience {
         return (int) ((0.176777 * Math.pow(level + 1, 2.5)) + 1) - (exp);
     }
 
-    public String template() {
-
-        return "";
-    }
 }

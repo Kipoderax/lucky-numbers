@@ -96,13 +96,15 @@ public class AccountController {
     @PostMapping("/addMoney")
     public String charge(@RequestParam int chargeSaldo) {
 
+        int level = userExperienceRepository.findLevelByLogin(userSession.getUser().getLogin());
+
         if (!userSession.isUserLogin()) {
 
             return "redirect:/login";
         }
 
         //doładowuje konto
-        if (chargeSaldo >= 0 && chargeSaldo <= 200) {
+        if (chargeSaldo >= 0 && chargeSaldo <= (50 + (level * 2))) {
 
             userRepository.updateUserSaldoByLogin(
                     userRepository.findSaldoByLogin(userSession.getUser().getLogin()) + chargeSaldo,
