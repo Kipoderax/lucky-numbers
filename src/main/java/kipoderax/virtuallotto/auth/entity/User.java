@@ -32,8 +32,8 @@ public class User {
     @Column(name = "last_login")
     private Date lastLogin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Game> game;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Game game;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserBets> userBets;

@@ -3,11 +3,11 @@ package kipoderax.virtuallotto.dtos.models;
 public class UserDtoBuilder {
 
     private String name = "";
+    private int numberGame = 0;
     private int amountOfThree = 0;
     private int amountOfFour = 0;
     private int amountOfFive = 0;
     private int amountOfSix = 0;
-    private int numberGame = 0;
     private int level = 0;
     private int experience = 0;
 
@@ -55,6 +55,6 @@ public class UserDtoBuilder {
     }
 
     public UserDto build() {
-        return new UserDto(name, amountOfThree, amountOfFour, amountOfFive, amountOfSix, numberGame, level, experience);
+        return new UserDto(name, numberGame, amountOfThree, amountOfFour, amountOfFive, amountOfSix, level, experience);
     }
 }

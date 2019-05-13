@@ -4,6 +4,8 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.dtos.mapper.UserMapper;
+import kipoderax.virtuallotto.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
 import kipoderax.virtuallotto.game.repository.GameRepository;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,6 +28,7 @@ public class UserService {
     }
 
     private final UserSession userSession;
+    private UserMapper userMapper;
 
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
@@ -34,12 +38,14 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        UserSession userSession,
                        GameRepository gameRepository,
-                       UserExperienceRepository userExperienceRepository) {
+                       UserExperienceRepository userExperienceRepository,
+                       UserMapper userMapper) {
 
         this.userSession = userSession;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userExperienceRepository = userExperienceRepository;
+        this.userMapper = userMapper;
 
     }
 
@@ -71,7 +77,7 @@ public class UserService {
         userExperience.setExperience(0);
 
         game.setUser(user);
-        user.setGame(games);
+        user.setGame(game);
         userExperience.setUser(user);
 
         gameRepository.save(game);
@@ -130,4 +136,15 @@ public class UserService {
 //        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.GERMAN);
 //        return dateFormat.format(userRepository.findDateOfCreateAccountByLogin(login));
 //    }
+
+    public List<UserDto> getAllDtoUsers() {
+        List<UserDto> userDtos = new ArrayList<>();
+
+        userRepository.findAll()
+                .stream()
+                .map(u -> userDtos.add(userMapper.map(u)))
+                .collect(Collectors.toList());
+
+        return userDtos;
+    }
 }

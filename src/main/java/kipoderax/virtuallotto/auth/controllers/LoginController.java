@@ -4,6 +4,7 @@ import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
+import kipoderax.virtuallotto.dtos.models.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +26,10 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLogin(Model model) {
+        UserDto userDto = new UserDto();
 
         model.addAttribute("loginForm", new LoginForm());
+        System.out.println(userDto.getUsername());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 

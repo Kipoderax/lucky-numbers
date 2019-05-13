@@ -44,4 +44,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select lastLogin from User where login=:login")
     Date findLastLoginDateByLogin(@Param("login") String login);
+
+    //zapytanie
+//    @Query("select u.username from User ")
+//    List<User> findDataForStats();
 }

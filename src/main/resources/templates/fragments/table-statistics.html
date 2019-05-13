@@ -6,53 +6,42 @@
 
     <div class="content-bg">
         <div class="content-txt">
-            <table width="100%" cellspacing="1" cellpadding="4" border="0">
+
+            <table id="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
+
                 <tbody>
+
                 <tr bgcolor="#505050">
-                    <td colspan="8" style="font-weight: bold; color: white">
+                    <td colspan="9" style="font-weight: bold; color: white">
                         Gracze z największym szczęściem wirtualnego miliona
                     </td>
                 </tr>
+
                 <tr bgcolor="#d4c0a1">
                     <td class="whites">#</td>
                     <td class="whites">Name</td>
-                    <td class="whites"><center>Rozegranych gier</center></td>
+                    <td class="whites"><center>Ilosc gier</center></td>
                     <td class="whites"><center>Ilosc 3</center></td>
                     <td class="whites"><center>Ilosc 4</center></td>
                     <td class="whites"><center>Ilosc 5</center></td>
                     <td class="whites"><center>Ilosc 6</center></td>
-                    <td class="whites"><center>Poziom</center></td>
+                    <td class="whites"><center>Lvl</center></td>
+                    <td class="whites"><center>Exp</center></td>
                 </tr>
-                <tr bgcolor="#f1e0c6">
-                    <td>1.</td>
-                    <td>Player1</td>
-                    <td align="center">216</td>
-                    <td align="center">6</td>
-                    <td align="center">1</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
-                    <td align="center">9</td>
+
+                <tr bgcolor="#f1e0c6" th:each="users: ${userDto}">
+
+                    <td id="position">1.</td>
+                    <td th:text="${users.username}">Player1</td>
+                    <td th:text="${users.amountOfThree}" align="center">216</td>
+                    <td th:text="${users.amountOfFour}" align="center">6</td>
+                    <td th:text="${users.amountOfFive}" align="center">1</td>
+                    <td th:text="${users.amountOfSix}" align="center">0</td>
+                    <td th:text="${users.numberGame}" align="center">0</td>
+                    <td th:text="${users.level}" align="center">9</td>
+                    <td th:text="${users.experience}" align="center">9</td>
                 </tr>
-                <tr bgcolor="d4c0a1">
-                    <td>1.</td>
-                    <td>Player1</td>
-                    <td align="center">134</td>
-                    <td align="center">4</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
-                    <td align="center">4</td>
-                </tr>
-                <tr>
-                    <td>1.</td>
-                    <td>Player1</td>
-                    <td align="center">374</td>
-                    <td align="center">8</td>
-                    <td align="center">1</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
-                    <td align="center">11</td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
