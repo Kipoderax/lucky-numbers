@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -45,7 +46,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select lastLogin from User where login=:login")
     Date findLastLoginDateByLogin(@Param("login") String login);
 
-    //zapytanie
-//    @Query("select u.username from User ")
-//    List<User> findDataForStats();
+    //SORTING
+//    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.login=:login")
+    @Query("select u from User u order by username")
+    List<User> sortStatisticsByUserName();
 }

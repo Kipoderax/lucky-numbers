@@ -1,4 +1,20 @@
-<div class="cnt-center" th:fragment="statistics" xmlns:th="http://www.thymeleaf.org">
+<div class="cnt-center" th:fragment="statistics" xmlns:th="http://www.thymeleaf.org" >
+
+<style>
+    .stats_table {
+        counter-reset: tableCount;
+    }
+    .position:before {
+        content: counter(tableCount);
+        counter-increment: tableCount;
+    }
+    .color:nth-of-type(odd) {
+        background-color:#f1e0c6;
+    }
+    .color:nth-of-type(even){
+        background-color:#d4c0a1;
+    }
+</style>
 
     <div class="content-top">
         <div class="title">Statystyki</div>
@@ -7,7 +23,22 @@
     <div class="content-bg">
         <div class="content-txt">
 
-            <table id="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
+            <form th:action="@{/statystyki}" method="post">
+                <center>
+                    Sortuj wedlug:
+                    <select style="margin-bottom: 5px" name="by">
+                        <option value="level">Level</option>
+                        <option value="numberGame">Ilosc gier</option>
+                        <option value="three">Ilosc trojek</option>
+                        <option value="four">Ilosc czworek</option>
+                        <option value="five">Ilosc piatek</option>
+                        <option value="six">Ilosc szostek</option>
+                    </select>
+                    <input type="image" name="submit" src="images/button-submit.png" width="70" height="20" border="0">
+                </center>
+            </form>
+
+            <table class="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
 
                 <tbody>
 
@@ -29,17 +60,17 @@
                     <td class="whites"><center>Exp</center></td>
                 </tr>
 
-                <tr bgcolor="#f1e0c6" th:each="users: ${userDto}">
+                <tr class="color" th:each="users: ${userDto}">
 
-                    <td id="position">1.</td>
-                    <td th:text="${users.username}">Player1</td>
-                    <td th:text="${users.amountOfThree}" align="center">216</td>
-                    <td th:text="${users.amountOfFour}" align="center">6</td>
-                    <td th:text="${users.amountOfFive}" align="center">1</td>
-                    <td th:text="${users.amountOfSix}" align="center">0</td>
-                    <td th:text="${users.numberGame}" align="center">0</td>
-                    <td th:text="${users.level}" align="center">9</td>
-                    <td th:text="${users.experience}" align="center">9</td>
+                    <td class="position"></td>
+                    <td th:text="${users.username}"></td>
+                    <td th:text="${users.numberGame}" align="center"></td>
+                    <td th:text="${users.amountOfThree}" align="center"></td>
+                    <td th:text="${users.amountOfFour}" align="center"></td>
+                    <td th:text="${users.amountOfFive}" align="center"></td>
+                    <td th:text="${users.amountOfSix}" align="center"></td>
+                    <td th:text="${users.level}" align="center"></td>
+                    <td th:text="${users.experience}" align="center"></td>
                 </tr>
 
                 </tbody>

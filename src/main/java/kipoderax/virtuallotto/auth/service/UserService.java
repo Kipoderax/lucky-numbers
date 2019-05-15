@@ -14,11 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -53,7 +49,6 @@ public class UserService {
         User user = new User();
         Game game = new Game();
         UserExperience userExperience = new UserExperience();
-        List<Game> games = new ArrayList<>();
 
         if (isLoginFree(registerForm.getLogin())){
 
@@ -137,14 +132,4 @@ public class UserService {
 //        return dateFormat.format(userRepository.findDateOfCreateAccountByLogin(login));
 //    }
 
-    public List<UserDto> getAllDtoUsers() {
-        List<UserDto> userDtos = new ArrayList<>();
-
-        userRepository.findAll()
-                .stream()
-                .map(u -> userDtos.add(userMapper.map(u)))
-                .collect(Collectors.toList());
-
-        return userDtos;
-    }
 }

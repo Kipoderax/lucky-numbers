@@ -2,40 +2,42 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
-import kipoderax.virtuallotto.auth.service.UserService;
-import kipoderax.virtuallotto.dtos.mapper.UserMapper;
-import kipoderax.virtuallotto.dtos.models.UserDto;
-import kipoderax.virtuallotto.game.repository.GameRepository;
+import kipoderax.virtuallotto.game.service.StatisticsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class StatisticsController {
 
     private final UserRepository userRepository;
-    private final GameRepository gameRepository;
+    private StatisticsService statisticsService;
 
-    private UserService userService;
-    private UserMapper userMapper;
 
     public StatisticsController(UserRepository userRepository,
-                                GameRepository gameRepository,
-                                UserMapper userMapper,
-                                UserService userService) {
+                                StatisticsService statisticsService) {
 
         this.userRepository = userRepository;
-        this.gameRepository = gameRepository;
-        this.userMapper = userMapper;
-        this.userService = userService;
+        this.statisticsService = statisticsService;
     }
-//[UserDto(username=tester, amountOfThree=1450, amountOfFour=23, amountOfFive=0, amountOfSix=0, numberGame=0, level=27, experience=713),
-// UserDto(username=Kipoderax, amountOfThree=124, amountOfFour=3, amountOfFive=0, amountOfSix=0, numberGame=0, level=9, experience=166)
- @GetMapping("/statystyki")
+
+    @GetMapping("/statystyki")
     public String statistics(Model model) {
 
-        model.addAttribute("userDto", userService.getAllDtoUsers());
+        model.addAttribute("userDto", statisticsService.getAllDtoUsersDefault());
+
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
+        return "game/statistics";
+    }
+
+    @PostMapping("/statystyki")
+    public String statistics(Model model, @RequestParam("by") String by) {
+
+        model.addAttribute("userDto", statisticsService.getAllDtoUsersBy(by));
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());

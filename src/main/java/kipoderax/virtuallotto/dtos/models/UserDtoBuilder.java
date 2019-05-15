@@ -19,6 +19,11 @@ public class UserDtoBuilder {
         return this;
     }
 
+    public UserDtoBuilder numberGame(int numberGame) {
+        this.numberGame = numberGame;
+        return this;
+    }
+
     public UserDtoBuilder amountOfThree(int amountOfThree) {
         this.amountOfThree = amountOfThree;
         return this;
@@ -36,11 +41,6 @@ public class UserDtoBuilder {
 
     public UserDtoBuilder amountOfSix(int amountOfSix) {
         this.amountOfSix = amountOfSix;
-        return this;
-    }
-
-    public UserDtoBuilder numberGame(int numberGame) {
-        this.numberGame = numberGame;
         return this;
     }
 

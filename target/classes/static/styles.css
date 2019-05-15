@@ -243,25 +243,12 @@ span {
     z-index: 20;
 }
 
+
 .table-desc {
     font-weight: bold;
     padding-right: 10px;
     white-space: nowrap;
     vertical-align: top;
-}
-
-#stats_table {
-  counter-reset: rowNumber;
-}
-
-#stats_table tr {
-  counter-increment: rowNumber;
-}
-
-#stats_table tr td:first-child::before {
-  content: counter(rowNumber);
-  min-width: 1em;
-  margin-right: 0.5em;
 }
 
 /* Content Area */
