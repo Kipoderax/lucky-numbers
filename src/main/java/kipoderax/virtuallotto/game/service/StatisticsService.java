@@ -35,17 +35,10 @@ public class StatisticsService {
         List<UserDto> userDtos = new ArrayList<>();
         getAllDtoUsers(userDtos);
 
-        userDtos.sort(Comparator.comparing(UserDto::getLevel).thenComparing(UserDto::getUsername).reversed());
+        userDtos.sort(Comparator.comparing(UserDto::getLevel).
+                thenComparing(UserDto::getUsername).reversed());
 
         return userDtos;
-    }
-
-    //todo cdn
-    public void comparing(List<UserDto> userDtos, int temp) {
-
-        userDtos.sort(Comparator.comparing(UserDto::getNumberGame).
-                thenComparing(UserDto::getLevel).
-                thenComparing(UserDto::getUsername).reversed());
     }
 
     public List<UserDto> getAllDtoUsersBy(String by) {

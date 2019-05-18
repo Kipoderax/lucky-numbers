@@ -1,0 +1,55 @@
+<div class="cnt-center" th:fragment="user-numbers" xmlns:th="http://www.thymeleaf.org">
+
+    <style>
+    .stats_table {
+        counter-reset: tableCount;
+    }
+    .position:before {
+        content: counter(tableCount);
+        counter-increment: tableCount;
+    }
+    .color:nth-of-type(odd) {
+        background-color:#f1e0c6;
+    }
+    .color:nth-of-type(even){
+        background-color:#d4c0a1;
+    }
+    </style>
+
+    <div class="content-top">
+        <div class="title">Wytypowane liczby</div>
+    </div>
+
+    <div class="content-bg">
+        <div class="content-txt">
+            <table class="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
+                <tbody>
+                <tr>
+                    <td style="font-weight: bold; color: white" bgcolor="#505050">
+                        <b>Moje liczby</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#d4c0a1">
+                            <table cellpadding="1" border="0">
+                                <tbody>
+                                <tr class="color" th:each="userNumbers: ${usersavenumbers}">
+                                    <td width="20px" class="position"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number1}"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number2}"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number3}"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number4}"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number5}"></td>
+                                    <td width="40px" align="center" th:text="${userNumbers.number6}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+    <div class="content-bot"></div>
+</div>

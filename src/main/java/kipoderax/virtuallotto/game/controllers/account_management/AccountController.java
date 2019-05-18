@@ -1,11 +1,10 @@
-package kipoderax.virtuallotto.game.controllers;
+package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
-import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Controller;
@@ -24,21 +23,18 @@ public class AccountController {
     private UserService userService;
     private UserRepository userRepository;
     private GameRepository gameRepository;
-    private UserBetsRepository userBetsRepository;
     private UserExperienceRepository userExperienceRepository;
 
     public AccountController(UserSession userSession,
                              UserService userService,
                              UserRepository userRepository,
                              GameRepository gameRepository,
-                             UserBetsRepository userBetsRepository,
                              UserExperienceRepository userExperienceRepository){
 
         this.userSession = userSession;
         this.userService = userService;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
-        this.userBetsRepository = userBetsRepository;
         this.userExperienceRepository = userExperienceRepository;
     }
 

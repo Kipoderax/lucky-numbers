@@ -31,13 +31,4 @@ public class GameModel {
     private Set<Integer> numberSet = new TreeSet<>(); //zbior 6 wylosowanych liczb
     private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb
 
-    public int getLevel(int level) {
-
-        return level;
-    }
-
-//    public double getLevel(double level) {
-//
-//        return level;
-//    }
 }

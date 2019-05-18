@@ -8,13 +8,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
 
     @Transactional
     @Modifying
     @Query(value = "insert into bets(user_id, number1, number2, number3, number4, number5, number6) "+
-            "values(:id, :number1, :number2, :number3, :number4, :number5, :number6) ", nativeQuery = true)
+            "values(:id, :number1, :number2, :number3, :number4, :number5, :number6)", nativeQuery = true)
     void saveInputNumbersByIdUser(@Param("id") int id,
                                   @Param("number1") int number1,
                                   @Param("number2") int number2,
@@ -23,28 +26,15 @@ public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
                                   @Param("number5") int number5,
                                   @Param("number6") int number6);
 
-    @Query("select ub.number1 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber1ByLogin(@Param("login") String login, int id);
+    @Query("select ub from UserBets ub join ub.user u on ub.user = u.id" +
+            " where ub.user.id=:user_id")
+    List<UserBets> findAllById(@Param("user_id") int userId);
 
-    @Query("select ub.number2 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber2ByLogin(@Param("login") String login, int id);
+//    @Query("select ub.")
+//    List<UserBets> findIdBets(@Param("user_id") int userId,
+//                              @Param("bets_id") int betsId);
 
-    @Query("select ub.number3 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber3ByLogin(@Param("login") String login, int id);
-
-    @Query("select ub.number4 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber4ByLogin(@Param("login") String login, int id);
-
-    @Query("select ub.number5 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber5ByLogin(@Param("login") String login, int id);
-
-    @Query("select ub.number6 from UserBets ub join ub.user u on ub.user = u.id" +
-            " where u.login=:login and id_bets=:id")
-    Integer findUserNumber6ByLogin(@Param("login") String login, int id);
-
+    @Query("select ub.idBets from UserBets ub join ub.user u on ub.user = u.id" +
+            " where ub.user.id=:user_id")
+    Optional<UserBets> findByUserId(@Param("user_id") int userId);
 }

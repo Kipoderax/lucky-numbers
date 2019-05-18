@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
+
+    <title th:text="#{title.homepage}">Strona główna</title>
+
+</head>
+
+<body>
+
+<div id="page">
+    <div id="header">Wirtualna gra o miliony</div>
+    <div id="cnt-container">
+
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
+
+        <div class="cnt-center" th:replace="fragments/user-numbers-fragment :: user-numbers"></div>
+
+        <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
+
+    </div>
+</div>
+
+</body>
+</html>

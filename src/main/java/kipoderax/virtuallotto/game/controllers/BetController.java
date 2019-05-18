@@ -5,7 +5,6 @@ import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.GameService;
@@ -23,19 +22,16 @@ public class BetController {
      private GameService gameService;
      private UserSession userSession;
      private UserRepository userRepository;
-     private UserBetsRepository userBetsRepository;
      private UserExperienceRepository userExperienceRepository;
 
     public BetController(GameService gameService,
                          UserSession userSession,
                          UserRepository userRepository,
-                         UserBetsRepository userBetsRepository,
                          UserExperienceRepository userExperienceRepository) {
 
         this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
-        this.userBetsRepository = userBetsRepository;
         this.userExperienceRepository = userExperienceRepository;
     }
 
@@ -89,16 +85,27 @@ public class BetController {
             return "game/bet";
     }
 
-    @PostMapping("/zaklad")
-    public String saveInputNumbers(@ModelAttribute("numbersForm") NumbersForm numbersForm, Model model) {
+    @GetMapping("/zaklady")
+    public String saveInputNumbers(Model model) {
 
         if (userSession.getUser() == null) {
             model.addAttribute("info", "Musisz być zalogowany");
 
             return "auth/login";
         }
+        model.addAttribute("numbersForm", new NumbersForm());
+
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
+        return "game/bet-for-register-users";
+    }
+
+    @PostMapping("/zaklady")
+    public String saveInputNumbers(@ModelAttribute NumbersForm numbersForm) {
+
         gameService.saveUserInputNumbers(numbersForm, userSession.getUser().getId());
 
-        return "redirect:/konto";
+        return "redirect:/zaklady";
     }
 }

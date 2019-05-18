@@ -4,8 +4,6 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.dtos.mapper.UserMapper;
-import kipoderax.virtuallotto.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
 import kipoderax.virtuallotto.game.repository.GameRepository;
@@ -24,7 +22,6 @@ public class UserService {
     }
 
     private final UserSession userSession;
-    private UserMapper userMapper;
 
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
@@ -34,15 +31,12 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        UserSession userSession,
                        GameRepository gameRepository,
-                       UserExperienceRepository userExperienceRepository,
-                       UserMapper userMapper) {
+                       UserExperienceRepository userExperienceRepository) {
 
         this.userSession = userSession;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userExperienceRepository = userExperienceRepository;
-        this.userMapper = userMapper;
-
     }
 
     public boolean register(RegisterForm registerForm) {

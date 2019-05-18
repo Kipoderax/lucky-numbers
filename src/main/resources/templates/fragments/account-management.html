@@ -69,6 +69,29 @@
                     <td class="table-desc">Poziom</td>
                     <td th:text="${level} + '. Do nastepnego ' + ${toNextLevel} + ' punktow doswiadczenia.'"></td>
                 </tr>
+
+                <tr>
+                    <td>
+                        <table>
+                            <form>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/zaklady}">
+                                                <img src="images/button-dodaj-liczby.png" height="30px">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/mojeliczby}">
+                                                <img src="images/button-dodane-liczby.png" height="30px">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </form>
+                        </table>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
