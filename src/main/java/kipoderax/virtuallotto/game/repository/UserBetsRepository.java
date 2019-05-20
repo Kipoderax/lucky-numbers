@@ -30,9 +30,12 @@ public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
             " where ub.user.id=:user_id")
     List<UserBets> findAllById(@Param("user_id") int userId);
 
-//    @Query("select ub.")
-//    List<UserBets> findIdBets(@Param("user_id") int userId,
-//                              @Param("bets_id") int betsId);
+//    @Query("select ub.idBets from UserBets ub join ub.user u on ub.user = u.id" +
+//            " where ub.user.id=:user_id and ub.idBets=:bets_id order by idBets limit 1")
+//    Integer findIdBetsByUserId(@Param("user_id") int userId);
+    @Query("select count(ub) from UserBets ub join ub.user u on ub.user = u.id" +
+            " where ub.user.id=:user_id")
+    Integer AmountBetsByUserId(@Param("user_id") int userId);
 
     @Query("select ub.idBets from UserBets ub join ub.user u on ub.user = u.id" +
             " where ub.user.id=:user_id")

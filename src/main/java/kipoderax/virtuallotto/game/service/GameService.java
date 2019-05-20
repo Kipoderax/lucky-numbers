@@ -16,6 +16,10 @@ import java.util.Set;
 @Service
 @Data
 public class GameService {
+
+    //todo tego nie będzie. Ta mała platformówka dla niezarejestrowanych bedzie w js
+    //todo ponizszy kod pomigruje do UserNumberService z drobnymi modyfikacjami
+
     private final SecureRandom randomNumber = new SecureRandom();
     private final GameModel gameModel = new GameModel();
     private final ConvertToJson convertToJson = new ConvertToJson();
@@ -37,7 +41,7 @@ public class GameService {
 
     public List<Integer> showTarget() {
 
-        return gameModel.getTestRealNumbers();
+        return gameModel.getLastNumbers();
     }
     public List<Integer> showWins() {
 
@@ -69,11 +73,11 @@ public class GameService {
             for (int i = 0; i < gameModel.getNumberSet().size(); i++) {
 
                 //jesli ktoras wartosc liczb losowo wygenerowanych znajduje sie w tablicy
-                if (value == gameModel.getTestRealNumbers().get(i)) {
+                if (value == gameModel.getLastNumbers().get(i)) {
 
                     //dodaj ja do listy liczb trafionych
                     gameModel.getAddGoalNumbers().add(
-                            gameModel.getTestRealNumbers().get(i));
+                            gameModel.getLastNumbers().get(i));
 
                     success++;
                 }
@@ -88,13 +92,13 @@ public class GameService {
         return gameModel.getAddGoalNumbers();
     }
 
-    private void upgradeCurrentSaldo(GameModel gameModel, int count, int currentSaldo, int currentExperience) {
+    private void upgradeCurrentSaldo(GameModel gameModel, int success, int currentSaldo, int currentExperience) {
         gameModel.setWinPerOneGame(0);
 
         for (int i = 3; i <= gameModel.getRewardsMoney().length; i++) {
 
             //jeśli ilość trafień jest co najmniej i
-            if (count == i) {
+            if (success == i) {
 
                 //powiększ saldo zgodnie z ilością trafień uwzględniając koszt zakładu
                 currentSaldo += gameModel.getRewardsMoney()[i - 2] + gameModel.getRewardsMoney()[0];
@@ -109,7 +113,7 @@ public class GameService {
         for (int i = 1; i <= gameModel.getRewardsMoney().length; i++) {
 
             //jeśli ilość trafień jest co najmniej i
-            if (count == i) {
+            if (success == i) {
 
                 //dodaj expa
                 currentExperience += gameModel.getRewardsExperience()[i-1];
@@ -117,7 +121,7 @@ public class GameService {
             }
         }
 
-        if (count < 3) {
+        if (success < 3) {
 
             //odejmuj saldo o kosztu zakładu
             currentSaldo += gameModel.getRewardsMoney()[0];
