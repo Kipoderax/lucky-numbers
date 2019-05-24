@@ -4,8 +4,11 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.forms.LoginForm;
 import kipoderax.virtuallotto.auth.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.game.entity.ApiNumber;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
+import kipoderax.virtuallotto.game.model.GameModel;
+import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +29,29 @@ public class UserService {
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final UserExperienceRepository userExperienceRepository;
+    private final ApiNumberRepository apiNumberRepository;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        UserSession userSession,
                        GameRepository gameRepository,
-                       UserExperienceRepository userExperienceRepository) {
+                       UserExperienceRepository userExperienceRepository,
+                       ApiNumberRepository apiNumberRepository) {
 
         this.userSession = userSession;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userExperienceRepository = userExperienceRepository;
+        this.apiNumberRepository = apiNumberRepository;
     }
 
     public boolean register(RegisterForm registerForm) {
+        GameModel gameModel = new GameModel();
+
         User user = new User();
         Game game = new Game();
         UserExperience userExperience = new UserExperience();
+        ApiNumber apiNumber = new ApiNumber();
 
         if (isLoginFree(registerForm.getLogin())){
 
@@ -65,13 +74,29 @@ public class UserService {
         userExperience.setLevel(1);
         userExperience.setExperience(0);
 
+        apiNumber.setNumber1(gameModel.getConvertToJson().getLastLottoNumbers().get(0));
+        apiNumber.setNumber2(gameModel.getConvertToJson().getLastLottoNumbers().get(1));
+        apiNumber.setNumber3(gameModel.getConvertToJson().getLastLottoNumbers().get(2));
+        apiNumber.setNumber4(gameModel.getConvertToJson().getLastLottoNumbers().get(3));
+        apiNumber.setNumber5(gameModel.getConvertToJson().getLastLottoNumbers().get(4));
+        apiNumber.setNumber6(gameModel.getConvertToJson().getLastLottoNumbers().get(5));
+
         game.setUser(user);
         user.setGame(game);
         userExperience.setUser(user);
+        apiNumber.setUser(user);
 
         gameRepository.save(game);
         userRepository.save(user);
         userExperienceRepository.save(userExperience);
+        apiNumberRepository.save(apiNumber);
+//        apiNumberRepository.saveApiNumbers(userSession.getUser().getId(),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(0),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(1),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(2),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(3),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(4),
+//                gameModel.getConvertToJson().getLastLottoNumbers().get(5));
 
         return true;
     }

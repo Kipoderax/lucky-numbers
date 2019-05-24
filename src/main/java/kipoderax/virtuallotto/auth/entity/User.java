@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.auth.entity;
 
+import kipoderax.virtuallotto.game.entity.ApiNumber;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserBets;
 import kipoderax.virtuallotto.game.entity.UserExperience;
@@ -41,5 +42,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JoinColumn(name = "user_exp_id")
     private UserExperience userExperience;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_api_numbers")
+    private ApiNumber apiNumber;
 
 }

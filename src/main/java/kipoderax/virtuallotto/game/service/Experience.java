@@ -1,6 +1,5 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.game.model.GameModel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class Experience {
 
-    public int reachNextLevel(GameModel gameModel) {
+    public int reachNextLevel(int experience) {
 
-        return (int) (2 * Math.pow(gameModel.getExperience(), 0.4));
+        return (int) (2 * Math.pow(experience, 0.4));
     }
 
     public int needExpToNextLevel(int level, int exp) {

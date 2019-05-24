@@ -2,7 +2,6 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
-import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

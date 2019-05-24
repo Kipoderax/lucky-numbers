@@ -8,7 +8,6 @@ import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.GameService;
-import kipoderax.virtuallotto.game.service.UserNumbersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +24,15 @@ public class BetController {
      private UserRepository userRepository;
      private UserExperienceRepository userExperienceRepository;
 
-     private UserNumbersService userNumbersService;
-
     public BetController(GameService gameService,
                          UserSession userSession,
                          UserRepository userRepository,
-                         UserExperienceRepository userExperienceRepository,
-                         UserNumbersService userNumbersService) {
+                         UserExperienceRepository userExperienceRepository) {
 
         this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
         this.userExperienceRepository = userExperienceRepository;
-        this.userNumbersService = userNumbersService;
     }
 
     @GetMapping("/zaklad")
@@ -75,13 +70,11 @@ public class BetController {
             userRepository.updateUserSaldoByLogin(
                     gameService.getSaldo(gameModel), userSession.getUser().getLogin());
             userExperienceRepository.updateExperienceById(userSession.getUser().getId(), gameModel.getExperience());
-            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel));
+            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel.getExperience()));
 
 
             model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getLogin()));
             model.addAttribute("winMoney", gameService.getMyWin(gameModel));
-
-            userNumbersService.checkUserNumbers(userSession.getUser().getId(), gameModel);
 
         }
         else {

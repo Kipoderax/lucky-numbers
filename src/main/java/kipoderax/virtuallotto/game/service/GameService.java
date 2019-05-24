@@ -43,10 +43,10 @@ public class GameService {
 
         return gameModel.getLastNumbers();
     }
-    public List<Integer> showWins() {
-
-        return gameModel.getWins();
-    }
+//    public List<Integer> showWins() {
+//
+//        return gameModel.getWins();
+//    }
 
     public Set<Integer> generateNumber(GameModel gameModel) {
 

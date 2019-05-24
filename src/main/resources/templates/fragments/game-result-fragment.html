@@ -1,0 +1,109 @@
+<div class="cnt-center" th:fragment="game-result" xmlns:th="http://www.thymeleaf.org">
+
+    <style>
+    .stats_table {
+        counter-reset: tableCount;
+    }
+    .position:before {
+        content: counter(tableCount);
+        counter-increment: tableCount;
+    }
+    .color:nth-of-type(odd) {
+        background-color:#f1e0c6;
+    }
+    .color:nth-of-type(even){
+        background-color:#d4c0a1;
+    }
+    </style>
+
+    <div class="content-top">
+        <div class="title">Wytypowane liczby</div>
+    </div>
+
+    <div class="content-bg">
+        <div class="content-txt">
+            <table class="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
+                <tbody>
+                <tr>
+                    <td style="font-weight: bold; color: white" bgcolor="#505050">
+                        <b>Podsumowanie</b>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td bgcolor="#d4c0a1">
+                        <table width="300px">
+                            <tbody>
+                            <tr th:each="result: ${userResult}" class="color">
+                                <td bgcolor="#d4c0a1">
+                                    <table style="margin-bottom: 20px">
+                                        <thead>
+                                        <tr style="background-color: grey">
+                                            <th colspan="2" align="center">Na <i th:text="${amountnumbergame}"></i> zakładów</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>żadnych liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.failGoal}">11</td>
+                                        </tr>
+                                        <tr style="background-color: #f1e0c6">
+                                            <td>trafienia 1 liczby:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goalOneNumber}">11</td>
+                                        </tr>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>trafienia 2 liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goal2Numbers}">4</td>
+                                        </tr>
+                                        <tr style="background-color: #f1e0c6">
+                                            <td>trafienia 3 liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goal3Numbers}">1</td>
+                                        </tr>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>trafienia 4 liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goal4Numbers}">0</td>
+                                        </tr>
+                                        <tr style="background-color: #f1e0c6">
+                                            <td>trafienia 5 liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goal5Numbers}">0</td>
+                                        </tr>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>trafienia 6 liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.goal6Numbers}">0</td>
+                                        </tr>
+                                        <tr style="height: 10px; background-color: grey">
+                                            <td align="center" colspan="2">Rezultat</td>
+                                        </tr>
+                                        <tr style="background-color: #f1e0c6">
+                                            <td>wydano:</td>
+                                            <td class="table-desc" align="center" th:text="${result.totalCostBets}">105 plx</td>
+                                        </tr>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>z trafionych liczb:</td>
+                                            <td class="table-desc" align="center" th:text="${result.totalEarn}">+24 pln</td>
+                                        </tr>
+                                        <tr style="background-color: #f1e0c6">
+                                            <td>rezultat:</td>
+                                            <td class="table-desc" align="center" th:text="${result.finishResult}">-81</td>
+                                        </tr>
+                                        <tr style="background-color: #d4c0a1">
+                                            <td>punkty doswiadczenia:</td>
+                                            <td class="table-desc" align="center" th:text="${result.totalExp}">+44</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="content-bot"></div>
+</div>

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
@@ -30,14 +29,11 @@ public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
             " where ub.user.id=:user_id")
     List<UserBets> findAllById(@Param("user_id") int userId);
 
-//    @Query("select ub.idBets from UserBets ub join ub.user u on ub.user = u.id" +
-//            " where ub.user.id=:user_id and ub.idBets=:bets_id order by idBets limit 1")
-//    Integer findIdBetsByUserId(@Param("user_id") int userId);
     @Query("select count(ub) from UserBets ub join ub.user u on ub.user = u.id" +
             " where ub.user.id=:user_id")
     Integer AmountBetsByUserId(@Param("user_id") int userId);
 
-    @Query("select ub.idBets from UserBets ub join ub.user u on ub.user = u.id" +
-            " where ub.user.id=:user_id")
-    Optional<UserBets> findByUserId(@Param("user_id") int userId);
+    @Query("delete UserBets where id=:user_id")
+    void deleteUserBetsAfterShowResult(@Param("user_id") int userId);
+
 }

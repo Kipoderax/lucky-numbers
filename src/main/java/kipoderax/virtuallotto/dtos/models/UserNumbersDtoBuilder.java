@@ -45,4 +45,5 @@ public class UserNumbersDtoBuilder {
     public UserNumbersDto build() {
         return new UserNumbersDto(number1, number2, number3, number4, number5, number6);
     }
+
 }
