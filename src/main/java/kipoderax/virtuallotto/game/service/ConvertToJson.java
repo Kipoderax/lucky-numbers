@@ -1,7 +1,6 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.auth.forms.NumbersForm;
-import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
+import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,13 +78,11 @@ public class ConvertToJson {
 
     public List<Integer> getLastNumbers(List<Integer> list) {
         getJSON("https://app.lotto.pl/wyniki/?type=dl");
-
         return list;
     }
 
-    //todo sprobowac za pomocą mapy
     public List<Integer> getLastWins(List<Integer> list) {
-        getJSON("https://app.lotto.pl/wyniki/?type=dl");
+        getJSON("https://app.lotto.pl/wygrane/?type=dl");
 
         return list;
     }

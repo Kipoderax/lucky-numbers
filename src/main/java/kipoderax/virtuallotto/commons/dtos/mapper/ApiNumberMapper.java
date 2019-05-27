@@ -1,7 +1,7 @@
-package kipoderax.virtuallotto.dtos.mapper;
+package kipoderax.virtuallotto.commons.dtos.mapper;
 
-import kipoderax.virtuallotto.dtos.models.ApiNumberDto;
-import kipoderax.virtuallotto.dtos.models.ApiNumberDtoBuilder;
+import kipoderax.virtuallotto.commons.dtos.models.ApiNumberDto;
+import kipoderax.virtuallotto.commons.dtos.models.ApiNumberDtoBuilder;
 import kipoderax.virtuallotto.game.entity.ApiNumber;
 import org.springframework.stereotype.Component;
 

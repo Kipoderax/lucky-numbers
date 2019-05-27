@@ -1,8 +1,8 @@
 package kipoderax.virtuallotto.game.service;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.dtos.mapper.UserMapper;
-import kipoderax.virtuallotto.dtos.models.UserDto;
+import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
+import kipoderax.virtuallotto.commons.dtos.models.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,37 +47,42 @@ public class StatisticsService {
 
         switch (by) {
             case "level":
-                userDtos.sort(Comparator.comparing(UserDto::getLevel).
+                userDtos.sort(Comparator.comparing(UserDto::getExperience).
+                        thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
             case "numberGame":
                 userDtos.sort(Comparator.comparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getLevel).
+                        thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
             case "three":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfThree).
-                        thenComparing(UserDto::getLevel).
+                        thenComparing(UserDto::getExperience).
+                        thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
             case "four":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfFour).
-                        thenComparing(UserDto::getLevel).
+                        thenComparing(UserDto::getExperience).
+                        thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
             case "five":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfFive).
-                        thenComparing(UserDto::getLevel).
+                        thenComparing(UserDto::getExperience).
+                        thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
             case "six":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfSix).
-                        thenComparing(UserDto::getLevel).
+                        thenComparing(UserDto::getExperience).
+                        thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
         }

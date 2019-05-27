@@ -6,7 +6,6 @@
 
     <div class="content-bg">
         <div class="content-txt">
-            <form action="#" method="post">
                 <table width="100%" cellspacing="1" cellpadding="4" border="0">
                     <tbody>
                     <tr>
@@ -16,7 +15,7 @@
                     </tr>
                     <tr>
                         <td bgcolor="#d4c0a1">
-                            <form th:action="@{/zaklady}" method="post" th:object="${numbersForm}">
+                            <form th:action="@{/zakladyinput}" method="post" th:object="${numbersForm}">
                             <table cellpadding="1" border="0">
                                 <tbody>
                                 <tr>
@@ -33,14 +32,29 @@
                                         <input type="image" name="submit" src="images/button-submit.png" width="120" height="22" border="0">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td th:text="'Zakladow do wyslania: ' + ${saldo}"></td>
+                                </tr>
                                 </tbody>
                             </table>
+                            </form>
+
+                            <form th:action="@{/zaklady}" method="post" th:object="${numbersForm}">
+                                <table cellpadding="1" border="0">
+                                    <tbody>
+                                    <tr>
+<!--                                        <a th:href="@{/zaklady}" style="text-decoration: none">-->
+                                            <input type="image" src="images/button-loss.png" width="120" height="35">
+<!--                                        </a>-->
+                                        <td th:text="'Zakladow do wyslania: ' + ${saldo}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </form>
         </div>
     </div>
 

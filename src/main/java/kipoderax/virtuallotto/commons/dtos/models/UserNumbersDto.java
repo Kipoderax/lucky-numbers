@@ -1,12 +1,11 @@
-package kipoderax.virtuallotto.dtos.models;
+package kipoderax.virtuallotto.commons.dtos.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor @AllArgsConstructor
-public class ApiNumberDto {
+@Data @AllArgsConstructor @NoArgsConstructor
+public class UserNumbersDto {
 
     private int number1;
     private int number2;
@@ -14,4 +13,5 @@ public class ApiNumberDto {
     private int number4;
     private int number5;
     private int number6;
+
 }

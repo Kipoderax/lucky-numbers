@@ -1,4 +1,4 @@
-package kipoderax.virtuallotto.dtos.models;
+package kipoderax.virtuallotto.commons.dtos.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

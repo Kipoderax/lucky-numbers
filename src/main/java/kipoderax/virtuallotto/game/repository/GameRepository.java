@@ -11,16 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
-    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.login=:login")
-    Integer findNumberGameByLogin(@Param("login") String login);
-    @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.login=:login")
-    Integer findCountOfThreeByLogin(@Param("login") String login);
-    @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.login=:login")
-    Integer findCountOfFourByLogin(@Param("login") String login);
-    @Query("select g.countOfFive from Game g join g.user u on g.user = u.id where u.login=:login")
-    Integer findCountOfFiveByLogin(@Param("login") String login);
-    @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.login=:login")
-    Integer findCountOfSixByLogin(@Param("login") String login);
+    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findNumberGameByLogin(@Param("user_id") int userId);
+    @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findCountOfThreeByLogin(@Param("user_id") int userId);
+    @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findCountOfFourByLogin(@Param("user_id") int userId);
+    @Query("select g.countOfFive from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findCountOfFiveByLogin(@Param("user_id") int userId);
+    @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findCountOfSixByLogin(@Param("user_id") int userId);
 
     @Transactional
     @Modifying

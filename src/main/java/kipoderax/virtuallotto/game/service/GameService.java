@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.game.service;
 
 import kipoderax.virtuallotto.auth.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 @Data
@@ -39,24 +41,39 @@ public class GameService {
         this.userExperienceRepository = userExperienceRepository;
     }
 
-    public List<Integer> showTarget() {
+    public int[] showTarget() {
+        InputNumberValidation inputNumberValidation = new InputNumberValidation();
+        int numbers[] = new int[6];
+        gameModel.getLastNumbers();
 
-        return gameModel.getLastNumbers();
-    }
-//    public List<Integer> showWins() {
-//
-//        return gameModel.getWins();
-//    }
-
-    public Set<Integer> generateNumber(GameModel gameModel) {
-
-        while (gameModel.getNumberSet().size() != 6) {
-
-            gameModel.setNumber(randomNumber.nextInt(49) + 1);
-            gameModel.getNumberSet().add(gameModel.getNumber());
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = gameModel.getLastNumbers().get(i);
         }
 
-        return gameModel.getNumberSet();
+        inputNumberValidation.sort(numbers);
+        return numbers;
+    }
+
+    public NumbersForm generateNumber(GameModel gameModel, NumbersForm numbersForm) {
+
+        Set<Integer> numberSet = new TreeSet<>();
+
+        while (numberSet.size() != 6) {
+
+            gameModel.setNumber(randomNumber.nextInt(49) + 1);
+            numberSet.add(gameModel.getNumber());
+        }
+
+            gameModel.getNumberSet().addAll(numberSet);
+
+        numbersForm.setNumber1(gameModel.getNumberSet().get(0));
+        numbersForm.setNumber2(gameModel.getNumberSet().get(1));
+        numbersForm.setNumber3(gameModel.getNumberSet().get(2));
+        numbersForm.setNumber4(gameModel.getNumberSet().get(3));
+        numbersForm.setNumber5(gameModel.getNumberSet().get(4));
+        numbersForm.setNumber6(gameModel.getNumberSet().get(5));
+
+        return numbersForm;
     }
 
     public List<Integer> addGoalNumber(GameModel gameModel) {
@@ -64,8 +81,8 @@ public class GameService {
         int currentSaldo = gameModel.getSaldo();
         int success = 0;
 
-        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getLogin());
-        int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getLogin());
+        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getId());
+        int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getId());
 
         //przejdz po liczbach wygenerowanych
         for (int value : gameModel.getNumberSet()) {
@@ -135,10 +152,10 @@ public class GameService {
     }
 
     public void upgradeAmountFRom3To6(int success) {
-        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getLogin());
-        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getLogin());
-        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getLogin());
-        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getLogin());
+        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getId());
+        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getId());
+        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getId());
+        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getId());
 
         switch (success) {
             case 3:
@@ -169,16 +186,4 @@ public class GameService {
 
         return gameModel.getWinPerOneGame();
     }
-
-    public void saveUserInputNumbers(NumbersForm numbersForm, int id) {
-
-        userBetsRepository.saveInputNumbersByIdUser(id, numbersForm.getNumber1(),
-                numbersForm.getNumber2(), numbersForm.getNumber3(), numbersForm.getNumber4(),
-                numbersForm.getNumber5(), numbersForm.getNumber6());
-    }
-
-    //todo opcja generowania n zestawow liczb. Dla kazdego zestawu zwrócić obok liczbe trafień, wygraną
-
-    //todo opcja wyboru poziomu trudności gry
-
 }

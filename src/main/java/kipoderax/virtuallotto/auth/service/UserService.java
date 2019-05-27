@@ -90,13 +90,6 @@ public class UserService {
         userRepository.save(user);
         userExperienceRepository.save(userExperience);
         apiNumberRepository.save(apiNumber);
-//        apiNumberRepository.saveApiNumbers(userSession.getUser().getId(),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(0),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(1),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(2),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(3),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(4),
-//                gameModel.getConvertToJson().getLastLottoNumbers().get(5));
 
         return true;
     }
@@ -137,11 +130,6 @@ public class UserService {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();
-    }
-
-    public int getCountPlayers() {
-
-       return userRepository.getAllRegisterUsers();
     }
 
 //    public String getDateOfRegisterUser(String login) {

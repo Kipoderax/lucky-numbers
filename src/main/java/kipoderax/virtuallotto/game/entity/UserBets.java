@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.game.entity;
 
 import kipoderax.virtuallotto.auth.entity.User;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 
@@ -13,12 +14,12 @@ public class UserBets {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Column(name = "idbets") int idBets;
 
-    private int number1;
-    private int number2;
-    private int number3;
-    private int number4;
-    private int number5;
-    private int number6;
+    private @Range(min = 1, max = 49) int number1;
+    private @Range(min = 1, max = 49) int number2;
+    private @Range(min = 1, max = 49) int number3;
+    private @Range(min = 1, max = 49) int number4;
+    private @Range(min = 1, max = 49) int number5;
+    private @Range(min = 1, max = 49) int number6;
 
     @ManyToOne(cascade = {
             CascadeType.REFRESH,

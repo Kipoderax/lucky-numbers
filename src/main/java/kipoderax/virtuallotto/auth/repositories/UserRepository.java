@@ -15,33 +15,37 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByLogin(String login);
+    Optional<User> findById(int id);
+
+    @Query(value = "select id from user order by id desc limit 1", nativeQuery = true)
+    Integer findMaxId();
 
     boolean existsByLogin(String login);
 
-    @Query("select email from User where login=:login")
-    String findEmailByLogin(@Param("login") String login);
+    @Query("select email from User where id=:user_id")
+    String findEmailByLogin(@Param("user_id") int userId);
 
-    @Query("select saldo from User where login=:login")
-    Integer findSaldoByLogin(@Param("login") String login);
+    @Query("select saldo from User where id=:user_id")
+    Integer findSaldoByLogin(@Param("user_id") int userId);
 
     @Transactional
     @Modifying
-    @Query("update User set saldo=:saldo where login=:login")
+    @Query("update User set saldo=:saldo where id=:user_id")
     void updateUserSaldoByLogin(@Param("saldo") int saldo,
-                                @Param("login") String login);
+                                @Param("user_id") int userId);
 
     @Query("select count(id) from User")
     Integer getAllRegisterUsers();
 
-    @Query("select dateOfCreatedAccount from User where login=:login")
-    Date findDateOfCreateAccountByLogin(@Param("login") String login);
+    @Query("select dateOfCreatedAccount from User where id=:user_id")
+    Date findDateOfCreateAccountByLogin(@Param("user_id") int userId);
 
     @Transactional
     @Modifying
-    @Query("update User set lastLogin=:last_login where login=:login")
+    @Query("update User set lastLogin=:last_login where id=:user_id")
     void updateLastLoginByLogin(@Param("last_login") Date lastLogin,
-                          @Param("login") String login);
+                          @Param("user_id") int userId);
 
-    @Query("select lastLogin from User where login=:login")
-    Date findLastLoginDateByLogin(@Param("login") String login);
+    @Query("select lastLogin from User where id=:user_id")
+    Date findLastLoginDateByLogin(@Param("user_id") int userId);
 }

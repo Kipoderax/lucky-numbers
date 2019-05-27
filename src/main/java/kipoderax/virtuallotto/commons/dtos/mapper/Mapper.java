@@ -1,4 +1,4 @@
-package kipoderax.virtuallotto.dtos.mapper;
+package kipoderax.virtuallotto.commons.dtos.mapper;
 
 public interface Mapper<F, T> {
 

@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class UserNumbersController {
 
@@ -49,34 +46,25 @@ public class UserNumbersController {
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
 
-        //game-result-fragment
-            List<Integer> oldList = new ArrayList<>();
-            oldList.add(1);
-            oldList.add(8);
-            oldList.add(11);
-            oldList.add(17);
-            oldList.add(24);
-            oldList.add(31);
-
-            List<Integer> newList = new ArrayList<>();
-            newList.add(1);
-            newList.add(7);
-            newList.add(11);
-            newList.add(17);
-            newList.add(24);
-            newList.add(31);
-
         if (!userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),
                 gameModel.getLastNumbers())) {
-            model.addAttribute("userResult", userNumbersService.checkUserNumbers(userSession.getUser().getId(), gameModel));
+            model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId()));
             model.addAttribute("amountnumbergame", userBetsRepository.AmountBetsByUserId(userSession.getUser().getId()));
 
             System.out.println("z bazy danych: " + userNumbersService.getUserApiNumber(userSession.getUser().getId()));
             System.out.println("z api: " + gameModel.getLastNumbers());
+
+            apiNumberRepository.updateApiNumbers(userSession.getUser().getId(),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(0),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(1),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(2),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(3),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(4),
+                    gameModel.getConvertToJson().getLastLottoNumbers().get(5));
+
+            userBetsRepository.deleteUserBetsAfterShowResult(userSession.getUser().getId());
         }
-        System.out.println("z bazy danych: " + userNumbersService.getUserApiNumber(userSession.getUser().getId()));
-        System.out.println("z api: " + gameModel.getLastNumbers());
 
         return "game/game-result";
     }

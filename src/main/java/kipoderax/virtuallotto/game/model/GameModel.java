@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.model;
 
+import kipoderax.virtuallotto.auth.forms.NumbersForm;
 import kipoderax.virtuallotto.game.service.ConvertToJson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,13 @@ import java.util.*;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class GameModel {
+
+    public int[] createNumbersOfNumbersForm(NumbersForm numbersForm) {
+        int numbers[] = {numbersForm.getNumber1(), numbersForm.getNumber2(), numbersForm.getNumber3(),
+                numbersForm.getNumber4(), numbersForm.getNumber5(), numbersForm.getNumber6()};
+
+        return numbers;
+    }
 
     private ConvertToJson convertToJson = new ConvertToJson();
 
@@ -20,11 +28,8 @@ public class GameModel {
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
-//    private List<Integer> wins = convertToJson.getLastWins(convertToJson.getLastLottoNumbers());
     private List<Integer> lastNumbers = convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
-    private Integer[] targetEasyVersion = {2, 5, 8, 10, 12, 18}; //losowanie z 25
-
-    private Set<Integer> numberSet = new TreeSet<>(); //zbior 6 wylosowanych liczb
+    private List<Integer> numberSet = new ArrayList<>(); //zbior 6 wylosowanych liczb
     private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb
 
 

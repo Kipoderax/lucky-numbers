@@ -47,26 +47,26 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        String login = userSession.getUser().getLogin();
-        int numberGame = gameRepository.findNumberGameByLogin(login);
-        int three = gameRepository.findCountOfThreeByLogin(login);
-        int four = gameRepository.findCountOfFourByLogin(login);
-        int five = gameRepository.findCountOfFiveByLogin(login);
-        int six = gameRepository.findCountOfSixByLogin(login);
+        int id = userSession.getUser().getId();
+        int numberGame = gameRepository.findNumberGameByLogin(id);
+        int three = gameRepository.findCountOfThreeByLogin(id);
+        int four = gameRepository.findCountOfFourByLogin(id);
+        int five = gameRepository.findCountOfFiveByLogin(id);
+        int six = gameRepository.findCountOfSixByLogin(id);
         int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
 
-        userRepository.updateLastLoginByLogin(new Date(), userSession.getUser().getLogin());
+        userRepository.updateLastLoginByLogin(new Date(), id);
 
         model.addAttribute("currentUser", userSession.getUser().getUsername());
 
         //MAIN INFORMATION CONTENT
-        model.addAttribute("email", userRepository.findEmailByLogin(login));
-        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(login));
-        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(login));
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(login));
-        model.addAttribute("level", userExperienceRepository.findLevelByLogin(login));
-        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(login),
-                userExperienceRepository.findExpByLogin(login)));
+        model.addAttribute("email", userRepository.findEmailByLogin(id));
+        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(id));
+        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(id));
+        model.addAttribute("saldo", userRepository.findSaldoByLogin(id));
+        model.addAttribute("level", userExperienceRepository.findLevelByLogin(id));
+        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(id),
+                userExperienceRepository.findExpByLogin(id)));
 
         //GAME CONTENT
         model.addAttribute("amountOfThree", three);
@@ -74,7 +74,7 @@ public class AccountController {
         model.addAttribute("amountOfFive", five);
         model.addAttribute("amountOfSix", six);
         model.addAttribute("numberGame", numberGame);
-        model.addAttribute("exp", userExperienceRepository.findExpByLogin(login));
+        model.addAttribute("exp", userExperienceRepository.findExpByLogin(id));
 
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
@@ -92,7 +92,7 @@ public class AccountController {
     @PostMapping("/addMoney")
     public String charge(@RequestParam int chargeSaldo) {
 
-        int level = userExperienceRepository.findLevelByLogin(userSession.getUser().getLogin());
+        int level = userExperienceRepository.findLevelByLogin(userSession.getUser().getId());
 
         if (!userSession.isUserLogin()) {
 
@@ -103,8 +103,8 @@ public class AccountController {
         if (chargeSaldo >= 0 && chargeSaldo <= (50 + (level * 2))) {
 
             userRepository.updateUserSaldoByLogin(
-                    userRepository.findSaldoByLogin(userSession.getUser().getLogin()) + chargeSaldo,
-                    userSession.getUser().getLogin()
+                    userRepository.findSaldoByLogin(userSession.getUser().getId()) + chargeSaldo,
+                    userSession.getUser().getId()
             );
 
             return "redirect:/konto";

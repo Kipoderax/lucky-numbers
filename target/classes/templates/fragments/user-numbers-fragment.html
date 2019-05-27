@@ -50,66 +50,25 @@
                         </table>
                     </td>
 
-<!--                    <td style="margin-left: 10px" bgcolor="#d4c0a1">-->
-<!--                        <table width="260px" style="margin-bottom: 20px">-->
-<!--                            <thead>-->
-<!--                                <tr>-->
-<!--                                    <th colspan="2" align="center">Na 35 zakładów</th>-->
-<!--                                </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody>-->
-<!--                                <tr>-->
-<!--                                    <td>żadnych liczb</td>-->
-<!--                                    <td style="margin-right: 50px">11</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>trafienia 1 liczby</td>-->
-<!--                                    <td>11</td>-->
-<!--                                </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>trafienia 2 liczb</td>-->
-<!--                                        <td>4</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>trafienia 3 liczb</td>-->
-<!--                                        <td>1</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>trafienia 4 liczb</td>-->
-<!--                                        <td>0</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>trafienia 5 liczb</td>-->
-<!--                                        <td>0</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>trafienia 6 liczb</td>-->
-<!--                                        <td>0</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>wydano</td>-->
-<!--                                        <td>105 plx</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>z trafionych liczb</td>-->
-<!--                                        <td>+24 pln</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>rezultat</td>-->
-<!--                                        <td>-81</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>punkty doswiadczenia</td>-->
-<!--                                        <td>+44</td>-->
-<!--                                    </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
-<!--                        </form>-->
-
-<!--                        </td>-->
                     </tr>
                     </tbody>
             </table>
+
+            <form th:action="@{/zakladygenerate}" method="post">
+                <td>
+                    <table width="100%" style="margin-left: 100px">
+                        <tbody>
+                        <tr>
+                            <td align="center">
+                                <a th:href="@{/zakladygenerate}" style="text-decoration: none">
+                                    <input type="image" src="images/button-loss.png" width="120" height="35">
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </form>
 
         </div>
     </div>

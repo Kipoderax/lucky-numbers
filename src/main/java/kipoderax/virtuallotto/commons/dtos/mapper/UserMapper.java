@@ -1,8 +1,8 @@
-package kipoderax.virtuallotto.dtos.mapper;
+package kipoderax.virtuallotto.commons.dtos.mapper;
 
 import kipoderax.virtuallotto.auth.entity.User;
-import kipoderax.virtuallotto.dtos.models.UserDto;
-import kipoderax.virtuallotto.dtos.models.UserDtoBuilder;
+import kipoderax.virtuallotto.commons.dtos.models.UserDto;
+import kipoderax.virtuallotto.commons.dtos.models.UserDtoBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
