@@ -53,7 +53,7 @@ public class UserNumbersController {
             model.addAttribute("amountnumbergame", userBetsRepository.AmountBetsByUserId(userSession.getUser().getId()));
 
             System.out.println("z bazy danych: " + userNumbersService.getUserApiNumber(userSession.getUser().getId()));
-            System.out.println("z api: " + gameModel.getLastNumbers());
+            System.out.println("z api: " + gameModel.getLastNumbers().subList(0, 6));
 
             apiNumberRepository.updateApiNumbers(userSession.getUser().getId(),
                     gameModel.getConvertToJson().getLastLottoNumbers().get(0),

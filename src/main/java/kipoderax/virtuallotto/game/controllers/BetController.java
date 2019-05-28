@@ -116,10 +116,15 @@ public class BetController {
 
             if (inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-                userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
-                        userSession.getUser().getId());
+                if (userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3 != 0) {
+
+                    userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+                            userSession.getUser().getId());
+                }
             }
         }
+
+
 
         return "redirect:/zaklady";
     }
@@ -129,7 +134,7 @@ public class BetController {
         GameModel gameModel = new GameModel();
 
         gameService.generateNumber(gameModel, numbersForm);
-        model.addAttribute("saldopost", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
+        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
 
         return "game/bet-for-register-users";
     }

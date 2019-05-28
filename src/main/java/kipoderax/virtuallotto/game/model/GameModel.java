@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.model;
 
+import kipoderax.virtuallotto.auth.forms.HistoryGameForm;
 import kipoderax.virtuallotto.auth.forms.NumbersForm;
 import kipoderax.virtuallotto.game.service.ConvertToJson;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class GameModel {
 
     private ConvertToJson convertToJson = new ConvertToJson();
 
+
     private int number; //komponent numberSet
     private int experience;
     private int level;
@@ -28,6 +30,7 @@ public class GameModel {
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
+    private StringBuilder dateGame = convertToJson.getLastDate(convertToJson.getDate());
     private List<Integer> lastNumbers = convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
     private List<Integer> numberSet = new ArrayList<>(); //zbior 6 wylosowanych liczb
     private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb

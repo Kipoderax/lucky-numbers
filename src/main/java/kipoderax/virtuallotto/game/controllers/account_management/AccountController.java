@@ -89,30 +89,6 @@ public class AccountController {
         return "auth/myaccount";
     }
 
-    @PostMapping("/addMoney")
-    public String charge(@RequestParam int chargeSaldo) {
-
-        int level = userExperienceRepository.findLevelByLogin(userSession.getUser().getId());
-
-        if (!userSession.isUserLogin()) {
-
-            return "redirect:/login";
-        }
-
-        //doładowuje konto
-        if (chargeSaldo >= 0 && chargeSaldo <= (50 + (level * 2))) {
-
-            userRepository.updateUserSaldoByLogin(
-                    userRepository.findSaldoByLogin(userSession.getUser().getId()) + chargeSaldo,
-                    userSession.getUser().getId()
-            );
-
-            return "redirect:/konto";
-        }
-
-        return "redirect:/konto";
-    }
-
     @GetMapping("/logout")
     public String logout() {
 

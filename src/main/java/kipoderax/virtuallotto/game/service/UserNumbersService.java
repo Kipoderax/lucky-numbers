@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.service;
 
+import kipoderax.virtuallotto.auth.forms.HistoryGameForm;
 import kipoderax.virtuallotto.auth.forms.ResultForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserSession;
@@ -32,6 +33,7 @@ public class UserNumbersService {
     private ApiNumberRepository apiNumberRepository;
 
     private UserSession userSession;
+    private ConvertToJson convertToJson;
 
     public UserNumbersService(UserNumbersMapper userNumbersMapper,
                               ApiNumberMapper apiNumberMapper,
@@ -42,7 +44,8 @@ public class UserNumbersService {
                               UserRepository userRepository,
                               ApiNumberRepository apiNumberRepository,
 
-                              UserSession userSession) {
+                              UserSession userSession,
+                              ConvertToJson convertToJson) {
 
         this.userNumbersMapper = userNumbersMapper;
         this.apiNumberMapper = apiNumberMapper;
@@ -54,6 +57,7 @@ public class UserNumbersService {
         this.apiNumberRepository = apiNumberRepository;
 
         this.userSession = userSession;
+        this.convertToJson = convertToJson;
     }
 
 
@@ -122,7 +126,7 @@ public class UserNumbersService {
             } else {
                 int success = 0;
                 List<Integer> currentNumbers = new ArrayList<>();
-                for (int value : gameModel.getLastNumbers()) {
+                for (int value : gameModel.getLastNumbers().subList(0, 6)) {
                     currentNumbers.add(userNumbersDtos.get(i).getNumber1());
                     currentNumbers.add(userNumbersDtos.get(i).getNumber2());
                     currentNumbers.add(userNumbersDtos.get(i).getNumber3());
@@ -140,23 +144,60 @@ public class UserNumbersService {
                 }
                 upgradeAmountFrom3To6(success, goalNumbers, resultForm);
             }
-                }
+        }
 
-
+        saveAmountGoalAfterViewResult(resultForm);
         addUserExperience(gameModel, goalNumbers, resultForm);
         costBets(maxBetsId, gameModel, resultForm);
         earnFromGoalNumbers(goalNumbers, gameModel, resultForm);
         resultEarn(maxBetsId * gameModel.getRewardsMoney()[0], resultForm.getTotalEarn(), resultForm);
+        renewUserSaldo(userId, resultForm.getTotalEarn());
+        saveToHistoryUser(gameModel);
 
         return resultForm;
     }
 
-    public void upgradeAmountFrom3To6(int success, int[] goalNumbers, ResultForm resultForm) {
+    public void saveToHistoryUser(GameModel gameModel) {
+        HistoryGameForm historyGameForm = new HistoryGameForm();
+        historyGameForm.setDateGame(gameModel.getDateGame());
+        System.out.println("saveToHistoryUser: " + gameModel.getDateGame().substring(0, 10));
+        System.out.println("saveToHistoryUser2: " + historyGameForm.getDateGame().substring(0, 10));
+    }
 
+    public void renewUserSaldo(int userId, int totalEarn) {
+        int renewSaldo;
+        int currentUserSaldo = userRepository.findSaldoByLogin(userId);
+        int maxSaldoForUser = 30 + 2*userExperienceRepository.findLevelByLogin(userId);
+
+        if (currentUserSaldo <= maxSaldoForUser) {
+
+            renewSaldo = maxSaldoForUser + totalEarn;
+            userRepository.updateUserSaldoByLogin(renewSaldo, userId);
+        } else {
+
+            renewSaldo = currentUserSaldo + totalEarn;
+            userRepository.updateUserSaldoByLogin(renewSaldo, userId);
+        }
+    }
+
+    public void saveAmountGoalAfterViewResult(ResultForm resultForm) {
         int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getId());
         int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getId());
         int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getId());
         int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getId());
+
+        int newAmountOfThree = currentAmountOfThree + resultForm.getGoal3Numbers();
+        int newAmountOfFour = currentAmountOfFour + resultForm.getGoal4Numbers();
+        int newAmountOfFive = currentAmountOfFive + resultForm.getGoal5Numbers();
+        int newAmountOfSix = currentAmountOfSix + resultForm.getGoal6Numbers();
+
+        gameRepository.updateAmountOfThree(newAmountOfThree, userSession.getUser().getId());
+        gameRepository.updateAmountOfFour(newAmountOfFour, userSession.getUser().getId());
+        gameRepository.updateAmountOfFive(newAmountOfFive, userSession.getUser().getId());
+        gameRepository.updateAmountOfSix(newAmountOfSix, userSession.getUser().getId());
+    }
+
+    public void upgradeAmountFrom3To6(int success, int[] goalNumbers, ResultForm resultForm) {
 
         for (int i = 0; i <= 6; i++) {
             if (success == i) {
@@ -172,15 +213,6 @@ public class UserNumbersService {
         resultForm.setGoal5Numbers(goalNumbers[5]);
         resultForm.setGoal6Numbers(goalNumbers[6]);
 
-        int newAmountOfThree = currentAmountOfThree + resultForm.getGoal3Numbers();
-        int newAmountOfFour = currentAmountOfFour + resultForm.getGoal4Numbers();
-        int newAmountOfFive = currentAmountOfFive + resultForm.getGoal5Numbers();
-        int newAmountOfSix = currentAmountOfSix + resultForm.getGoal6Numbers();
-
-        gameRepository.updateAmountOfThree(newAmountOfThree, userSession.getUser().getId());
-        gameRepository.updateAmountOfFour(newAmountOfFour, userSession.getUser().getId());
-        gameRepository.updateAmountOfFive(newAmountOfFive, userSession.getUser().getId());
-        gameRepository.updateAmountOfSix(newAmountOfSix, userSession.getUser().getId());
     }
 
     public int addUserExperience(GameModel gameModel, int[] goalNumbers, ResultForm resultForm) {
@@ -226,13 +258,7 @@ public class UserNumbersService {
     }
 
     public int resultEarn(int totalCost, int winPrice, ResultForm resultForm) {
-
-        int currentUserSaldo = userRepository.findSaldoByLogin(userSession.getUser().getId());
-
         resultForm.setFinishResult(winPrice + totalCost);
-
-        int newUserSaldo = currentUserSaldo + resultForm.getFinishResult();
-        userRepository.updateUserSaldoByLogin(newUserSaldo, userSession.getUser().getId());
 
         return resultForm.getFinishResult();
     }
@@ -256,6 +282,7 @@ public class UserNumbersService {
     }
 
     public void saveUserInputNumbers(int numbers[], int id) {
+        GameModel gameModel = new GameModel();
         InputNumberValidation inputNumberValidation = new InputNumberValidation();
         inputNumberValidation.sort(numbers);
 
@@ -263,7 +290,7 @@ public class UserNumbersService {
         userBetsRepository.saveInputNumbersByIdUser(id, numbers[0], numbers[1], numbers[2], numbers[3],
                 numbers[4], numbers[5]);
 
-        int newSaldo = currentSaldo - 3;
+        int newSaldo = currentSaldo + gameModel.getRewardsMoney()[0];
         userRepository.updateUserSaldoByLogin(newSaldo, id);
     }
 }

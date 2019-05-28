@@ -62,7 +62,7 @@ public class UserService {
         user.setLogin(registerForm.getLogin());
         user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         user.setEmail(registerForm.getEmail());
-        user.setSaldo(100);
+        user.setSaldo(30);
         user.setDateOfCreatedAccount(new Date());
 
         game.setNumberGame(0);
