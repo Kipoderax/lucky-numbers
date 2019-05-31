@@ -1,7 +1,6 @@
 package kipoderax.virtuallotto.game.model;
 
-import kipoderax.virtuallotto.auth.forms.HistoryGameForm;
-import kipoderax.virtuallotto.auth.forms.NumbersForm;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.game.service.ConvertToJson;
 import lombok.AllArgsConstructor;
 import lombok.Data;

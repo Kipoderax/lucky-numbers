@@ -1,6 +1,6 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.auth.forms.NumbersForm;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;

@@ -13,7 +13,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Column(name = "idgame") Integer idGame;
 
-    private @Column(name = "type_game") String typeGame;
+    private @Column(name = "max_bets_to_send") int maxBetsToSend;
     private @Column(name = "count_of_three") int countOfThree;
     private @Column(name = "count_of_four") int countOfFour;
     private @Column(name = "count_of_five") int countOfFive;

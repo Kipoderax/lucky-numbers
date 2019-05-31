@@ -1,6 +1,6 @@
 package kipoderax.virtuallotto.game.controllers;
 
-import kipoderax.virtuallotto.auth.forms.NumbersForm;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
@@ -102,7 +102,9 @@ public class BetController {
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
+
+//        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
+        model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         return "game/bet-for-register-users";
     }
@@ -116,7 +118,7 @@ public class BetController {
 
             if (inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-                if (userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3 != 0) {
+                if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
                     userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
                             userSession.getUser().getId());
@@ -134,7 +136,7 @@ public class BetController {
         GameModel gameModel = new GameModel();
 
         gameService.generateNumber(gameModel, numbersForm);
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
+        model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         return "game/bet-for-register-users";
     }

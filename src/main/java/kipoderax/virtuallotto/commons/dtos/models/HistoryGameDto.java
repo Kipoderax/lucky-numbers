@@ -1,12 +1,13 @@
-package kipoderax.virtuallotto.auth.forms;
+package kipoderax.virtuallotto.commons.dtos.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
-public class HistoryGameForm {
+@Data @AllArgsConstructor @NoArgsConstructor
+public class HistoryGameDto {
 
-    private int historyGameId;
-    private StringBuilder dateGame;
+    private String dateGame;
     private int amountBets;
     private int amountGoalThrees;
     private int amountGoalFours;

@@ -1,6 +1,6 @@
 package kipoderax.virtuallotto.auth.controllers;
 
-import kipoderax.virtuallotto.auth.forms.LoginForm;
+import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;

@@ -28,6 +28,7 @@
                     <td style="font-weight: bold; color: white" bgcolor="#505050">
                         <b>Podsumowanie</b>
                     </td>
+                    <td bgcolor="#505050"></td>
                 </tr>
                 <tr>
 
@@ -95,6 +96,42 @@
                                 </td>
                             </tr>
                             </tbody>
+                        </table>
+
+
+                    </td>
+
+                    <td bgcolor="#d4c0a1">
+                        <table>
+
+                            <tr style="height: 10px; background-color: grey">
+                                <td>Wylosowane trojki</td>
+                            </tr>
+                            <tr th:each="goal3Numbers : ${userResult}" class="color">
+                                <td th:text="${goal3Numbers.goalWith3Numbers}">lista liczb</td>
+                            </tr>
+
+                            <tr style="height: 10px; background-color: grey">
+                                <td>Wylosowane czworki</td>
+                            </tr>
+                            <tr th:each="goal4Numbers : ${userResult}" class="color">
+                                <td th:text="${goal4Numbers.goalWith4Numbers}">lista liczb</td>
+                            </tr>
+
+                            <tr style="height: 10px; background-color: grey">
+                                <td>Wylosowane piątki</td>
+                            </tr>
+                            <tr th:each="goal5Numbers : ${userResult}" class="color">
+                                <td th:text="${goal5Numbers.goalWith5Numbers}">lista liczb</td>
+                            </tr>
+
+                            <tr style="height: 10px; background-color: grey">
+                                <td>Wylosowana szóstka</td>
+                            </tr>
+                            <tr th:each="goal6Numbers : ${userResult}" class="color">
+                                <td th:text="${goal6Numbers.goalWith3Numbers}">lista liczb</td>
+                            </tr>
+
                         </table>
                     </td>
 

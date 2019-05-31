@@ -48,4 +48,9 @@ public class User {
     @JoinColumn(name = "id_api_numbers")
     private ApiNumber apiNumber;
 
+    @OneToMany(mappedBy = "user", cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+//    @JoinColumn(name = "history_game_id")
+    private List<HistoryGame> historyGames;
+
 }

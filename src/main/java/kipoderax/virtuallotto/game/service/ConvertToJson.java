@@ -1,6 +1,5 @@
 package kipoderax.virtuallotto.game.service;
 
-import kipoderax.virtuallotto.game.model.GameModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,6 @@ public class ConvertToJson {
                         lastLottoNumbers.add(lottoNumber);
 
                     }
-//                    date = sb.substring(0, 10);
                     date.append(sb,0, 10);
 
                     br.close();
@@ -85,7 +83,6 @@ public class ConvertToJson {
 
     public StringBuilder getLastDate(StringBuilder date) {
         getJSON("https://app.lotto.pl/wyniki/?type=dl");
-        System.out.println("getLastDate: " + date);
 
         return date;
     }

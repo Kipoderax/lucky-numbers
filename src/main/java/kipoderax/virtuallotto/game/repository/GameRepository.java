@@ -21,6 +21,8 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
     Integer findCountOfFiveByLogin(@Param("user_id") int userId);
     @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.id=:user_id")
     Integer findCountOfSixByLogin(@Param("user_id") int userId);
+    @Query("select g.maxBetsToSend from Game g join g.user u on g.user = u.id where u.id=:user_id")
+    Integer findMaxBetsToSend(@Param("user_id") int userId);
 
     @Transactional
     @Modifying
@@ -52,5 +54,12 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
             "(select u.id from User u where g.user = u.id and u.id=:id)")
     void updateAmountOfSix(@Param("countOfSix") int countOfSix,
                            @Param("id") int id);
+
+    @Transactional
+    @Modifying
+    @Query("update Game g set g.maxBetsToSend=:bets where g.user in " +
+            "(select u.id from User u where g.user = u.id and u.id=:user_id)")
+    void updateMaxBetsToSend(@Param("bets") int maxBetsToSend,
+                             @Param("user_id") int userId);
 
 }

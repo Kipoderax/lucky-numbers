@@ -1,8 +1,8 @@
 package kipoderax.virtuallotto.auth.service;
 
 import kipoderax.virtuallotto.auth.entity.User;
-import kipoderax.virtuallotto.auth.forms.LoginForm;
-import kipoderax.virtuallotto.auth.forms.RegisterForm;
+import kipoderax.virtuallotto.commons.forms.LoginForm;
+import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.game.entity.ApiNumber;
 import kipoderax.virtuallotto.game.entity.Game;
@@ -65,6 +65,7 @@ public class UserService {
         user.setSaldo(30);
         user.setDateOfCreatedAccount(new Date());
 
+        game.setMaxBetsToSend(10);
         game.setNumberGame(0);
         game.setCountOfThree(0);
         game.setCountOfFour(0);
@@ -131,12 +132,5 @@ public class UserService {
 
         return new BCryptPasswordEncoder();
     }
-
-//    public String getDateOfRegisterUser(String login) {
-//        userRepository.findDateOfCreateAccountByLogin(login);
-//
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.GERMAN);
-//        return dateFormat.format(userRepository.findDateOfCreateAccountByLogin(login));
-//    }
 
 }

@@ -29,7 +29,7 @@
 
                 <tr bgcolor="#505050">
                     <td colspan="9" style="font-weight: bold; color: white">
-                        Gracze z największym szczęściem wirtualnego miliona
+                        Moja historia gry
                     </td>
                 </tr>
 
@@ -45,28 +45,16 @@
                     <td class="whites"><center>Zdobyte coinsy</center></td>
                 </tr>
 
-<!--                <tr class="color" th:each="users: ${userDto}">-->
-
-<!--                    <td class="position">0</td>-->
-<!--                    <td th:text="${users.username}">0</td>-->
-<!--                    <td th:text="${users.numberGame}" align="center">0</td>-->
-<!--                    <td th:text="${users.amountOfThree}" align="center">0</td>-->
-<!--                    <td th:text="${users.amountOfFour}" align="center">0</td>-->
-<!--                    <td th:text="${users.amountOfFive}" align="center">0</td>-->
-<!--                    <td th:text="${users.amountOfSix}" align="center">0</td>-->
-<!--                    <td th:text="${users.level}" align="center">0</td>-->
-<!--                    <td th:text="${users.experience}" align="center">0</td>-->
-<!--                </tr>-->
-                <tr>
+                <tr class="color" th:each="myhistory : ${history}">
                     <td class="position"></td>
-                    <td>2019-05-28</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td th:text="${myhistory.dateGame}"></td>
+                    <td th:text="${myhistory.amountBets}">0</td>
+                    <td th:text="${myhistory.amountGoalThrees}">0</td>
+                    <td th:text="${myhistory.amountGoalFours}">0</td>
+                    <td th:text="${myhistory.amountGoalFives}">0</td>
+                    <td th:text="${myhistory.amountGoalSixes}">0</td>
+                    <td th:text="${myhistory.experience}">0</td>
+                    <td th:text="${myhistory.result}">0</td>
                 </tr>
 
                 </tbody>

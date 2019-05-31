@@ -1,4 +1,4 @@
-package kipoderax.virtuallotto.auth.forms;
+package kipoderax.virtuallotto.commons.forms;
 
 import lombok.Data;
 
