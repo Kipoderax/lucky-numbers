@@ -1,9 +1,8 @@
-package kipoderax.virtuallotto.game.service;
+package kipoderax.virtuallotto.game.service.user_numbers;
 
 import kipoderax.virtuallotto.auth.entity.HistoryGame;
 import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.commons.forms.HistoryGameForm;
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.commons.forms.ResultForm;
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
@@ -14,10 +13,12 @@ import kipoderax.virtuallotto.commons.dtos.models.ApiNumberDto;
 import kipoderax.virtuallotto.commons.dtos.models.UserNumbersDto;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
+import kipoderax.virtuallotto.game.model.WinnerBets;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class UserNumbersService {
     private ApiNumberRepository apiNumberRepository;
     private HistoryGameRepository historyGameRepository;
 
+    private WinnerBetsServiceImpl winnerBetsService;
+
     private UserSession userSession;
 
     public UserNumbersService(UserNumbersMapper userNumbersMapper,
@@ -49,6 +52,8 @@ public class UserNumbersService {
                               ApiNumberRepository apiNumberRepository,
                               HistoryGameRepository historyGameRepository,
 
+                              WinnerBetsServiceImpl winnerBetsService,
+
                               UserSession userSession) {
 
         this.userNumbersMapper = userNumbersMapper;
@@ -60,6 +65,8 @@ public class UserNumbersService {
         this.userRepository = userRepository;
         this.apiNumberRepository = apiNumberRepository;
         this.historyGameRepository = historyGameRepository;
+
+        this.winnerBetsService = winnerBetsService;
 
         this.userSession = userSession;
     }
@@ -81,7 +88,6 @@ public class UserNumbersService {
 
         return userNumbersDtos;
     }
-
 
 
     public List<ApiNumberDto> userApiNumbers(List<ApiNumberDto> apiNumberDtos, int userId) {
@@ -110,16 +116,14 @@ public class UserNumbersService {
         return intApiDtos;
     }
 
-    public ResultForm checkUserNumbers (GameModel gameModel, int userId) {
+    public ResultForm checkUserNumbers(GameModel gameModel, int userId) {
 
-        NumbersForm numbersForm = new NumbersForm();
         ResultForm resultForm = new ResultForm();
         HistoryGame historyGame = new HistoryGame();
         User user = userSession.getUser();
 
         List<UserNumbersDto> userNumbersDtos = new ArrayList<>();
         userNumbersDtos(userNumbersDtos, userId);
-        List<List<Integer>> goalBets= new ArrayList<>();
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
         int currentUserNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getId());
 
@@ -132,11 +136,13 @@ public class UserNumbersService {
                 resultForm.getGoal6Numbers()};
 
         for (int i = 0; i < maxBetsId; i++) {
+
             if (maxBetsId == 0) {
                 break;
             } else {
                 int success = 0;
                 List<Integer> currentNumbers = new ArrayList<>();
+
                 for (int value : gameModel.getLastNumbers().subList(0, 6)) {
                     currentNumbers.add(userNumbersDtos.get(i).getNumber1());
                     currentNumbers.add(userNumbersDtos.get(i).getNumber2());
@@ -153,19 +159,18 @@ public class UserNumbersService {
                     }
 
                 }
-//                groupingGoalBetsWithSuccess(resultForm, numbersForm);
-                goalBetsWithSuccess(success, goalBets, currentNumbers, resultForm);
+
+                goalBetsWithSuccess(success, currentNumbers);
                 upgradeAmountFrom3To6(success, goalNumbers, resultForm);
             }
         }
 
-        System.out.println("Trojka bez geta" + resultForm.getGoalWith3Numbers());
         saveAmountGoalAfterViewResult(resultForm);
         addUserExperience(gameModel, goalNumbers, resultForm);
         costBets(maxBetsId, gameModel, resultForm);
         earnFromGoalNumbers(goalNumbers, gameModel, resultForm);
         resultEarn(maxBetsId * gameModel.getRewardsMoney()[0], resultForm.getTotalEarn(), resultForm);
-        renewUserSaldo(userId, resultForm.getTotalEarn());
+        renewUserSaldo(userId, resultForm.getTotalEarn(), maxBetsId);
         saveToHistoryUser(gameModel);
 
         historyGame.setDateGame(saveToHistoryUser(gameModel).substring(0, 10));
@@ -190,20 +195,25 @@ public class UserNumbersService {
         return historyGameForm.getDateGame();
     }
 
-    public void renewUserSaldo(int userId, int totalEarn) {
+    public void renewUserSaldo(int userId, int totalEarn, int betsSended) {
         int renewSaldo;
         int currentUserSaldo = userRepository.findSaldoByLogin(userId);
-        int maxSaldoForUser = 30 + 2*userExperienceRepository.findLevelByLogin(userId);
+        int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(userId) * 2);
+        int maxBetsToSend = gameRepository.findMaxBetsToSend(userId);
 
-        if (currentUserSaldo <= maxSaldoForUser) {
+        if (maxBetsToSend - betsSended == 0) {
+
+            renewSaldo = currentUserSaldo + maxSaldoForUser + totalEarn;
+        } else if (currentUserSaldo < maxSaldoForUser) {
 
             renewSaldo = maxSaldoForUser + totalEarn;
-            userRepository.updateUserSaldoByLogin(renewSaldo, userId);
         } else {
 
-            renewSaldo = currentUserSaldo + totalEarn;
-            userRepository.updateUserSaldoByLogin(renewSaldo, userId);
+            renewSaldo = currentUserSaldo + betsSended * 3 + totalEarn;
         }
+
+        System.out.println("renewUserSaldo: " + currentUserSaldo + " + " + maxSaldoForUser + " + " + totalEarn);
+        userRepository.updateUserSaldoByLogin(renewSaldo, userId);
     }
 
     public void saveAmountGoalAfterViewResult(ResultForm resultForm) {
@@ -248,7 +258,7 @@ public class UserNumbersService {
         int sumExperience = 0;
 
         for (int i = 1; i <= 6; i++) {
-            sumExperience += goalNumbers[i] * gameModel.getRewardsExperience()[i-1];
+            sumExperience += goalNumbers[i] * gameModel.getRewardsExperience()[i - 1];
 
         }
         resultForm.setTotalExp(sumExperience);
@@ -271,11 +281,11 @@ public class UserNumbersService {
         return resultForm.getTotalCostBets();
     }
 
-    public int earnFromGoalNumbers (int[] goalNumbers, GameModel gameModel, ResultForm resultForm) {
+    public int earnFromGoalNumbers(int[] goalNumbers, GameModel gameModel, ResultForm resultForm) {
 
         int sumEarnMoney = 0;
         for (int i = 3; i <= 6; i++) {
-            sumEarnMoney += goalNumbers[i] * gameModel.getRewardsMoney()[i-2];
+            sumEarnMoney += goalNumbers[i] * gameModel.getRewardsMoney()[i - 2];
         }
 
         resultForm.setTotalEarn(sumEarnMoney);
@@ -349,25 +359,27 @@ public class UserNumbersService {
     }
 
 
-    public void goalBetsWithSuccess(int success, List<List<Integer>> goalBets,
-                                    List<Integer> listUserBets, ResultForm resultForm) {
+    public void goalBetsWithSuccess(int success, List<Integer> listUserBets) {
+
+        WinnerBets winnerBets = new WinnerBets(listUserBets.get(0), listUserBets.get(1),
+                listUserBets.get(2), listUserBets.get(3), listUserBets.get(4), listUserBets.get(5));
 
         switch (success) {
             case 3:
-                goalBets.add(listUserBets.subList(0, 6));
-                resultForm.setGoalWith3Numbers(goalBets);
+
+                winnerBetsService.addWinnerBetsWith3Numbers(winnerBets);
                 break;
             case 4:
-                goalBets.add(listUserBets.subList(0, 6));
-                resultForm.setGoalWith4Numbers(goalBets);
+
+                winnerBetsService.addWinnerBetsWith4Numbers(winnerBets);
                 break;
             case 5:
-                goalBets.add(listUserBets.subList(0, 6));
-                resultForm.setGoalWith5Numbers(goalBets);
+
+                winnerBetsService.addWinnerBetsWith5Numbers(winnerBets);
                 break;
             case 6:
-                goalBets.add(listUserBets.subList(0, 6));
-                resultForm.setGoalWith6Numbers(goalBets);
+
+                winnerBetsService.addWinnerBetsWith6Numbers(winnerBets);
                 break;
         }
     }

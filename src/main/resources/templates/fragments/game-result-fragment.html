@@ -25,10 +25,12 @@
             <table class="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
                 <tbody>
                 <tr>
-                    <td style="font-weight: bold; color: white" bgcolor="#505050">
+                    <td  style="font-weight: bold; color: white" bgcolor="#505050">
                         <b>Podsumowanie</b>
                     </td>
-                    <td bgcolor="#505050"></td>
+                    <td bgcolor="#505050">
+                        <p style="color: white" th:text="${'Wylosowane liczby: ' + newapinumbers}"></p>
+                    </td>
                 </tr>
                 <tr>
 
@@ -89,7 +91,7 @@
                                         </tr>
                                         <tr style="background-color: #d4c0a1">
                                             <td>punkty doswiadczenia:</td>
-                                            <td class="table-desc" align="center" th:text="${result.totalExp}">+44</td>
+                                            <td class="table-desc" align="center" th:text="'+' + ${result.totalExp}">+44</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -105,31 +107,50 @@
                         <table>
 
                             <tr style="height: 10px; background-color: grey">
-                                <td>Wylosowane trojki</td>
+                                <td align="center" colspan="6">Wylosowane trojki</td>
                             </tr>
-                            <tr th:each="goal3Numbers : ${userResult}" class="color">
-                                <td th:text="${goal3Numbers.goalWith3Numbers}">lista liczb</td>
+                            <tr class="color" th:each="with3: ${with3numbers}">
+                                <td width="40px" align="center" th:text="${with3.number1}"></td>
+                                <td width="40px" align="center" th:text="${with3.number2}"></td>
+                                <td width="40px" align="center" th:text="${with3.number3}"></td>
+                                <td width="40px" align="center" th:text="${with3.number4}"></td>
+                                <td width="40px" align="center" th:text="${with3.number5}"></td>
+                                <td width="40px" align="center" th:text="${with3.number6}"></td>
+                            </tr>
+                            <tr style="height: 10px; background-color: grey">
+                                <td align="center" colspan="6">Wylosowane czworki</td>
+                            </tr>
+                            <tr class="color" th:each="with4: ${with4numbers}">
+                                <td width="40px" align="center" th:text="${with4.number1}"></td>
+                                <td width="40px" align="center" th:text="${with4.number2}"></td>
+                                <td width="40px" align="center" th:text="${with4.number3}"></td>
+                                <td width="40px" align="center" th:text="${with4.number4}"></td>
+                                <td width="40px" align="center" th:text="${with4.number5}"></td>
+                                <td width="40px" align="center" th:text="${with4.number6}"></td>
                             </tr>
 
                             <tr style="height: 10px; background-color: grey">
-                                <td>Wylosowane czworki</td>
+                                <td align="center" colspan="6">Wylosowane piatki</td>
                             </tr>
-                            <tr th:each="goal4Numbers : ${userResult}" class="color">
-                                <td th:text="${goal4Numbers.goalWith4Numbers}">lista liczb</td>
-                            </tr>
-
-                            <tr style="height: 10px; background-color: grey">
-                                <td>Wylosowane piątki</td>
-                            </tr>
-                            <tr th:each="goal5Numbers : ${userResult}" class="color">
-                                <td th:text="${goal5Numbers.goalWith5Numbers}">lista liczb</td>
+                            <tr class="color" th:each="with5: ${with5numbers}">
+                                <td width="40px" align="center" th:text="${with5.number1}"></td>
+                                <td width="40px" align="center" th:text="${with5.number2}"></td>
+                                <td width="40px" align="center" th:text="${with5.number3}"></td>
+                                <td width="40px" align="center" th:text="${with5.number4}"></td>
+                                <td width="40px" align="center" th:text="${with5.number5}"></td>
+                                <td width="40px" align="center" th:text="${with5.number6}"></td>
                             </tr>
 
                             <tr style="height: 10px; background-color: grey">
-                                <td>Wylosowana szóstka</td>
+                                <td align="center" colspan="6">Wylosowana szostka</td>
                             </tr>
-                            <tr th:each="goal6Numbers : ${userResult}" class="color">
-                                <td th:text="${goal6Numbers.goalWith3Numbers}">lista liczb</td>
+                            <tr class="color" th:each="with6: ${with6numbers}">
+                                <td width="40px" align="center" th:text="${with6.number1}"></td>
+                                <td width="40px" align="center" th:text="${with6.number2}"></td>
+                                <td width="40px" align="center" th:text="${with6.number3}"></td>
+                                <td width="40px" align="center" th:text="${with6.number4}"></td>
+                                <td width="40px" align="center" th:text="${with6.number5}"></td>
+                                <td width="40px" align="center" th:text="${with6.number6}"></td>
                             </tr>
 
                         </table>

@@ -9,7 +9,7 @@ import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.GameService;
-import kipoderax.virtuallotto.game.service.UserNumbersService;
+import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

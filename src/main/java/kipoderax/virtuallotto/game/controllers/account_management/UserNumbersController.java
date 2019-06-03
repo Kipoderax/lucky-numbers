@@ -6,10 +6,15 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
-import kipoderax.virtuallotto.game.service.UserNumbersService;
+import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
+import kipoderax.virtuallotto.game.service.user_numbers.WinnerBetsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Controller
 public class UserNumbersController {
@@ -20,17 +25,24 @@ public class UserNumbersController {
     private UserBetsRepository userBetsRepository;
     private ApiNumberRepository apiNumberRepository;
 
+    private WinnerBetsServiceImpl winnerBetsService;
+
+    @Autowired
     public UserNumbersController(UserNumbersService userNumbersService,
                                  UserSession userSession,
                                  UserRepository userRepository,
                                  UserBetsRepository userBetsRepository,
-                                 ApiNumberRepository apiNumberRepository) {
+                                 ApiNumberRepository apiNumberRepository,
+
+                                 WinnerBetsServiceImpl winnerBetsService) {
 
         this.userNumbersService = userNumbersService;
         this.userSession = userSession;
         this.userRepository = userRepository;
         this.userBetsRepository = userBetsRepository;
         this.apiNumberRepository = apiNumberRepository;
+
+        this.winnerBetsService = winnerBetsService;
     }
 
     @GetMapping("/mojeliczby")
@@ -62,6 +74,15 @@ public class UserNumbersController {
                     gameModel.getConvertToJson().getLastLottoNumbers().get(3),
                     gameModel.getConvertToJson().getLastLottoNumbers().get(4),
                     gameModel.getConvertToJson().getLastLottoNumbers().get(5));
+
+            model.addAttribute("with3numbers", winnerBetsService.getWinnerBetsWith3Numbers());
+            model.addAttribute("with4numbers", winnerBetsService.getWinnerBetsWith4Numbers());
+            model.addAttribute("with5numbers", winnerBetsService.getWinnerBetsWith5Numbers());
+            model.addAttribute("with6numbers", winnerBetsService.getWinnerBetsWith6Numbers());
+
+            Collections.sort(gameModel.getLastNumbers().subList(0, 6));
+            model.addAttribute("newapinumbers", gameModel.getLastNumbers().subList(0, 6));
+
 
             userBetsRepository.deleteUserBetsAfterShowResult(userSession.getUser().getId());
         }
