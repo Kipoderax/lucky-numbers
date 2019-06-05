@@ -18,11 +18,13 @@ import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import kipoderax.virtuallotto.game.service.ConvertToJson;
 import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -118,6 +120,7 @@ public class UserNumbersService {
 
     public ResultForm checkUserNumbers(GameModel gameModel, int userId) {
 
+
         ResultForm resultForm = new ResultForm();
         HistoryGame historyGame = new HistoryGame();
         User user = userSession.getUser();
@@ -136,7 +139,6 @@ public class UserNumbersService {
                 resultForm.getGoal6Numbers()};
 
         for (int i = 0; i < maxBetsId; i++) {
-
             if (maxBetsId == 0) {
                 break;
             } else {
@@ -159,7 +161,6 @@ public class UserNumbersService {
                     }
 
                 }
-
                 goalBetsWithSuccess(success, currentNumbers);
                 upgradeAmountFrom3To6(success, goalNumbers, resultForm);
             }
@@ -212,7 +213,6 @@ public class UserNumbersService {
             renewSaldo = currentUserSaldo + betsSended * 3 + totalEarn;
         }
 
-        System.out.println("renewUserSaldo: " + currentUserSaldo + " + " + maxSaldoForUser + " + " + totalEarn);
         userRepository.updateUserSaldoByLogin(renewSaldo, userId);
     }
 
@@ -283,9 +283,13 @@ public class UserNumbersService {
 
     public int earnFromGoalNumbers(int[] goalNumbers, GameModel gameModel, ResultForm resultForm) {
 
+        ConvertToJson convertToJson = new ConvertToJson();
+
         int sumEarnMoney = 0;
         for (int i = 3; i <= 6; i++) {
-            sumEarnMoney += goalNumbers[i] * gameModel.getRewardsMoney()[i - 2];
+            convertToJson.getMoneyRew()[0] = 24;
+            sumEarnMoney += goalNumbers[i] * convertToJson.getLastWins(convertToJson.getMoneyRew()[i - 3]);
+            System.out.println(i + ": " + sumEarnMoney);
         }
 
         resultForm.setTotalEarn(sumEarnMoney);
@@ -324,20 +328,18 @@ public class UserNumbersService {
 
         if (level > 5) {
             if (userSaldo / 3 > level * 2) {
+
                 leftBets = level * 2;
-                gameRepository.updateMaxBetsToSend(leftBets, userId);
-                System.out.println(leftBets + ", " + level + ", " + userSaldo);
             } else {
+
                 leftBets = userSaldo / 3;
-                gameRepository.updateMaxBetsToSend(leftBets, userId);
-                System.out.println(leftBets + ", " + level + ", " + userSaldo);
             }
         } else {
+
             leftBets = 10;
-            gameRepository.updateMaxBetsToSend(leftBets, userId);
-            System.out.println(leftBets + ", " + level + ", " + userSaldo);
         }
 
+        gameRepository.updateMaxBetsToSend(leftBets, userId);
     }
 
     public int leftBetsToSend(int userId) {

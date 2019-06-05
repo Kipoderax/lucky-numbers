@@ -2,9 +2,8 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
-import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.service.GameService;
+import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +14,14 @@ import java.util.Collections;
 @Controller
 public class IndexController {
 
-    private GameService gameService;
     private UserRepository userRepository;
+    private UserNumbersService userNumbersService;
 
-    public IndexController(GameService gameService,
-                           UserRepository userRepository) {
+    public IndexController(UserRepository userRepository,
+                           UserNumbersService userNumbersService) {
 
-        this.gameService = gameService;
         this.userRepository = userRepository;
+        this.userNumbersService = userNumbersService;
     }
 
     @GetMapping({"/"})

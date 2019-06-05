@@ -21,6 +21,9 @@ public class ConvertToJson {
     private List<Integer> lastLottoNumbers = new ArrayList<>();
     private StringBuilder date = new StringBuilder();
 
+    private List<String> moneyRewards = new ArrayList<>();
+    private int[] moneyRew = new int[4];
+
     public String getJSON(String url) {
 
         HttpURLConnection c = null;
@@ -45,16 +48,25 @@ public class ConvertToJson {
 
                         int lottoNumber;
 
-                        try {
-                            lottoNumber = Integer.parseInt(line);
+                        moneyRewards.add(line);
 
+                        try {
+
+                            lottoNumber = Integer.parseInt(line);
                         }
                         catch (NumberFormatException e) { continue; }
 
                         lastLottoNumbers.add(lottoNumber);
-
                     }
                     date.append(sb,0, 10);
+
+                    int fourthPrice = (int) Double.parseDouble(getMoneyRewards().get(3).substring(5, 8));
+                    int fifthPrice = (int) Double.parseDouble(getMoneyRewards().get(2).substring(3));
+                    int sixthPrice = (int) Double.parseDouble(getMoneyRewards().get(1).substring(2));
+
+                    moneyRew[1] = fourthPrice;
+                    moneyRew[2] = fifthPrice;
+                    moneyRew[3] = sixthPrice;
 
                     br.close();
 
@@ -87,9 +99,9 @@ public class ConvertToJson {
         return date;
     }
 
-    public List<Integer> getLastWins(List<Integer> list) {
+    public int getLastWins(int number) {
         getJSON("https://app.lotto.pl/wygrane/?type=dl");
 
-        return list;
+        return number;
     }
 }

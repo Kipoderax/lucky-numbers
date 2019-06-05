@@ -1,7 +1,6 @@
 package kipoderax.virtuallotto.game.model;
 
 import kipoderax.virtuallotto.commons.forms.NumbersForm;
-import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.service.ConvertToJson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,13 +19,19 @@ public class GameModel {
     }
 
     private ConvertToJson convertToJson = new ConvertToJson();
-    private InputNumberValidation inputNumberValidation = new InputNumberValidation();
 
     private int number; //komponent numberSet
     private int experience;
     private int level;
-    private int[] rewardsMoney = {-3, 24, 120, 4_800, 2_000_000};
+
+//    convertToJson.getLastWins(convertToJson.getMoneyRew()[0])
+    private int[] rewardsMoney = {-3,
+            convertToJson.getLastWins(convertToJson.getMoneyRew()[0]),
+            convertToJson.getLastWins(convertToJson.getMoneyRew()[1]),
+            convertToJson.getLastWins(convertToJson.getMoneyRew()[2]),
+            convertToJson.getLastWins(convertToJson.getMoneyRew()[3])};
     private int[] rewardsExperience = {1, 3, 21, 186, 1_985, 15_134};
+
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 

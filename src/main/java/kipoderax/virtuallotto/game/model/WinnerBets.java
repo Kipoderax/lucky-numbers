@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 public class WinnerBets {
 
     private int number1;

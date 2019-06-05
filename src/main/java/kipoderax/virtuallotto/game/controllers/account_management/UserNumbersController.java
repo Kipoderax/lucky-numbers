@@ -64,9 +64,6 @@ public class UserNumbersController {
             model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId()));
             model.addAttribute("amountnumbergame", userBetsRepository.AmountBetsByUserId(userSession.getUser().getId()));
 
-            System.out.println("z bazy danych: " + userNumbersService.getUserApiNumber(userSession.getUser().getId()));
-            System.out.println("z api: " + gameModel.getLastNumbers().subList(0, 6));
-
             apiNumberRepository.updateApiNumbers(userSession.getUser().getId(),
                     gameModel.getConvertToJson().getLastLottoNumbers().get(0),
                     gameModel.getConvertToJson().getLastLottoNumbers().get(1),
@@ -82,7 +79,6 @@ public class UserNumbersController {
 
             Collections.sort(gameModel.getLastNumbers().subList(0, 6));
             model.addAttribute("newapinumbers", gameModel.getLastNumbers().subList(0, 6));
-
 
             userBetsRepository.deleteUserBetsAfterShowResult(userSession.getUser().getId());
         }

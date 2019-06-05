@@ -8,6 +8,7 @@ public class VirtualLottoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(VirtualLottoApplication.class, args);
+
     }
 
 }

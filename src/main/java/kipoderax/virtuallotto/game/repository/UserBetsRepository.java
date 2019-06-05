@@ -38,12 +38,4 @@ public interface UserBetsRepository extends JpaRepository<UserBets, Integer> {
     @Query("delete from UserBets ub where ub.user.id=:user_id")
     void deleteUserBetsAfterShowResult(@Param("user_id") int userId);
 
-//    @Query(value = "SELECT * FROM practicemanager.practices WHERE student_id = ?1 LIMIT ?2 OFFSET ?3",
-//            nativeQuery = true)
-//    @Transactional
-//    @Modifying
-//    @Query("delete ub from UserBets ub where ub.user.id=:user_id limit =: bets_id, 1")
-//    void deleteUserBetsByUserBetsId(@Param("user_id") int userId,
-//                                    @Param("bets_id") int betsId);
-
 }
