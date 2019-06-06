@@ -1,24 +1,21 @@
 package kipoderax.virtuallotto.game.service.dto;
 
-import kipoderax.virtuallotto.auth.entity.HistoryGame;
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.HistoryMapper;
 import kipoderax.virtuallotto.commons.dtos.models.HistoryGameDto;
+import kipoderax.virtuallotto.game.model.GameModel;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class HistoryGameDtoService {
 
-    HistoryGameRepository historyGameRepository;
-    HistoryMapper historyMapper;
-    UserRepository userRepository;
+    private HistoryGameRepository historyGameRepository;
+    private HistoryMapper historyMapper;
+    private UserRepository userRepository;
 
     public HistoryGameDtoService(HistoryGameRepository historyGameRepository,
                                  UserRepository userRepository,
@@ -29,35 +26,47 @@ public class HistoryGameDtoService {
         this.userRepository = userRepository;
     }
 
-    public List<HistoryGameDto> getAllHistoryGames(int userId) {
-        List<HistoryGameDto> historyGameDtos = new ArrayList<>();
+    public List<HistoryGameDto> putAllHistoryGames(int userId, List<HistoryGameDto> historyGameDtos) {
 
         historyGameRepository.findAllById(userId)
                 .stream()
                 .map(n -> historyGameDtos.add(historyMapper.map(n)))
-                .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
 
-        System.out.println(historyGameDtos.get(historyGameDtos.size() - 1));
+        Collections.reverse(historyGameDtos);
+
+        return historyGameDtos;
+    }
+
+    public List<HistoryGameDto> getAllHistoryGames(int userId) {
+        List<HistoryGameDto> historyGameDtos = new ArrayList<>();
+
+        putAllHistoryGames(userId, historyGameDtos);
 
         return historyGameDtos;
     }
 
     public List<HistoryGameDto> getLast5BestExperience() {
         List<HistoryGameDto> historyGameDtos = new ArrayList<>();
+        List<HistoryGameDto> getExperience;
+        GameModel gameModel = new GameModel();
 
-//        for (int i = 1; i < ; i++) {
-//            Optional<HistoryGame> historyGame = historyGameRepository.findById(i);
-//
-//            if (!historyGame.isPresent()) {
-//                continue;
-//            } else {
-//                historyGameDtos.add(getAllHistoryGames(i).get(0));
-//            }
-//        }
+        for (int j = 1; j < userRepository.findMaxId(); j++) {
 
+            putAllHistoryGames(j, historyGameDtos);
+        }
 
-//        System.out.println(historyGameDtos.get(1).getExperience());
-        return historyGameDtos;
+        getExperience = historyGameDtos.stream()
+                .filter(n -> n.getDateGame().equals(gameModel.getDateGame()))
+                .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < getExperience.size(); i++) {
+            System.out.println("exp: " + getExperience.get(i).getExperience() + " name: " + getExperience.get(i).getUsername() +
+                    " data: " + getExperience.get(i).getDateGame());
+        }
+
+        return getExperience;
     }
 }

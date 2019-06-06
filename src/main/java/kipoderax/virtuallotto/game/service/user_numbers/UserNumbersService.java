@@ -189,7 +189,7 @@ public class UserNumbersService {
         return resultForm;
     }
 
-    public StringBuilder saveToHistoryUser(GameModel gameModel) {
+    public String saveToHistoryUser(GameModel gameModel) {
         HistoryGameForm historyGameForm = new HistoryGameForm();
         historyGameForm.setDateGame(gameModel.getDateGame());
 

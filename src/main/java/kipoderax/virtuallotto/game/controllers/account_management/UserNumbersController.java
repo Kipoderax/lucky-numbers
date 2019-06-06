@@ -6,6 +6,8 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
+import kipoderax.virtuallotto.game.service.StatisticsService;
+import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import kipoderax.virtuallotto.game.service.user_numbers.WinnerBetsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,30 +15,37 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Collection;
 import java.util.Collections;
 
 @Controller
 public class UserNumbersController {
 
     private UserSession userSession;
+
     private UserNumbersService userNumbersService;
+    private WinnerBetsServiceImpl winnerBetsService;
+    private StatisticsService statisticsService;
+    private HistoryGameDtoService historyGameDtoService;
+
     private UserRepository userRepository;
     private UserBetsRepository userBetsRepository;
     private ApiNumberRepository apiNumberRepository;
 
-    private WinnerBetsServiceImpl winnerBetsService;
 
     @Autowired
     public UserNumbersController(UserNumbersService userNumbersService,
+                                 StatisticsService statisticsService,
+                                 HistoryGameDtoService historyGameDtoService,
                                  UserSession userSession,
                                  UserRepository userRepository,
                                  UserBetsRepository userBetsRepository,
                                  ApiNumberRepository apiNumberRepository,
-
                                  WinnerBetsServiceImpl winnerBetsService) {
 
+
         this.userNumbersService = userNumbersService;
+        this.statisticsService = statisticsService;
+        this.historyGameDtoService = historyGameDtoService;
         this.userSession = userSession;
         this.userRepository = userRepository;
         this.userBetsRepository = userBetsRepository;
@@ -57,6 +66,12 @@ public class UserNumbersController {
 
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
+
+        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         if (!userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),

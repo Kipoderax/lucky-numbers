@@ -7,6 +7,8 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
+import kipoderax.virtuallotto.game.service.StatisticsService;
+import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,22 +20,34 @@ import java.util.Date;
 public class AccountController {
 
     private UserSession userSession;
-    private UserService userService;
+
     private UserRepository userRepository;
     private GameRepository gameRepository;
     private UserExperienceRepository userExperienceRepository;
 
+    private UserService userService;
+    private StatisticsService statisticsService;
+    private HistoryGameDtoService historyGameDtoService;
+
     public AccountController(UserSession userSession,
-                             UserService userService,
+
                              UserRepository userRepository,
                              GameRepository gameRepository,
-                             UserExperienceRepository userExperienceRepository){
+                             UserExperienceRepository userExperienceRepository,
+
+                             UserService userService,
+                             StatisticsService statisticsService,
+                             HistoryGameDtoService historyGameDtoService){
 
         this.userSession = userSession;
-        this.userService = userService;
+
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userExperienceRepository = userExperienceRepository;
+
+        this.userService = userService;
+        this.statisticsService = statisticsService;
+        this.historyGameDtoService = historyGameDtoService;
     }
 
     @GetMapping({"/konto"})
@@ -82,6 +96,8 @@ public class AccountController {
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
 
         return "auth/myaccount";

@@ -6,7 +6,7 @@ import lombok.Data;
 public class HistoryGameForm {
 
     private int historyGameId;
-    private StringBuilder dateGame;
+    private String dateGame;
     private int amountBets;
     private int amountGoalThrees;
     private int amountGoalFours;

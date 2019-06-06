@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HistoryGameController {
 
-    private HistoryGameDtoService historyGameDtoService;
     private UserSession userSession;
 
-    public HistoryGameController(HistoryGameDtoService historyGameDtoService, UserSession userSession) {
+    private HistoryGameDtoService historyGameDtoService;
+    private StatisticsService statisticsService;
+
+    public HistoryGameController(HistoryGameDtoService historyGameDtoService,
+                                 StatisticsService statisticsService,
+                                 UserSession userSession) {
+
         this.historyGameDtoService = historyGameDtoService;
+        this.statisticsService = statisticsService;
         this.userSession = userSession;
     }
 
@@ -21,6 +28,9 @@ public class HistoryGameController {
     public String historyGame(Model model) {
 
         model.addAttribute("history", historyGameDtoService.getAllHistoryGames(userSession.getUser().getId()));
+
+        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         return "auth/history-game";
     }

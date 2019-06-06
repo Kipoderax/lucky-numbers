@@ -82,12 +82,12 @@
     </div>
     <div class="menu-cnt">
 
-<!--        <ul th:each="topxp : ${toplastxp}">-->
-<!--            <li>-->
-<!--                <i th:text="${topxp.username}"></i>-->
-<!--                <span class="pull-right" th:text="${topxp.level}"></span>-->
-<!--            </li>-->
-<!--        </ul>-->
+        <ul th:each="topxp : ${toplastxp}">
+            <li>
+                <i th:text="${topxp.username}"></i>
+                <span class="pull-right" th:text="'+ ' + ${topxp.experience}"></span>
+            </li>
+        </ul>
 
 
     </div>

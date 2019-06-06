@@ -40,7 +40,7 @@ public class IndexController {
         model.addAttribute("result", gameModel.getLastNumbers().subList(0, 6));
 
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
-//        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
