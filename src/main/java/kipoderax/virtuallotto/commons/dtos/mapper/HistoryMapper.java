@@ -12,6 +12,7 @@ public class HistoryMapper implements Mapper<HistoryGame, HistoryGameDto> {
     public HistoryGameDto map(HistoryGame from) {
 
         return new HistoryGameDtoBuilder()
+                .username(from.getUser().getUsername())
                 .dateGame(from.getDateGame())
                 .amountBets(from.getAmountBets())
                 .amountGoalThrees(from.getAmountGoalThrees())

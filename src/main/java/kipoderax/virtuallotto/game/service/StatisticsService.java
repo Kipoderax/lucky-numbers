@@ -35,9 +35,8 @@ public class StatisticsService {
         List<UserDto> userDtos = new ArrayList<>();
         getAllDtoUsers(userDtos);
 
-        userDtos.sort(Comparator.comparing(UserDto::getLevel).
-                thenComparing(UserDto::getExperience)
-                .thenComparing(UserDto::getNumberGame).
+        userDtos.sort(Comparator.comparing(UserDto::getExperience).
+                thenComparing(UserDto::getNumberGame).
                 thenComparing(UserDto::getUsername).reversed());
 
         return userDtos;

@@ -17,6 +17,9 @@ public interface UserExperienceRepository extends JpaRepository<UserExperience, 
     @Query("select ue.experience from UserExperience ue join ue.user u on ue.user = u.id where u.id=:user_id")
     Integer findExpByLogin(@Param("user_id") int userId);
 
+//    @Query("select ue.level from UserExperience ue join ue.user u on ue.user = u.id where u.id=:user_id limit 5")
+//    Integer findFirst5LevelByLogin(@Param("user_id") int userId);
+
     @Transactional
     @Modifying
     @Query("update UserExperience ue set ue.experience=:experience where ue.user in " +

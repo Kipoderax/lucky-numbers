@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data @AllArgsConstructor @NoArgsConstructor
 public class HistoryGameDto {
 
+    private String username;
     private String dateGame;
     private int amountBets;
     private int amountGoalThrees;

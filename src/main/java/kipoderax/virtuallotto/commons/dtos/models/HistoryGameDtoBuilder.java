@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.commons.dtos.models;
 
 public class HistoryGameDtoBuilder {
 
+    private String username = "";
     private String dateGame = "";
     private int amountBets = 0;
     private int amountGoalThrees = 0;
@@ -13,6 +14,12 @@ public class HistoryGameDtoBuilder {
 
     public HistoryGameDtoBuilder() {
     }
+
+    public HistoryGameDtoBuilder username(String username) {
+        this.username = username;
+        return this;
+    }
+
 
     public HistoryGameDtoBuilder dateGame(String dateGame) {
         this.dateGame = dateGame;
@@ -56,7 +63,7 @@ public class HistoryGameDtoBuilder {
 
     public HistoryGameDto build() {
         return new HistoryGameDto(
-                dateGame, amountBets,
+                username, dateGame, amountBets,
                 amountGoalThrees, amountGoalFours, amountGoalFives, amountGoalSixes,
                 experience, result);
     }
