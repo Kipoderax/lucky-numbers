@@ -62,11 +62,6 @@ public class HistoryGameDtoService {
                 .limit(5)
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < getExperience.size(); i++) {
-            System.out.println("exp: " + getExperience.get(i).getExperience() + " name: " + getExperience.get(i).getUsername() +
-                    " data: " + getExperience.get(i).getDateGame());
-        }
-
         return getExperience;
     }
 }

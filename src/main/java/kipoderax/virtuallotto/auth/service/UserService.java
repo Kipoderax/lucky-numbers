@@ -11,7 +11,6 @@ import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,6 @@ public class UserService {
     private final UserExperienceRepository userExperienceRepository;
     private final ApiNumberRepository apiNumberRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository,
                        UserSession userSession,
                        GameRepository gameRepository,
@@ -53,7 +51,7 @@ public class UserService {
         UserExperience userExperience = new UserExperience();
         ApiNumber apiNumber = new ApiNumber();
 
-        if (isLoginFree(registerForm.getLogin())){
+        if (isLoginFree(registerForm.getUsername())){
 
             return false;
         }
@@ -95,9 +93,9 @@ public class UserService {
         return true;
     }
 
-    public boolean isLoginFree(String login) {
+    public boolean isLoginFree(String username) {
 
-        return userRepository.existsByLogin(login);
+        return userRepository.existsByUsername(username);
     }
 
     public LoginResponse login(LoginForm loginForm) {

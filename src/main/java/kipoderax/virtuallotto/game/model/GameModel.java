@@ -35,7 +35,7 @@ public class GameModel {
     private int saldo;
     private int winPerOneGame; //przedstawia zysk dla aktualnej gry
 
-    private String dateGame = convertToJson.getLastDate(convertToJson.getDate()).toString().substring(0, 10);
+    private String dateGame = convertToJson.getLastDate(convertToJson.getDate());
     private List<Integer> lastNumbers = convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
 
     private List<Integer> numberSet = new ArrayList<>(); //zbior 6 wylosowanych liczb

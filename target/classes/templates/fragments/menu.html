@@ -84,8 +84,8 @@
 
         <ul th:each="topxp : ${toplastxp}">
             <li>
-                <i th:text="${topxp.username}"></i>
-                <span class="pull-right" th:text="'+ ' + ${topxp.experience}"></span>
+                <i th:text="${topxp.username}">-</i>
+                <span class="pull-right" th:text="'+ ' + ${topxp.experience}">0</span>
             </li>
         </ul>
 

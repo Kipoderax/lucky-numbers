@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 public class ConvertToJson {
 
     private List<Integer> lastLottoNumbers = new ArrayList<>();
-    private StringBuilder date = new StringBuilder();
+    private StringBuilder getDate = new StringBuilder();
+    private String date;
 
     private List<String> moneyRewards = new ArrayList<>();
     private int[] moneyRew = new int[4];
@@ -58,7 +59,9 @@ public class ConvertToJson {
 
                         lastLottoNumbers.add(lottoNumber);
                     }
-                    date.append(sb,0, 10);
+//                    date.append(sb,0, 10);
+//                    date = sb.append(sb, 0, 10).toString();//.toString().substring(0, 10);
+                    date = sb.toString().substring(0, 10);
 
                     int fourthPrice = (int) Double.parseDouble(getMoneyRewards().get(3).substring(5, 8));
                     int fifthPrice = (int) Double.parseDouble(getMoneyRewards().get(2).substring(3));
@@ -93,7 +96,7 @@ public class ConvertToJson {
         return list;
     }
 
-    public StringBuilder getLastDate(StringBuilder date) {
+    public String getLastDate(String date) {
         getJSON("https://app.lotto.pl/wyniki/?type=dl");
 
         return date;

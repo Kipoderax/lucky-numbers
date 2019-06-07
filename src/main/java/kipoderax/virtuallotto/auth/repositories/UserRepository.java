@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "select id from user order by id desc limit 1", nativeQuery = true)
     Integer findMaxId();
 
-    boolean existsByLogin(String login);
+    boolean existsByUsername(String username);
 
     @Query("select email from User where id=:user_id")
     String findEmailByLogin(@Param("user_id") int userId);
