@@ -51,14 +51,18 @@ public class UserService {
         UserExperience userExperience = new UserExperience();
         ApiNumber apiNumber = new ApiNumber();
 
-        if (isLoginFree(registerForm.getUsername())){
+        if (isUsernameFree(registerForm.getUsername())){
 
             return false;
         }
 
         user.setUsername(registerForm.getUsername());
         user.setLogin(registerForm.getLogin());
-        user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
+
+        if (registerForm.getPassword().equals(registerForm.getConfirmPassword())) {
+            user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
+        } else { return false; }
+
         user.setEmail(registerForm.getEmail());
         user.setSaldo(30);
         user.setDateOfCreatedAccount(new Date());
@@ -93,7 +97,12 @@ public class UserService {
         return true;
     }
 
-    public boolean isLoginFree(String username) {
+//    public boolean isConfirmPasswordCorrect(String password, String confirmPassword) {
+//
+//        return password.equals(confirmPassword);
+//    }
+
+    public boolean isUsernameFree(String username) {
 
         return userRepository.existsByUsername(username);
     }
