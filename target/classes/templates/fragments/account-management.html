@@ -1,7 +1,7 @@
 <div class="cnt-center" th:fragment="account-management" xmlns:th="http://www.thymeleaf.org">
 
     <div class="content-top">
-        <div class="title">Zarządzanie kontem</div>
+        <div class="title" th:text="'Zarzadzanie kontem: ' + ${username}">Zarządzanie kontem</div>
     </div>
 
     <div class="content-bg">
@@ -12,15 +12,18 @@
                 <tbody>
                 <tr>
 
+                    <td><a href="/change-password"><img src="images/button-zmien-haslo.png" height="30px"></a></td>
+                    <td><a href="#"><img src="images/button-zmien-nick.png" height="30px"></a></td>
+
                     <td width="100%"></td>
                     <td>
                         <table cellspacing="0" cellpadding="0" border="0">
                             <tbody>
 
-                            <tr>
                                 <td>
                                 <form th:action="@{/logout}" method="get">
-                                    <input class="buttonText" type="image" name="Logout" alt="wyloguj" src="images/logout-button.png">
+                                    <input class="buttonText" type="image" name="Logout" alt="wyloguj"
+                                           src="images/logout-button.png" height="30px">
                                 </form>
                                 </td>
                             </tr>
@@ -43,15 +46,15 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Email:</td>
-                    <td style="width:90%" th:text="${email}">email1@wp.pl</td>
+                    <td style="width:90%" th:text="${email}"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Konto utworzono:</td>
-                    <td th:text="${createAccount}">1 Maj 2019, 21:15:10</td>
+                    <td th:text="${createAccount}"></td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Ostatni login:</td>
-                    <td th:text="${lastLogin}">2 Maj 2019, 16:35:04</td>
+                    <td th:text="${lastLogin}"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Saldo</td>

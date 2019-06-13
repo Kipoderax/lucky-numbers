@@ -4,7 +4,6 @@ import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
-import kipoderax.virtuallotto.commons.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +35,8 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLogin(Model model) {
-        UserDto userDto = new UserDto();
 
         model.addAttribute("loginForm", new LoginForm());
-        System.out.println(userDto.getUsername());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
@@ -53,9 +50,9 @@ public class LoginController {
     public String getLogin(@ModelAttribute LoginForm loginForm,
                            Model model) {
 
-        UserService.LoginResponse loginResponse = userService.login(loginForm);
+        UserService.Response loginResponse = userService.login(loginForm);
 
-        if (loginResponse != UserService.LoginResponse.SUCCESS) {
+        if (loginResponse != UserService.Response.SUCCESS) {
             model.addAttribute("info", loginResponse);
 
             return "auth/login";

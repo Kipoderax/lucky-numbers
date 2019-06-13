@@ -21,9 +21,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Integer findMaxId();
 
     boolean existsByUsername(String username);
+    boolean existsByLogin(String login);
+
+    @Query("select username from User where id=:user_id")
+    String findUsernameByUserId(@Param("user_id") int userId);
 
     @Query("select email from User where id=:user_id")
-    String findEmailByLogin(@Param("user_id") int userId);
+    String findEmailByUserId(@Param("user_id") int userId);
 
     @Query("select saldo from User where id=:user_id")
     Integer findSaldoByLogin(@Param("user_id") int userId);
@@ -34,11 +38,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserSaldoByLogin(@Param("saldo") int saldo,
                                 @Param("user_id") int userId);
 
+    @Transactional
+    @Modifying
+    @Query("update User u set u.password=:password where u.id=:user_id")
+    void updateUserPassword(@Param("password") String password,
+                            @Param("user_id") int userId);
+
     @Query("select count(id) from User")
     Integer getAllRegisterUsers();
 
     @Query("select dateOfCreatedAccount from User where id=:user_id")
-    Date findDateOfCreateAccountByLogin(@Param("user_id") int userId);
+    Date findDateOfCreateAccountByUserId(@Param("user_id") int userId);
 
     @Transactional
     @Modifying
@@ -47,5 +57,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                           @Param("user_id") int userId);
 
     @Query("select lastLogin from User where id=:user_id")
-    Date findLastLoginDateByLogin(@Param("user_id") int userId);
+    Date findLastLoginDateByUserId(@Param("user_id") int userId);
 }

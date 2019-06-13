@@ -4,6 +4,8 @@ import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.forms.LoginForm;
+import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
@@ -11,7 +13,7 @@ import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -72,9 +74,10 @@ public class AccountController {
         model.addAttribute("currentUser", userSession.getUser().getUsername());
 
         //MAIN INFORMATION CONTENT
-        model.addAttribute("email", userRepository.findEmailByLogin(id));
-        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByLogin(id));
-        model.addAttribute("lastLogin", userRepository.findLastLoginDateByLogin(id));
+        model.addAttribute("username", userRepository.findUsernameByUserId(id));
+        model.addAttribute("email", userRepository.findEmailByUserId(id));
+        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(id));
+        model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(id));
         model.addAttribute("saldo", userRepository.findSaldoByLogin(id));
         model.addAttribute("level", userExperienceRepository.findLevelByLogin(id));
         model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(id),
@@ -109,5 +112,27 @@ public class AccountController {
         userService.logout();
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/change-password")
+    public String changePassword(Model model) {
+
+        model.addAttribute("passwordForm", new RegisterForm());
+
+        return "auth/change-password";
+    }
+
+    @PostMapping("/change-password")
+    private String changePassword(Model model, @ModelAttribute RegisterForm registerForm) {
+
+//        UserService.Response changePassword = userService.changePassword(registerForm);
+
+
+        if (userService.changePassword(registerForm)) {
+
+            return "redirect:/";
+        }
+
+        return "redirect:/konto";
     }
 }

@@ -46,6 +46,7 @@ public class StatisticsController {
             Optional<User> optionalUser = userRepository.findById(i);
 
             if (!optionalUser.isPresent()) {
+
                 continue;
             } else {
                 System.out.println("Wyswietl saldo: " + userRepository.findSaldoByLogin(i));

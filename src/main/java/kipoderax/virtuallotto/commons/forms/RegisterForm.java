@@ -11,4 +11,7 @@ public class RegisterForm {
     private String confirmPassword;
     private String email;
 
+    private String newPassword;
+    private String confirmNewPassword;
+
 }

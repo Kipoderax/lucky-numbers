@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class UserService {
 
-    public enum LoginResponse {
+    public enum Response {
         SUCCESS, FAILED
     }
 
@@ -56,10 +56,16 @@ public class UserService {
             return false;
         }
 
+        if (isLoginFree(registerForm.getLogin())) {
+
+            return false;
+        }
+
         user.setUsername(registerForm.getUsername());
         user.setLogin(registerForm.getLogin());
 
         if (registerForm.getPassword().equals(registerForm.getConfirmPassword())) {
+
             user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
         } else { return false; }
 
@@ -97,35 +103,40 @@ public class UserService {
         return true;
     }
 
-//    public boolean isConfirmPasswordCorrect(String password, String confirmPassword) {
-//
-//        return password.equals(confirmPassword);
-//    }
-
     public boolean isUsernameFree(String username) {
 
         return userRepository.existsByUsername(username);
     }
 
-    public LoginResponse login(LoginForm loginForm) {
+    public boolean isLoginFree(String login) {
+
+        return userRepository.existsByLogin(login);
+    }
+
+    public boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
+
+        return bCryptPasswordEncoder().matches(
+                password, userOptional.get().getPassword()
+        );
+    }
+
+    public Response login(LoginForm loginForm) {
         Optional<User> userOptional =
                 userRepository.findByLogin(loginForm.getLogin());
 
         if (!userOptional.isPresent()) {
 
-            return LoginResponse.FAILED;
+            return Response.FAILED;
         }
-        if (!bCryptPasswordEncoder().matches(
-                loginForm.getPassword(), userOptional.get().getPassword()
-        )) {
+        if (!isCorrectCurrentPassword(loginForm.getPassword(), userOptional)) {
 
-            return LoginResponse.FAILED;
+            return Response.FAILED;
         }
 
         userSession.setUserLogin(true);
         userSession.setUser(userOptional.get());
 
-        return LoginResponse.SUCCESS;
+        return Response.SUCCESS;
     }
 
     public void logout() {
@@ -133,6 +144,26 @@ public class UserService {
         userSession.setUserLogin(false);
         userSession.setUser(null);
 
+    }
+
+    public boolean changePassword(RegisterForm registerForm) {
+
+        if (!bCryptPasswordEncoder().matches(
+                registerForm.getPassword(), userSession.getUser().getPassword())) {
+
+            return false;
+        }
+        if (!registerForm.getNewPassword().equals(registerForm.getConfirmNewPassword())) {
+
+            return false;
+        }
+
+        registerForm.setNewPassword(bCryptPasswordEncoder().encode(registerForm.getNewPassword()));
+
+        userRepository.updateUserPassword(registerForm.getNewPassword(),
+                userSession.getUser().getId());
+
+        return true;
     }
 
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

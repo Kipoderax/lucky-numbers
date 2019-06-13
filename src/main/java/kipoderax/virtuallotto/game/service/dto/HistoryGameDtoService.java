@@ -57,7 +57,7 @@ public class HistoryGameDtoService {
         }
 
         getExperience = historyGameDtos.stream()
-                .filter(n -> n.getDateGame().equals(gameModel.getDateGame()))
+                .filter(n -> n.getDateGame().equals(gameModel.getDateGame().get(0)))
                 .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
                 .limit(5)
                 .collect(Collectors.toList());

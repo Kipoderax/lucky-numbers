@@ -169,7 +169,7 @@ public class UserNumbersService {
         saveAmountGoalAfterViewResult(resultForm);
         addUserExperience(gameModel, goalNumbers, resultForm);
         costBets(maxBetsId, gameModel, resultForm);
-        earnFromGoalNumbers(goalNumbers, gameModel, resultForm);
+        earnFromGoalNumbers(goalNumbers, resultForm);
         resultEarn(maxBetsId * gameModel.getRewardsMoney()[0], resultForm.getTotalEarn(), resultForm);
         renewUserSaldo(userId, resultForm.getTotalEarn(), maxBetsId);
         saveToHistoryUser(gameModel);
@@ -191,7 +191,7 @@ public class UserNumbersService {
 
     public String saveToHistoryUser(GameModel gameModel) {
         HistoryGameForm historyGameForm = new HistoryGameForm();
-        historyGameForm.setDateGame(gameModel.getDateGame());
+        historyGameForm.setDateGame(gameModel.getDateGame().get(0));
 
         return historyGameForm.getDateGame();
     }
@@ -281,7 +281,7 @@ public class UserNumbersService {
         return resultForm.getTotalCostBets();
     }
 
-    public int earnFromGoalNumbers(int[] goalNumbers, GameModel gameModel, ResultForm resultForm) {
+    public int earnFromGoalNumbers(int[] goalNumbers, ResultForm resultForm) {
 
         ConvertToJson convertToJson = new ConvertToJson();
 
