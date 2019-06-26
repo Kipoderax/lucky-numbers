@@ -33,3 +33,6 @@ package-lock.json
 .idea/workspace.xml
 dist
 .idea/*
+
+# properties
+*.properties
