@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class ApiNumberMapper implements Mapper<ApiNumber, ApiNumberDto>{
 
     public ApiNumberDto map(ApiNumber from) {
+
         return new ApiNumberDtoBuilder()
                 .number1(from.getNumber1())
                 .number2(from.getNumber2())

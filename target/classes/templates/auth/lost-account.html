@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link th:href="@{styles.css}" type="text/css" rel="stylesheet">
 
-    <title th:text="#{title.homepage}">Strona główna</title>
+    <title th:text="#{title.login}"></title>
 
 </head>
 
@@ -17,9 +16,9 @@
     <div id="header">Wirtualna gra o miliony</div>
     <div id="cnt-container">
 
-        <div id="cnt-left" th:insert="fragments/menu :: cnt-left"></div>
+        <div id="cnt-left" th:replace="fragments/menu :: cnt-left"></div>
 
-        <div class="cnt-center" th:replace="fragments/index-center-page :: cnt-center"></div>
+        <div class="cnt-center" th:replace="fragments/send-emailcheck-fragment :: send-email-check-form"></div>
 
         <div id="cnt-right" th:replace="fragments/menu :: cnt-right"></div>
 

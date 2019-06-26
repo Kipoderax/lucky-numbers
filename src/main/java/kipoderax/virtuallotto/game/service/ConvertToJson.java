@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 public class ConvertToJson {
 
     private List<Integer> lastLottoNumbers = new ArrayList<>();
-    private StringBuilder getDate = new StringBuilder();
     private List<String> date = new ArrayList<>();
 
     private List<String> moneyRewards = new ArrayList<>();

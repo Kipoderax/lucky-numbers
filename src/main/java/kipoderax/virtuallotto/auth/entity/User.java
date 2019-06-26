@@ -12,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "user")
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +49,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
-//    @JoinColumn(name = "history_game_id")
     private List<HistoryGame> historyGames;
 
 }
