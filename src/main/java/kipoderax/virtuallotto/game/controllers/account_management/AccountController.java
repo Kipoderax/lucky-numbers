@@ -94,7 +94,7 @@ public class AccountController {
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
         model.addAttribute("addup", addUp);
-        model.addAttribute("result", Math.abs(addUp - (numberGame * 3)));
+        model.addAttribute("result", (addUp - (numberGame * 3)));
 
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
@@ -124,8 +124,6 @@ public class AccountController {
 
     @PostMapping("/change-password")
     private String changePassword(Model model, @ModelAttribute RegisterForm registerForm) {
-
-//        UserService.Response changePassword = userService.changePassword(registerForm);
 
 
         if (userService.changePassword(registerForm)) {

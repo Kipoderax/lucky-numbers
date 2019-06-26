@@ -113,18 +113,23 @@ public class BetController {
     public String saveInputNumbers(@ModelAttribute NumbersForm numbersForm) {
         GameModel gameModel = new GameModel();
         InputNumberValidation inputNumberValidation = new InputNumberValidation();
+//
+//        if (!userNumbersService.isNewNumberApi(
+//                userNumbersService.getUserApiNumber(userSession.getUser().getId()),
+//                gameModel.getLastNumbers())) {
 
-        if (inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(numbersForm))) {
+            if (inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-            if (inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
+                if (inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-                if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+                    if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-                    userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
-                            userSession.getUser().getId());
+                        userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+                                userSession.getUser().getId());
+                    }
                 }
             }
-        }
+//        }
 
 
 

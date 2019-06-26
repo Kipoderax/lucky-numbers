@@ -360,7 +360,6 @@ public class UserNumbersService {
         userRepository.updateUserSaldoByLogin(newSaldo, id);
     }
 
-
     public void goalBetsWithSuccess(int success, List<Integer> listUserBets) {
 
         WinnerBets winnerBets = new WinnerBets(listUserBets.get(0), listUserBets.get(1),
