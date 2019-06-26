@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
+<<<<<<< HEAD
+=======
+import org.thymeleaf.context.Context;
+>>>>>>> 88145e0771f34b3999f0de131884e89be60ac1d8
 
 import java.util.Optional;
 
@@ -17,6 +21,10 @@ import java.util.Optional;
 public class EmailController {
 
     private final EmailSender emailSender;
+<<<<<<< HEAD
+=======
+    private final TemplateEngine templateEngine;
+>>>>>>> 88145e0771f34b3999f0de131884e89be60ac1d8
     private final UserRepository userRepository;
 
     private String slinkPassword = LostAccount.randomStringGenerator();
@@ -27,10 +35,18 @@ public class EmailController {
     @Value("${mail.subject}")
     private String subject;
 
+<<<<<<< HEAD
     public EmailController(EmailSender emailSender,
                            UserRepository userRepository){
 
         this.emailSender = emailSender;
+=======
+    public EmailController(EmailSender emailSender, TemplateEngine templateEngine,
+                           UserRepository userRepository) {
+
+        this.emailSender = emailSender;
+        this.templateEngine = templateEngine;
+>>>>>>> 88145e0771f34b3999f0de131884e89be60ac1d8
         this.userRepository = userRepository;
     }
 
@@ -60,5 +76,8 @@ public class EmailController {
 
         return "redirect:/send-mail";
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 88145e0771f34b3999f0de131884e89be60ac1d8
 }
