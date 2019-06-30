@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Date;
 
 @Service
 @PropertySource(value={"classpath:config.properties"})
@@ -48,8 +49,12 @@ public class EmailSenderService implements EmailSender {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 88145e0771f34b3999f0de131884e89be60ac1d8
+//    @Override
+//    public void tokenRemaining(Date currentTime, Date tokenTime) {
+//        if (currentTime.getTime() - tokenTime.getTime() > 1800) {
+//
+//
+//        }
+//    }
 }

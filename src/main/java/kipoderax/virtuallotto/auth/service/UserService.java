@@ -166,6 +166,20 @@ public class UserService {
         return true;
     }
 
+    public boolean changePasswordViaLink(RegisterForm registerForm, int id) {
+        if (!registerForm.getNewPassword().equals(registerForm.getConfirmNewPassword())) {
+
+            return false;
+        }
+
+        registerForm.setNewPassword(bCryptPasswordEncoder().encode(registerForm.getNewPassword()));
+
+        userRepository.updateUserPassword(registerForm.getNewPassword(),
+                id);
+
+        return true;
+    }
+
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();

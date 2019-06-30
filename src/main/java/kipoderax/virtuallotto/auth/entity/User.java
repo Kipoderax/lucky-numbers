@@ -51,4 +51,8 @@ public class User {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     private List<HistoryGame> historyGames;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_user_token")
+    private UserToken userToken;
+
 }

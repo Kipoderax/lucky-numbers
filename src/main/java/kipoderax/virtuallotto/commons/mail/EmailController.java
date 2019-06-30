@@ -2,12 +2,17 @@ package kipoderax.virtuallotto.commons.mail;
 
 import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.repositories.UserTokenRepository;
 import kipoderax.virtuallotto.auth.service.LostAccount;
+import kipoderax.virtuallotto.auth.service.UserService;
+import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -16,8 +21,10 @@ public class EmailController {
 
     private final EmailSender emailSender;
     private final UserRepository userRepository;
+    private final UserTokenRepository userTokenRepository;
+    private final UserService userService;
 
-    private String slinkPassword = LostAccount.randomStringGenerator();
+    private static int userId = 0;
 
     @Value("${mail.body}")
     private String body;
@@ -26,10 +33,14 @@ public class EmailController {
     private String subject;
 
     public EmailController(EmailSender emailSender,
-                           UserRepository userRepository) {
+                           UserRepository userRepository,
+                           UserTokenRepository userTokenRepository,
+                           UserService userService) {
 
         this.emailSender = emailSender;
         this.userRepository = userRepository;
+        this.userTokenRepository = userTokenRepository;
+        this.userService = userService;
     }
 
     @GetMapping({"/send-mail"})
@@ -47,15 +58,52 @@ public class EmailController {
 
         Optional<User> existsMail = userRepository.findByEmail(email.getAddress());
 
-        email.setBody(body + slinkPassword);
+        String linkPassword = LostAccount.randomStringGenerator();
+
+        email.setBody(body + linkPassword);
         email.setSubject(subject);
 
-        if (existsMail.isPresent()) {
+        if (existsMail.isPresent() && userTokenRepository.amountToken(existsMail.get().getId()) != 1) {
 
             emailSender.sendEmail(email);
+            userTokenRepository.saveToken(existsMail.get().getId(), linkPassword, new Date());
             return "redirect:/";
         }
 
+        emailSender.sendEmail(email);
+        userTokenRepository.updateToken(linkPassword, existsMail.get().getId(), new Date());
+
         return "redirect:/send-mail";
+    }
+
+    @GetMapping("/{linkPassword}")
+    public String sendd(Model model, @PathVariable("linkPassword") String linkPasswords) {
+
+        model.addAttribute("passwordForm", new RegisterForm());
+
+        userId = userTokenRepository.findUserMailByToken(linkPasswords);
+        String linkPassword = userTokenRepository.findToken(userId);
+
+        if (linkPassword.equals(linkPasswords)) {
+            model.addAttribute("linkPassword", linkPassword);
+
+            return "auth/change-password-by-link";
+        }
+
+        return "index";
+    }
+
+    @PostMapping("/{linkPassword}")
+    public String sendEmail(Model model, @PathVariable("linkPassword") String linkPasswords, RegisterForm registerForm) {
+
+        String linkPassword = userTokenRepository.findToken(userId);
+
+        if (userService.changePasswordViaLink(registerForm, userId)) {
+
+            userTokenRepository.deleteTokenAfterChangePassword(userId);
+            return "redirect:/login";
+        }
+
+        return "redirect:/" + linkPassword;
     }
 }
