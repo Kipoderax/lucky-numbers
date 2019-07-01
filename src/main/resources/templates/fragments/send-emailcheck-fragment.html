@@ -6,8 +6,10 @@
 
     <div class="content-bg">
         <div class="content-txt">
+
+<!--            <p th:if="${active} == 0 ? ${info}"></p>-->
             Podaj maila na którego zostanie wysłany link do ustawienia nowego hasła
-            <p th:text="${mail}"></p>
+
             <br>
 
             <form onsubmit="" method="post" th:action="@{/send-mail}" th:object="${mail}">

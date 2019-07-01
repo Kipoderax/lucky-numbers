@@ -5,5 +5,5 @@ import java.util.Date;
 public interface EmailSender {
 
     void sendEmail(Email email);
-//    void tokenRemaining(Date currentTime, Date tokenTime);
+    Long tokenRemaining(Date currentTime, Date tokenTime);
 }

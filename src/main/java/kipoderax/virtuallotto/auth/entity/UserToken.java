@@ -18,6 +18,8 @@ public class UserToken {
     @Column (name = "date_creation_token")
     private Date dateCreationToken;
 
+    private int active;
+
     @OneToOne(cascade = {
             CascadeType.REFRESH,
             CascadeType.MERGE,

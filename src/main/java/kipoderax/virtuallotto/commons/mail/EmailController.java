@@ -25,6 +25,7 @@ public class EmailController {
     private final UserService userService;
 
     private static int userId = 0;
+    private static String linkPassword = "";
 
     @Value("${mail.body}")
     private String body;
@@ -58,7 +59,7 @@ public class EmailController {
 
         Optional<User> existsMail = userRepository.findByEmail(email.getAddress());
 
-        String linkPassword = LostAccount.randomStringGenerator();
+        linkPassword = LostAccount.randomStringGenerator();
 
         email.setBody(body + linkPassword);
         email.setSubject(subject);
@@ -79,28 +80,37 @@ public class EmailController {
     @GetMapping("/{linkPassword}")
     public String sendd(Model model, @PathVariable("linkPassword") String linkPasswords) {
 
+        userId = userTokenRepository.findUserMailByToken(linkPasswords);
+
         model.addAttribute("passwordForm", new RegisterForm());
 
-        userId = userTokenRepository.findUserMailByToken(linkPasswords);
-        String linkPassword = userTokenRepository.findToken(userId);
+        System.out.println("Czas: " + emailSender.tokenRemaining(new Date(), userTokenRepository.getTime(userId)));
 
-        if (linkPassword.equals(linkPasswords)) {
-            model.addAttribute("linkPassword", linkPassword);
+        if (emailSender.tokenRemaining(new Date(), userTokenRepository.getTime(userId)) > 1800000) { //30 min
 
-            return "auth/change-password-by-link";
+            userTokenRepository.updateActiveLinkByUserId(userId, 0);
         }
 
-        return "index";
+
+        linkPassword = userTokenRepository.findTokenByUserId(userId);
+
+        if (userTokenRepository.findActiveLinkByEmail(userId) == 0) {
+
+            System.out.println("active: " + userTokenRepository.findActiveLinkByEmail(userId));
+            return "redirect:/send-mail";
+        }
+
+        return "auth/change-password-by-link";
     }
 
-    @PostMapping("/{linkPassword}")
+        @PostMapping("/{linkPassword}")
     public String sendEmail(Model model, @PathVariable("linkPassword") String linkPasswords, RegisterForm registerForm) {
 
-        String linkPassword = userTokenRepository.findToken(userId);
+        String linkPassword = userTokenRepository.findTokenByUserId(userId);
 
         if (userService.changePasswordViaLink(registerForm, userId)) {
 
-            userTokenRepository.deleteTokenAfterChangePassword(userId);
+            userTokenRepository.updateActiveLinkByUserId(userId, 0);
             return "redirect:/login";
         }
 

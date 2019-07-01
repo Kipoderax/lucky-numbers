@@ -40,7 +40,6 @@ public class EmailSenderService implements EmailSender {
             e.printStackTrace();
         }
 
-        System.out.println("Od: " + from);
         try {
 
             javaMailSender.send(mail);
@@ -50,11 +49,9 @@ public class EmailSenderService implements EmailSender {
         }
     }
 
-//    @Override
-//    public void tokenRemaining(Date currentTime, Date tokenTime) {
-//        if (currentTime.getTime() - tokenTime.getTime() > 1800) {
-//
-//
-//        }
-//    }
+    @Override
+    public Long tokenRemaining(Date currentTime, Date tokenTime) {
+
+        return currentTime.getTime() - tokenTime.getTime();
+    }
 }

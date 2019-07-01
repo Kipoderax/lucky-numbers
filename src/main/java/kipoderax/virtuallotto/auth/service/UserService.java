@@ -61,6 +61,11 @@ public class UserService {
             return false;
         }
 
+        if (isEmailFree(registerForm.getEmail())) {
+
+            return false;
+        }
+
         user.setUsername(registerForm.getUsername());
         user.setLogin(registerForm.getLogin());
 
@@ -111,6 +116,11 @@ public class UserService {
     public boolean isLoginFree(String login) {
 
         return userRepository.existsByLogin(login);
+    }
+
+    public boolean isEmailFree(String email) {
+
+        return userRepository.existsByEmail(email);
     }
 
     public boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
