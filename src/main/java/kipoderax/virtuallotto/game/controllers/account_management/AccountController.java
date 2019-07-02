@@ -4,7 +4,6 @@ import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
-import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
 
 @Controller
 public class AccountController {
@@ -123,7 +121,7 @@ public class AccountController {
     }
 
     @PostMapping("/change-password")
-    private String changePassword(Model model, @ModelAttribute RegisterForm registerForm) {
+    private String changePassword(@ModelAttribute RegisterForm registerForm) {
 
 
         if (userService.changePassword(registerForm)) {
@@ -132,5 +130,30 @@ public class AccountController {
         }
 
         return "redirect:/konto";
+    }
+
+    @GetMapping("/delete-account")
+    public String deleteAccount(Model model) {
+
+        if (!userSession.isUserLogin()) {
+
+            return "redirect:/login";
+        }
+
+        model.addAttribute("delete", new RegisterForm());
+
+        return "auth/delete-account";
+    }
+
+    @PostMapping("/delete-account")
+    public String deleteAccount(@ModelAttribute RegisterForm registerForm) {
+
+        if (userService.isCorrectCurrentPassword(registerForm)) {
+            userService.deleteAccount(userSession.getUser().getId());
+
+            return "redirect:/";
+        }
+
+        return "redirect:/delete-account";
     }
 }

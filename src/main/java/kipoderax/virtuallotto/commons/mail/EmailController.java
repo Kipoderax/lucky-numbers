@@ -103,7 +103,7 @@ public class EmailController {
         return "auth/change-password-by-link";
     }
 
-        @PostMapping("/{linkPassword}")
+    @PostMapping("/{linkPassword}")
     public String sendEmail(Model model, @PathVariable("linkPassword") String linkPasswords, RegisterForm registerForm) {
 
         String linkPassword = userTokenRepository.findTokenByUserId(userId);

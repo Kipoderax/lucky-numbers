@@ -60,4 +60,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select lastLogin from User where id=:user_id")
     Date findLastLoginDateByUserId(@Param("user_id") int userId);
+
+    @Transactional
+    @Modifying
+    @Query("delete from User where id=:user_id")
+    void deleteAccountByUserId(@Param("user_id") int userId);
 }

@@ -156,13 +156,14 @@ public class UserService {
 
     }
 
+    public void deleteAccount(int userId) {
+
+        userRepository.deleteAccountByUserId(userId);
+    }
+
     public boolean changePassword(RegisterForm registerForm) {
 
-        if (!bCryptPasswordEncoder().matches(
-                registerForm.getPassword(), userSession.getUser().getPassword())) {
-
-            return false;
-        }
+        if (isCorrectCurrentPassword(registerForm))
         if (!registerForm.getNewPassword().equals(registerForm.getConfirmNewPassword())) {
 
             return false;
@@ -174,6 +175,12 @@ public class UserService {
                 userSession.getUser().getId());
 
         return true;
+    }
+
+    public boolean isCorrectCurrentPassword(RegisterForm registerForm) {
+
+        return bCryptPasswordEncoder().matches(
+                registerForm.getPassword(), userSession.getUser().getPassword());
     }
 
     public boolean changePasswordViaLink(RegisterForm registerForm, int id) {
