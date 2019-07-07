@@ -51,7 +51,7 @@ public class HistoryGameDtoService {
         List<HistoryGameDto> getExperience;
         GameModel gameModel = new GameModel();
 
-        for (int j = 1; j < userRepository.findMaxId(); j++) {
+        for (int j = 1; j <= userRepository.findMaxId(); j++) {
 
             putAllHistoryGames(j, historyGameDtos);
         }

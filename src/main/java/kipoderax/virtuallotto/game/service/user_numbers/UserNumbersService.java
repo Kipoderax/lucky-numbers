@@ -118,7 +118,7 @@ public class UserNumbersService {
         return intApiDtos;
     }
 
-    public ResultForm checkUserNumbers(GameModel gameModel, int userId) {
+    public ResultForm checkUserNumbers(GameModel gameModel, int userId, String username) {
 
 
         ResultForm resultForm = new ResultForm();
@@ -128,7 +128,7 @@ public class UserNumbersService {
         List<UserNumbersDto> userNumbersDtos = new ArrayList<>();
         userNumbersDtos(userNumbersDtos, userId);
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
-        int currentUserNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getId());
+        int currentUserNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getUsername());
 
         theNumberOfTheGame(maxBetsId);
         int newUserNumberGame = currentUserNumberGame + maxBetsId;
@@ -171,7 +171,7 @@ public class UserNumbersService {
         costBets(maxBetsId, gameModel, resultForm);
         earnFromGoalNumbers(goalNumbers, resultForm);
         resultEarn(maxBetsId * gameModel.getRewardsMoney()[0], resultForm.getTotalEarn(), resultForm);
-        renewUserSaldo(userId, resultForm.getTotalEarn(), maxBetsId);
+        renewUserSaldo(username, userId, resultForm.getTotalEarn(), maxBetsId);
         saveToHistoryUser(gameModel);
 
         historyGame.setDateGame(saveToHistoryUser(gameModel).substring(0, 10));
@@ -184,7 +184,7 @@ public class UserNumbersService {
         historyGame.setResult(resultForm.getFinishResult());
         historyGame.setUser(user);
         historyGameRepository.save(historyGame);
-        maxBetsForSend(userId);
+        maxBetsForSend(userId, username);
 
         return resultForm;
     }
@@ -196,10 +196,10 @@ public class UserNumbersService {
         return historyGameForm.getDateGame();
     }
 
-    public void renewUserSaldo(int userId, int totalEarn, int betsSended) {
+    public void renewUserSaldo(String username, int userId, int totalEarn, int betsSended) {
         int renewSaldo;
         int currentUserSaldo = userRepository.findSaldoByLogin(userId);
-        int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(userId) * 2);
+        int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(username) * 2);
         int maxBetsToSend = gameRepository.findMaxBetsToSend(userId);
 
         if (maxBetsToSend - betsSended == 0) {
@@ -217,10 +217,10 @@ public class UserNumbersService {
     }
 
     public void saveAmountGoalAfterViewResult(ResultForm resultForm) {
-        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getId());
-        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getId());
-        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getId());
-        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getId());
+        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getUsername());
+        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getUsername());
+        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getUsername());
+        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getUsername());
 
         int newAmountOfThree = currentAmountOfThree + resultForm.getGoal3Numbers();
         int newAmountOfFour = currentAmountOfFour + resultForm.getGoal4Numbers();
@@ -254,7 +254,7 @@ public class UserNumbersService {
     public int addUserExperience(GameModel gameModel, int[] goalNumbers, ResultForm resultForm) {
 
         Experience experience = new Experience();
-        int currentUserExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getId());
+        int currentUserExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getUsername());
         int sumExperience = 0;
 
         for (int i = 1; i <= 6; i++) {
@@ -321,8 +321,8 @@ public class UserNumbersService {
         return success == 6;
     }
 
-    public void maxBetsForSend(int userId) {
-        int level = userExperienceRepository.findLevelByLogin(userId);
+    public void maxBetsForSend(int userId, String username) {
+        int level = userExperienceRepository.findLevelByLogin(username);
         int userSaldo = userRepository.findSaldoByLogin(userId);
         int leftBets;
 

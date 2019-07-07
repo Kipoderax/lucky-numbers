@@ -40,18 +40,17 @@ public class StatisticsController {
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
-        System.out.println("max id: " + userRepository.findMaxId());
 
-        for (int i = 1; i <= userRepository.findMaxId(); i++) {
-            Optional<User> optionalUser = userRepository.findById(i);
-
-            if (!optionalUser.isPresent()) {
-
-                continue;
-            } else {
-                System.out.println("Wyswietl saldo: " + userRepository.findSaldoByLogin(i));
-            }
-        }
+//        for (int i = 1; i <= userRepository.findMaxId(); i++) {
+//            Optional<User> optionalUser = userRepository.findById(i);
+//
+//            if (!optionalUser.isPresent()) {
+//
+//                continue;
+//            } else {
+//                System.out.println("Wyswietl saldo: " + userRepository.findSaldoByLogin(i));
+//            }
+//        }
 
         return "game/statistics";
     }

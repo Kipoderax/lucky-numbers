@@ -1,54 +1,21 @@
-<div class="cnt-center" th:fragment="account-management" xmlns:th="http://www.thymeleaf.org">
+<div class="cnt-center" th:fragment="player-content" xmlns:th="http://www.thymeleaf.org">
 
     <div class="content-top">
-        <div class="title" th:text="'Zarzadzanie kontem: ' + ${username}">Zarządzanie kontem</div>
+        <div class="title" th:text="'Gracz ' + ${player}">Zarządzanie kontem</div>
     </div>
 
     <div class="content-bg">
         <div class="content-txt">
 
-            <table>
-
-                <tbody>
-                <tr>
-
-                    <td><a href="/change-password"><img src="images/button-zmien-haslo.png" height="30px"></a></td>
-<!--                    <td><a href="#"><img src="images/button-zmien-nick.png" height="30px"></a></td>-->
-                    <td><a href="/delete-account"><img src="images/button-usunkonto.png" height="30px"></a> </td>
-
-                    <td width="100%"></td>
-                    <td>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tbody>
-
-                                <td>
-                                <form th:action="@{/logout}" method="get">
-                                    <input class="buttonText" type="image" name="Logout" alt="wyloguj"
-                                           src="images/logout-button.png" height="30px">
-                                </form>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </td>
-
-                </tr>
-                </tbody>
-
-            </table>
-
             <table width="100%" cellspacing="1" cellpadding="4">
+
                 <tbody>
                 <tr style="background-color: #505050">
                     <td class="white" colspan="2">
                         <b>Informacje główne</b>
                     </td>
                 </tr>
-                <tr style="background-color: #d4c0a1">
-                    <td class="table-desc">Email:</td>
-                    <td style="width:90%" th:text="${email}"></td>
-                </tr>
+
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Konto utworzono:</td>
                     <td th:text="${#dates.format(createAccount, 'dd MMM yyyy HH:mm:ss')}"></td>
@@ -57,39 +24,11 @@
                     <td class="table-desc">Ostatni login:</td>
                     <td th:text="${#dates.format(lastLogin, 'dd MMM yyyy HH:mm:ss')}"></td>
                 </tr>
-                <tr style="background-color: #f1e0c6">
-                    <td class="table-desc">Saldo</td>
-                    <td><b><font color="green" th:text="${saldo}"></font></b></td>
-                </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Poziom</td>
                     <td th:text="${level} + '. Do nastepnego ' + ${toNextLevel} + ' punktow doswiadczenia.'"></td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <a th:href="@{/zaklady}">
-                            <img src="images/button-dodaj-liczby.png" height="30px">
-                        </a>
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <a th:href="@{/mojeliczby}">
-                                        <img src="images/button-dodane-liczby.png" height="30px">
-                                    </a>
-                                </td>
-                                <td>
-                                    <a th:href="@{/wyniki}">
-                                        <img src="images/button-sprawdz.png" height="30px">
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </td>
-                </tr>
                 </tbody>
             </table>
 
@@ -124,13 +63,7 @@
                     <td class="table-desc">Punkty doświadczenia:</td>
                     <td th:text="${exp}"></td>
                 </tr>
-                <tr>
-                <td>
-                    <a th:href="@{/history}">
-                        <img src="images/button-history-game.png" height="30px">
-                    </a>
-                </td>
-                </tr>
+
                 </tbody>
             </table>
 
@@ -154,12 +87,12 @@
                     <td class="table-desc">Rezultat:</td>
                     <td th:if="${result gt 0}">
                         <b>
-                            <font color="green" th:text="${'Zyskales ' + result}"></font>
+                            <font color="green" th:text="${'Uzyskano ' + result}"></font>
                         </b>
                     </td>
                     <td th:if="${result lt 0}">
                         <b>
-                            <font color="red" th:text="${'Straciles ' + (-result)}"></font>
+                            <font color="red" th:text="${'Stracono ' + (-result)}"></font>
                         </b>
                     </td>
 
@@ -167,9 +100,11 @@
                 </tbody>
             </table>
 
+            <div class="content-txt" th:replace="fragments/search-player-fragment :: search"></div>
         </div>
     </div>
 
     <div class="content-bot"></div>
+
 
 </div>

@@ -5,6 +5,10 @@ import kipoderax.virtuallotto.commons.dtos.models.HistoryGameDto;
 import kipoderax.virtuallotto.commons.dtos.models.HistoryGameDtoBuilder;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
 public class HistoryMapper implements Mapper<HistoryGame, HistoryGameDto> {
 

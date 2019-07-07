@@ -3,6 +3,7 @@ package kipoderax.virtuallotto.auth.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data

@@ -76,7 +76,8 @@ public class UserNumbersController {
         if (!userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),
                 gameModel.getLastNumbers())) {
-            model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId()));
+            model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId(),
+                    userSession.getUser().getUsername()));
             model.addAttribute("amountnumbergame", userBetsRepository.AmountBetsByUserId(userSession.getUser().getId()));
 
             apiNumberRepository.updateApiNumbers(userSession.getUser().getId(),

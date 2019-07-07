@@ -21,11 +21,12 @@ public interface UserTokenRepository extends JpaRepository<UserToken, Integer> {
 
     @Transactional
     @Modifying
-    @Query("update UserToken ut set ut.token=:token, ut.dateCreationToken=:date_creation where ut.user in " +
+    @Query("update UserToken ut set ut.token=:token, ut.dateCreationToken=:date_creation, ut.active=:active where ut.user in " +
             "(select u.id from User u where ut.user = u.id and u.id=:user_id)")
     void updateToken(@Param("token") String token,
-                          @Param("user_id") int userId,
-                     @Param("date_creation") Date dateCreation);
+                     @Param("user_id") int userId,
+                     @Param("date_creation") Date dateCreation,
+                     @Param("active") int active);
 
     @Transactional
     @Modifying
@@ -44,11 +45,6 @@ public interface UserTokenRepository extends JpaRepository<UserToken, Integer> {
 
     @Query(value = "select ut.user_id from user_token ut where token = ?1", nativeQuery = true)
     Integer findUserMailByToken(@Param("token") String token);
-
-    @Transactional
-    @Modifying
-    @Query("delete from UserToken ut where ut.user.id=:user_id")
-    void deleteToken(@Param("user_id") int userId);
 
     @Query("select ut.dateCreationToken from UserToken ut join ut.user u on ut.user = u.id where u.id=:user_id")
     Date getTime(@Param("user_id") int userId);

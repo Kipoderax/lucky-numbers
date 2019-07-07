@@ -11,16 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
-    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.id=:user_id")
-    Integer findNumberGameByLogin(@Param("user_id") int userId);
-    @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.id=:user_id")
-    Integer findCountOfThreeByLogin(@Param("user_id") int userId);
-    @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.id=:user_id")
-    Integer findCountOfFourByLogin(@Param("user_id") int userId);
-    @Query("select g.countOfFive from Game g join g.user u on g.user = u.id where u.id=:user_id")
-    Integer findCountOfFiveByLogin(@Param("user_id") int userId);
-    @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.id=:user_id")
-    Integer findCountOfSixByLogin(@Param("user_id") int userId);
+    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.username=:username")
+    Integer findNumberGameByLogin(@Param("username") String username);
+    @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.username=:username")
+    Integer findCountOfThreeByLogin(@Param("username") String username);
+    @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.username=:username")
+    Integer findCountOfFourByLogin(@Param("username") String username);
+    @Query("select g.countOfFive from Game g join g.user u on g.user = u.id where u.username=:username")
+    Integer findCountOfFiveByLogin(@Param("username") String username);
+    @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.username=:username")
+    Integer findCountOfSixByLogin(@Param("username") String username);
     @Query("select g.maxBetsToSend from Game g join g.user u on g.user = u.id where u.id=:user_id")
     Integer findMaxBetsToSend(@Param("user_id") int userId);
 

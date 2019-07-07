@@ -81,8 +81,8 @@ public class GameService {
         int currentSaldo = gameModel.getSaldo();
         int success = 0;
 
-        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getId());
-        int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getId());
+        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getUsername());
+        int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getUsername());
 
         //przejdz po liczbach wygenerowanych
         for (int value : gameModel.getNumberSet()) {
@@ -152,10 +152,10 @@ public class GameService {
     }
 
     public void upgradeAmountFRom3To6(int success) {
-        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getId());
-        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getId());
-        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getId());
-        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getId());
+        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getUsername());
+        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getUsername());
+        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getUsername());
+        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getUsername());
 
         switch (success) {
             case 3:

@@ -72,12 +72,12 @@ public class EmailController {
         }
 
         emailSender.sendEmail(email);
-        userTokenRepository.updateToken(linkPassword, existsMail.get().getId(), new Date());
+        userTokenRepository.updateToken(linkPassword, existsMail.get().getId(), new Date(), 1);
 
         return "redirect:/send-mail";
     }
 
-    @GetMapping("/{linkPassword}")
+    @GetMapping("/linkPassword={linkPassword}")
     public String sendd(Model model, @PathVariable("linkPassword") String linkPasswords) {
 
         userId = userTokenRepository.findUserMailByToken(linkPasswords);
@@ -103,8 +103,8 @@ public class EmailController {
         return "auth/change-password-by-link";
     }
 
-    @PostMapping("/{linkPassword}")
-    public String sendEmail(Model model, @PathVariable("linkPassword") String linkPasswords, RegisterForm registerForm) {
+    @PostMapping("/linkPassword={linkPassword}")
+    public String sendEmail(RegisterForm registerForm, @PathVariable("linkPassword") String linkPasswords) {
 
         String linkPassword = userTokenRepository.findTokenByUserId(userId);
 
@@ -114,6 +114,6 @@ public class EmailController {
             return "redirect:/login";
         }
 
-        return "redirect:/" + linkPassword;
+        return "redirect:/linkPassword=" + linkPassword;
     }
 }

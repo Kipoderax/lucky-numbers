@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByLogin(String login);
-    Optional<User> findById(int id);
     Optional<User> findByEmail(String email);
 
     @Query(value = "select id from user order by id desc limit 1", nativeQuery = true)
@@ -25,8 +24,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByLogin(String login);
     boolean existsByEmail(String email);
 
-    @Query("select username from User where id=:user_id")
-    String findUsernameByUserId(@Param("user_id") int userId);
+    @Query("select username from User where username=:username")
+    String findUsernameByUsername(@Param("username") String username);
 
     @Query("select email from User where id=:user_id")
     String findEmailByUserId(@Param("user_id") int userId);
@@ -49,8 +48,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select count(id) from User")
     Integer getAllRegisterUsers();
 
-    @Query("select dateOfCreatedAccount from User where id=:user_id")
-    Date findDateOfCreateAccountByUserId(@Param("user_id") int userId);
+    @Query("select dateOfCreatedAccount from User where username=:username")
+    Date findDateOfCreateAccountByUserId(@Param("username") String username);
 
     @Transactional
     @Modifying
@@ -58,8 +57,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateLastLoginByLogin(@Param("last_login") Date lastLogin,
                           @Param("user_id") int userId);
 
-    @Query("select lastLogin from User where id=:user_id")
-    Date findLastLoginDateByUserId(@Param("user_id") int userId);
+    @Query("select lastLogin from User where username=:username")
+    Date findLastLoginDateByUserId(@Param("username") String username);
 
     @Transactional
     @Modifying

@@ -60,10 +60,10 @@ public class BetController {
                         userSession.getUser().getId()));
         gameModel.setExperience(
                 userExperienceRepository.findExpByLogin(
-                        userSession.getUser().getId()));
+                        userSession.getUser().getUsername()));
         gameModel.setLevel(
                 userExperienceRepository.findExpByLogin(
-                        userSession.getUser().getId()));
+                        userSession.getUser().getUsername()));
 
         if (gameModel.getSaldo() > 0) {
 
@@ -103,7 +103,6 @@ public class BetController {
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
-//        model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()) / 3);
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         return "game/bet-for-register-users";
@@ -123,14 +122,13 @@ public class BetController {
                 if (inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
                     if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
-
+//                        gameService.generateNumber(gameModel, numbersForm);
                         userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
                                 userSession.getUser().getId());
                     }
                 }
             }
 //        }
-
 
 
         return "redirect:/zaklady";
@@ -140,7 +138,12 @@ public class BetController {
     public String saveGenerateNumbers(Model model, @ModelAttribute NumbersForm numbersForm) {
         GameModel gameModel = new GameModel();
 
-        gameService.generateNumber(gameModel, numbersForm);
+        if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+
+            gameService.generateNumber(gameModel, numbersForm);
+            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+                    userSession.getUser().getId());
+        }
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         return "game/bet-for-register-users";

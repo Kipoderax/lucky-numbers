@@ -29,6 +29,8 @@ public class AccountController {
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
 
+    private static String user = "";
+
     public AccountController(UserSession userSession,
 
                              UserRepository userRepository,
@@ -59,27 +61,28 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        int id = userSession.getUser().getId();
-        int numberGame = gameRepository.findNumberGameByLogin(id);
-        int three = gameRepository.findCountOfThreeByLogin(id);
-        int four = gameRepository.findCountOfFourByLogin(id);
-        int five = gameRepository.findCountOfFiveByLogin(id);
-        int six = gameRepository.findCountOfSixByLogin(id);
+        String username = userSession.getUser().getUsername();
+        int userId = userSession.getUser().getId();
+        int numberGame = gameRepository.findNumberGameByLogin(username);
+        int three = gameRepository.findCountOfThreeByLogin(username);
+        int four = gameRepository.findCountOfFourByLogin(username);
+        int five = gameRepository.findCountOfFiveByLogin(username);
+        int six = gameRepository.findCountOfSixByLogin(username);
         int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
 
-        userRepository.updateLastLoginByLogin(new Date(), id);
+        userRepository.updateLastLoginByLogin(new Date(), userId);
 
         model.addAttribute("currentUser", userSession.getUser().getUsername());
 
         //MAIN INFORMATION CONTENT
-        model.addAttribute("username", userRepository.findUsernameByUserId(id));
-        model.addAttribute("email", userRepository.findEmailByUserId(id));
-        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(id));
-        model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(id));
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(id));
-        model.addAttribute("level", userExperienceRepository.findLevelByLogin(id));
-        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(id),
-                userExperienceRepository.findExpByLogin(id)));
+        model.addAttribute("username", userRepository.findUsernameByUsername(username));
+        model.addAttribute("email", userRepository.findEmailByUserId(userId));
+        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
+        model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
+        model.addAttribute("saldo", userRepository.findSaldoByLogin(userId));
+        model.addAttribute("level", userExperienceRepository.findLevelByLogin(username));
+        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(username),
+                userExperienceRepository.findExpByLogin(username)));
 
         //GAME CONTENT
         model.addAttribute("amountOfThree", three);
@@ -87,7 +90,7 @@ public class AccountController {
         model.addAttribute("amountOfFive", five);
         model.addAttribute("amountOfSix", six);
         model.addAttribute("numberGame", numberGame);
-        model.addAttribute("exp", userExperienceRepository.findExpByLogin(id));
+        model.addAttribute("exp", userExperienceRepository.findExpByLogin(username));
 
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
@@ -155,5 +158,62 @@ public class AccountController {
         }
 
         return "redirect:/delete-account";
+    }
+
+    @GetMapping("/player")
+    public String showPlayer(Model model) {
+        RegisterForm registerForm = new RegisterForm();
+
+        model.addAttribute("nick", registerForm);
+
+        return "game/search-player";
+    }
+
+    @PostMapping("/player")
+    public String showPlayer(Model model, @RequestParam("username") String username) {
+        Experience experience = new Experience();
+        model.addAttribute("nick", new RegisterForm());
+
+        if (userRepository.existsByUsername(username)) {
+
+            int three = gameRepository.findCountOfThreeByLogin(username);
+            int four = gameRepository.findCountOfFourByLogin(username);
+            int five = gameRepository.findCountOfFiveByLogin(username);
+            int six = gameRepository.findCountOfSixByLogin(username);
+            int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+
+            model.addAttribute("player", userRepository.findUsernameByUsername(username));
+
+            //MAIN INFORMATION CONTENT
+            model.addAttribute("username", userRepository.findUsernameByUsername(username));
+            model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
+            model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
+            model.addAttribute("level", userExperienceRepository.findLevelByLogin(username));
+            model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(username),
+                    userExperienceRepository.findExpByLogin(username)));
+
+            //GAME CONTENT
+            model.addAttribute("amountOfThree", three);
+            model.addAttribute("amountOfFour", four);
+            model.addAttribute("amountOfFive", five);
+            model.addAttribute("amountOfSix", six);
+            model.addAttribute("numberGame", gameRepository.findNumberGameByLogin(username));
+            model.addAttribute("exp", userExperienceRepository.findExpByLogin(username));
+
+            //STATISTICS CONTENT
+            model.addAttribute("expense", gameRepository.findNumberGameByLogin(username) * 3);
+            model.addAttribute("addup", addUp);
+            model.addAttribute("result", (addUp - (gameRepository.findNumberGameByLogin(username) * 3)));
+
+            //STATUS CONTENT
+            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
+            return "auth/player-account";
+        }
+
+        return "game/search-player";
     }
 }
