@@ -3,7 +3,8 @@ package kipoderax.virtuallotto.game.service;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
 import kipoderax.virtuallotto.commons.dtos.models.UserDto;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public class StatisticsService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDto> getAllDtoUsers(List<UserDto> userDtos, Pageable pageable) {
+    public List<UserDto> getAllDtoUsers(List<UserDto> userDtos) {
 
-        userRepository.findAllOrderByLevel(pageable)
+        userRepository.findAllOrderByLevel()
                 .stream()
                 .map(u -> userDtos.add(userMapper.map(u)))
                 .collect(Collectors.toList());
@@ -32,22 +33,21 @@ public class StatisticsService {
         return userDtos;
     }
 
-    public List<UserDto> getAllDtoUsersDefault(Pageable pageable) {
+    public List<UserDto> getAllDtoUsersDefault() {
         List<UserDto> userDtos = new ArrayList<>();
 
-        getAllDtoUsers(userDtos, pageable);
+        getAllDtoUsers(userDtos);
 
         userDtos.sort(Comparator.comparing(UserDto::getExperience).
                 thenComparing(UserDto::getNumberGame).
                 thenComparing(UserDto::getUsername).reversed());
 
-        return userDtos;
+        return userDtos.subList(0, get50RecordsOfUsers());
     }
 
-    public List<UserDto> getAllDtoUsersBy(String by, Pageable pageable) {
-
+    public List<UserDto> getAllDtoUsersBy(String by) {
         List<UserDto> userDtos = new ArrayList<>();
-        getAllDtoUsers(userDtos, pageable);
+        getAllDtoUsers(userDtos);
 
         switch (by) {
             case "level":
@@ -92,6 +92,11 @@ public class StatisticsService {
                 break;
         }
 
-        return userDtos;
+        return userDtos.subList(0, get50RecordsOfUsers());
+    }
+
+    public int get50RecordsOfUsers() {
+
+        return userRepository.getAllRegisterUsers() > 50 ? 50 : userRepository.getAllRegisterUsers();
     }
 }

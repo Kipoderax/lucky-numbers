@@ -11,7 +11,6 @@ import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import kipoderax.virtuallotto.game.service.user_numbers.WinnerBetsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +67,7 @@ public class UserNumbersController {
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
 
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault(PageRequest.of(0, 5)));
+        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());

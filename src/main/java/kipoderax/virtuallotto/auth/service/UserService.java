@@ -71,7 +71,11 @@ public class UserService {
 
         if (registerForm.getPassword().equals(registerForm.getConfirmPassword())) {
 
-            user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
+            if (registerForm.getPassword().length() > 7) {
+                user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
+            } else {
+                return false;
+            }
         } else { return false; }
 
         user.setEmail(registerForm.getEmail());
@@ -168,6 +172,10 @@ public class UserService {
 
             return false;
         }
+        if (registerForm.getNewPassword().length() < 8) {
+
+            return false;
+        }
 
         registerForm.setNewPassword(bCryptPasswordEncoder().encode(registerForm.getNewPassword()));
 
@@ -185,6 +193,11 @@ public class UserService {
 
     public boolean changePasswordViaLink(RegisterForm registerForm, int id) {
         if (!registerForm.getNewPassword().equals(registerForm.getConfirmNewPassword())) {
+
+            return false;
+        }
+
+        if (registerForm.getNewPassword().length() < 8){
 
             return false;
         }

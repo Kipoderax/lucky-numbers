@@ -10,7 +10,6 @@ import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -101,7 +100,7 @@ public class AccountController {
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault(PageRequest.of(0, 5)));
+        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
 
@@ -209,7 +208,7 @@ public class AccountController {
             //STATUS CONTENT
             model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
             model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault(PageRequest.of(0,5)));
+            model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
             model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
             return "auth/player-account";
