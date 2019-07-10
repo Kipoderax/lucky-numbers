@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class UserExperience {
 
     @Id @Column(name = "user_exp_id") @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userExperienceID;
+    private int userExperienceId;
 
     private int level;
 

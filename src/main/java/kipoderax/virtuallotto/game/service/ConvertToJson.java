@@ -62,7 +62,7 @@ public class ConvertToJson {
 //                    date = sb.append(sb, 0, 10).toString();//.toString().substring(0, 10);
                     date.add(sb.toString().substring(0, 10));
 
-                    int fourthPrice = (int) Double.parseDouble(getMoneyRewards().get(3).substring(5, 8));
+                    int fourthPrice = (int) Double.parseDouble(getMoneyRewards().get(3).substring(5, 7));
                     int fifthPrice = (int) Double.parseDouble(getMoneyRewards().get(2).substring(3));
                     int sixthPrice = (int) Double.parseDouble(getMoneyRewards().get(1).substring(2));
 

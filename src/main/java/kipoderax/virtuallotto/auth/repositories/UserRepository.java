@@ -1,9 +1,13 @@
 package kipoderax.virtuallotto.auth.repositories;
 
 import kipoderax.virtuallotto.auth.entity.User;
+import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +17,26 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+//    "select g.numberGame from Game g join g.user u on g.user = u.id
+//    @Query("select u from User u join u.userExperience ue on u.userExperience = ue.userExperienceId")
+    @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
+    Page<User> findAllOrderByLevel(Pageable pageable);
+
+    @Query("select u from User u join u.game g on u.id = g.user.id order by g.numberGame desc")
+    Page<User> findAllOrderByNumberGame(Pageable pageable);
+
+    @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
+    Page<User> findAllOrderByAmountOfThree(Pageable pageable);
+
+    @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
+    Page<User> findAllOrderByAmountOfFour(Pageable pageable);
+
+    @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
+    Page<User> findAllOrderByAmountOfFive(Pageable pageable);
+
+    @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
+    Page<User> findAllOrderByAmountOfSix(Pageable pageable);
 
     Optional<User> findByLogin(String login);
     Optional<User> findByEmail(String email);

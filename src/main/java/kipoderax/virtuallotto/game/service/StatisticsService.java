@@ -3,6 +3,7 @@ package kipoderax.virtuallotto.game.service;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
 import kipoderax.virtuallotto.commons.dtos.models.UserDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class StatisticsService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDto> getAllDtoUsers(List<UserDto> userDtos) {
+    public List<UserDto> getAllDtoUsers(List<UserDto> userDtos, Pageable pageable) {
 
-        userRepository.findAll()
+        userRepository.findAllOrderByLevel(pageable)
                 .stream()
                 .map(u -> userDtos.add(userMapper.map(u)))
                 .collect(Collectors.toList());
@@ -31,9 +32,10 @@ public class StatisticsService {
         return userDtos;
     }
 
-    public List<UserDto> getAllDtoUsersDefault() {
+    public List<UserDto> getAllDtoUsersDefault(Pageable pageable) {
         List<UserDto> userDtos = new ArrayList<>();
-        getAllDtoUsers(userDtos);
+
+        getAllDtoUsers(userDtos, pageable);
 
         userDtos.sort(Comparator.comparing(UserDto::getExperience).
                 thenComparing(UserDto::getNumberGame).
@@ -42,12 +44,14 @@ public class StatisticsService {
         return userDtos;
     }
 
-    public List<UserDto> getAllDtoUsersBy(String by) {
+    public List<UserDto> getAllDtoUsersBy(String by, Pageable pageable) {
+
         List<UserDto> userDtos = new ArrayList<>();
-        getAllDtoUsers(userDtos);
+        getAllDtoUsers(userDtos, pageable);
 
         switch (by) {
             case "level":
+
                 userDtos.sort(Comparator.comparing(UserDto::getExperience).
                         thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
