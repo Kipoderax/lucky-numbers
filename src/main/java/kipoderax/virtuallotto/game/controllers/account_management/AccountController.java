@@ -29,8 +29,6 @@ public class AccountController {
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
 
-    private static String user = "";
-
     public AccountController(UserSession userSession,
 
                              UserRepository userRepository,

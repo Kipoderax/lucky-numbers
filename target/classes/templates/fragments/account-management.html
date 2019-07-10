@@ -68,9 +68,11 @@
 
                 <tr>
                     <td>
+                        <div id="hello">
                         <a th:href="@{/zaklady}">
                             <img src="images/button-dodaj-liczby.png" height="30px">
                         </a>
+                        </div>
                     </td>
                     <td>
                         <table>
@@ -171,5 +173,28 @@
     </div>
 
     <div class="content-bot"></div>
+
+    <script type="text/javascript">
+
+function ShowHide()
+{
+  var d = new Date();
+  var dayofweek = d.getDay();
+  var hourofday = d.getHours();
+  if (dayofweek === 3)
+  {
+    $("#hello a").click(function(e){
+    e.preventDefault();});
+  }
+
+}
+
+$(document).ready(function(){
+
+    ShowHide();
+
+});
+
+</script>
 
 </div>

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collections;
+import java.util.Date;
 
 @Controller
 public class UserNumbersController {
@@ -67,15 +68,25 @@ public class UserNumbersController {
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
 
+        Date date = new Date();
+
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
+        if ( (date.getDay() == 2 || date.getDay() == 4 || date.getDay() == 6)
+                && (date.getHours() >= 21 && date.getMinutes() >= 30) &&
+                (date.getHours() <= 22 && date.getMinutes() <= 30)) {
+
+            return "redirect:/konto";
+        }
+
         if (!userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),
                 gameModel.getLastNumbers())) {
+
             model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId(),
                     userSession.getUser().getUsername()));
             model.addAttribute("amountnumbergame", userBetsRepository.AmountBetsByUserId(userSession.getUser().getId()));

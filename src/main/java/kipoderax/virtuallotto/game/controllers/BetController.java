@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 @Controller
 public class BetController {
@@ -92,6 +95,7 @@ public class BetController {
 
     @GetMapping("/zaklady")
     public String saveInputNumbers(Model model) {
+        Date date = new Date();
 
         if (userSession.getUser() == null) {
             model.addAttribute("info", "Musisz być zalogowany");
@@ -104,6 +108,13 @@ public class BetController {
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+
+        if ( (date.getDay() == 2 || date.getDay() == 4 || date.getDay() == 6)
+                && (date.getHours() >= 21 && date.getMinutes() >= 30) &&
+                (date.getHours() <= 22 && date.getMinutes() <= 30)) {
+
+            return "redirect:/konto";
+        }
 
         return "game/bet-for-register-users";
     }
