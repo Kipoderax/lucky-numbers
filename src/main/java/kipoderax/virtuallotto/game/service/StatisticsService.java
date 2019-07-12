@@ -3,8 +3,6 @@ package kipoderax.virtuallotto.game.service;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
 import kipoderax.virtuallotto.commons.dtos.models.UserDto;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

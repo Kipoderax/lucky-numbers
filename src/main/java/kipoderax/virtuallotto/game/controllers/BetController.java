@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -78,7 +77,7 @@ public class BetController {
             userRepository.updateUserSaldoByLogin(
                     gameService.getSaldo(gameModel), userSession.getUser().getId());
             userExperienceRepository.updateExperienceById(userSession.getUser().getId(), gameModel.getExperience());
-            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(gameModel.getExperience()));
+            userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.currentLevel(gameModel.getExperience()));
 
 
             model.addAttribute("saldo", userRepository.findSaldoByLogin(userSession.getUser().getId()));
@@ -94,7 +93,7 @@ public class BetController {
     }
 
     @GetMapping("/zaklady")
-    public String saveInputNumbers(Model model) {
+    public String saveInputNumbers(Model model, GameModel gameModel) {
         Date date = new Date();
 
         if (userSession.getUser() == null) {
@@ -111,9 +110,18 @@ public class BetController {
 
         if ( (date.getDay() == 2 || date.getDay() == 4 || date.getDay() == 6)
                 && (date.getHours() >= 21 && date.getMinutes() >= 30) &&
-                (date.getHours() <= 22 && date.getMinutes() <= 30)) {
+                (date.getHours() <= 22 && date.getMinutes() <= 30) ) {
 
             return "redirect:/konto";
+        }
+
+
+
+        if (!userNumbersService.isNewNumberApi(
+                userNumbersService.getUserApiNumber(userSession.getUser().getId()),
+                gameModel.getLastNumbers())) {
+
+            return "redirect:/wyniki";
         }
 
         return "game/bet-for-register-users";

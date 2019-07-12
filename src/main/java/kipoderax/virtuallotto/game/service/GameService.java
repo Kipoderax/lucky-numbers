@@ -81,7 +81,7 @@ public class GameService {
         int currentSaldo = gameModel.getSaldo();
         int success = 0;
 
-        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getUsername());
+//        int currentNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getUsername());
         int currentExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getUsername());
 
         //przejdz po liczbach wygenerowanych
@@ -103,7 +103,7 @@ public class GameService {
 
         //zaktualizuj konto na podstawie ilości powyższych trafień
         upgradeCurrentSaldo(gameModel, success, currentSaldo, currentExperience);
-        upgradeNumberGame(currentNumberGame);
+//        upgradeNumberGame(currentNumberGame);
         upgradeAmountFRom3To6(success);
 
         return gameModel.getAddGoalNumbers();
@@ -146,10 +146,10 @@ public class GameService {
         }
     }
 
-    public void upgradeNumberGame(int currentNumberGame) {
-        currentNumberGame++;
-        gameRepository.updateNumberGame(currentNumberGame, userSession.getUser().getId());
-    }
+//    public void upgradeNumberGame(int currentNumberGame) {
+//        currentNumberGame++;
+//        gameRepository.updateNumberGame(currentNumberGame, userSession.getUser().getId());
+//    }
 
     public void upgradeAmountFRom3To6(int success) {
         int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getUsername());

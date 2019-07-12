@@ -1,12 +1,11 @@
 package kipoderax.virtuallotto.game.controllers.account_management;
 
+import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
-import kipoderax.virtuallotto.game.repository.GameRepository;
-import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -22,8 +21,7 @@ public class AccountController {
     private UserSession userSession;
 
     private UserRepository userRepository;
-    private GameRepository gameRepository;
-    private UserExperienceRepository userExperienceRepository;
+    private HistoryGameRepository historyGameRepository;
 
     private UserService userService;
     private StatisticsService statisticsService;
@@ -32,8 +30,7 @@ public class AccountController {
     public AccountController(UserSession userSession,
 
                              UserRepository userRepository,
-                             GameRepository gameRepository,
-                             UserExperienceRepository userExperienceRepository,
+                             HistoryGameRepository historyGameRepository,
 
                              UserService userService,
                              StatisticsService statisticsService,
@@ -42,8 +39,7 @@ public class AccountController {
         this.userSession = userSession;
 
         this.userRepository = userRepository;
-        this.gameRepository = gameRepository;
-        this.userExperienceRepository = userExperienceRepository;
+        this.historyGameRepository = historyGameRepository;
 
         this.userService = userService;
         this.statisticsService = statisticsService;
@@ -61,12 +57,42 @@ public class AccountController {
 
         String username = userSession.getUser().getUsername();
         int userId = userSession.getUser().getId();
-        int numberGame = gameRepository.findNumberGameByLogin(username);
-        int three = gameRepository.findCountOfThreeByLogin(username);
-        int four = gameRepository.findCountOfFourByLogin(username);
-        int five = gameRepository.findCountOfFiveByLogin(username);
-        int six = gameRepository.findCountOfSixByLogin(username);
-        int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+
+
+        int numberGame;
+        if (historyGameRepository.amountBets(username) != null) {
+            numberGame = historyGameRepository.amountBets(username);
+        } else { numberGame = 0; }
+
+        int three;
+        if (historyGameRepository.amountGoalThrees(username) != null) {
+            three = historyGameRepository.amountGoalThrees(username);
+        } else { three = 0; }
+
+        int four;
+        if (historyGameRepository.amountGoalFours(username) != null) {
+            four = historyGameRepository.amountGoalFours(username);
+        } else { four = 0; }
+
+        int five;
+        if (historyGameRepository.amountGoalFives(username) != null) {
+            five = historyGameRepository.amountGoalFives(username);
+        } else { five = 0; }
+
+        int six;
+        if (historyGameRepository.amountGoalSixes(username) != null) {
+            six = historyGameRepository.amountGoalSixes(username);
+        } else { six = 0; }
+
+        Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+        if (addUp == null) {
+            addUp = 0;
+        }
+
+        int userExperience;
+        if (historyGameRepository.userExperience(username) != null) {
+            userExperience = historyGameRepository.userExperience(username);
+        } else { userExperience = 0; }
 
         userRepository.updateLastLoginByLogin(new Date(), userId);
 
@@ -78,9 +104,9 @@ public class AccountController {
         model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
         model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
         model.addAttribute("saldo", userRepository.findSaldoByLogin(userId));
-        model.addAttribute("level", userExperienceRepository.findLevelByLogin(username));
-        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(username),
-                userExperienceRepository.findExpByLogin(username)));
+        model.addAttribute("level", experience.currentLevel(userExperience));
+        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperience));
+        model.addAttribute("onehundred", experience.needExpForAllLevel(userExperience));
 
         //GAME CONTENT
         model.addAttribute("amountOfThree", three);
@@ -88,7 +114,7 @@ public class AccountController {
         model.addAttribute("amountOfFive", five);
         model.addAttribute("amountOfSix", six);
         model.addAttribute("numberGame", numberGame);
-        model.addAttribute("exp", userExperienceRepository.findExpByLogin(username));
+        model.addAttribute("exp", userExperience);
 
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
@@ -174,11 +200,40 @@ public class AccountController {
 
         if (userRepository.existsByUsername(username)) {
 
-            int three = gameRepository.findCountOfThreeByLogin(username);
-            int four = gameRepository.findCountOfFourByLogin(username);
-            int five = gameRepository.findCountOfFiveByLogin(username);
-            int six = gameRepository.findCountOfSixByLogin(username);
-            int addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+            int numberGame;
+            if (historyGameRepository.amountBets(username) != null) {
+                numberGame = historyGameRepository.amountBets(username);
+            } else { numberGame = 0; }
+
+            int three;
+            if (historyGameRepository.amountGoalThrees(username) != null) {
+                three = historyGameRepository.amountGoalThrees(username);
+            } else { three = 0; }
+
+            int four;
+            if (historyGameRepository.amountGoalFours(username) != null) {
+                four = historyGameRepository.amountGoalFours(username);
+            } else { four = 0; }
+
+            int five;
+            if (historyGameRepository.amountGoalFives(username) != null) {
+                five = historyGameRepository.amountGoalFives(username);
+            } else { five = 0; }
+
+            int six;
+            if (historyGameRepository.amountGoalSixes(username) != null) {
+                six = historyGameRepository.amountGoalSixes(username);
+            } else { six = 0; }
+
+            Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+            if (addUp == null) {
+                addUp = 0;
+            }
+
+            int userExperience;
+            if (historyGameRepository.userExperience(username) != null) {
+                userExperience = historyGameRepository.userExperience(username);
+            } else { userExperience = 0; }
 
             model.addAttribute("player", userRepository.findUsernameByUsername(username));
 
@@ -186,22 +241,20 @@ public class AccountController {
             model.addAttribute("username", userRepository.findUsernameByUsername(username));
             model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
             model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
-            model.addAttribute("level", userExperienceRepository.findLevelByLogin(username));
-            model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperienceRepository.findLevelByLogin(username),
-                    userExperienceRepository.findExpByLogin(username)));
+            model.addAttribute("level", experience.currentLevel(userExperience));
 
             //GAME CONTENT
             model.addAttribute("amountOfThree", three);
             model.addAttribute("amountOfFour", four);
             model.addAttribute("amountOfFive", five);
             model.addAttribute("amountOfSix", six);
-            model.addAttribute("numberGame", gameRepository.findNumberGameByLogin(username));
-            model.addAttribute("exp", userExperienceRepository.findExpByLogin(username));
+            model.addAttribute("numberGame", numberGame);
+            model.addAttribute("exp", userExperience);
 
             //STATISTICS CONTENT
-            model.addAttribute("expense", gameRepository.findNumberGameByLogin(username) * 3);
+            model.addAttribute("expense", numberGame * 3);
             model.addAttribute("addup", addUp);
-            model.addAttribute("result", (addUp - (gameRepository.findNumberGameByLogin(username) * 3)));
+            model.addAttribute("result", (addUp - (numberGame * 3)));
 
             //STATUS CONTENT
             model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());

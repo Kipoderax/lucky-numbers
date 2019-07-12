@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -128,11 +127,18 @@ public class UserNumbersService {
         List<UserNumbersDto> userNumbersDtos = new ArrayList<>();
         userNumbersDtos(userNumbersDtos, userId);
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
-        int currentUserNumberGame = gameRepository.findNumberGameByLogin(userSession.getUser().getUsername());
 
         theNumberOfTheGame(maxBetsId);
+        int currentUserNumberGame;
+
+        if (historyGameRepository.amountBets(username) != null) {
+            currentUserNumberGame = historyGameRepository.amountBets(username);
+        } else { currentUserNumberGame = 0; }
+
         int newUserNumberGame = currentUserNumberGame + maxBetsId;
         gameRepository.updateNumberGame(newUserNumberGame, userId);
+
+
 
         int[] goalNumbers = {resultForm.getFailGoal(), resultForm.getGoalOneNumber(), resultForm.getGoal2Numbers(),
                 resultForm.getGoal3Numbers(), resultForm.getGoal4Numbers(), resultForm.getGoal5Numbers(),
@@ -208,9 +214,13 @@ public class UserNumbersService {
         } else if (currentUserSaldo < maxSaldoForUser) {
 
             renewSaldo = maxSaldoForUser + totalEarn;
-        } else {
+        } else if (maxBetsToSend - betsSended == maxBetsToSend) {
 
-            renewSaldo = currentUserSaldo + betsSended * 3 + totalEarn;
+            renewSaldo = currentUserSaldo;
+        }
+        else {
+
+            renewSaldo = currentUserSaldo + (betsSended * 3) + totalEarn;
         }
 
         userRepository.updateUserSaldoByLogin(renewSaldo, userId);
@@ -265,7 +275,7 @@ public class UserNumbersService {
 
         int newUserExperience = currentUserExperience + resultForm.getTotalExp();
         userExperienceRepository.updateExperienceById(userSession.getUser().getId(), newUserExperience);
-        userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.reachNextLevel(newUserExperience));
+        userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.currentLevel(newUserExperience));
         return resultForm.getTotalExp();
     }
 
@@ -289,7 +299,6 @@ public class UserNumbersService {
         for (int i = 3; i <= 6; i++) {
             convertToJson.getMoneyRew()[0] = 24;
             sumEarnMoney += goalNumbers[i] * convertToJson.getLastWins(convertToJson.getMoneyRew()[i - 3]);
-            System.out.println(i + ": " + sumEarnMoney);
         }
 
         resultForm.setTotalEarn(sumEarnMoney);
@@ -384,5 +393,4 @@ public class UserNumbersService {
                 break;
         }
     }
-
 }

@@ -27,6 +27,8 @@ public class User {
 
     private int saldo;
 
+//    private @Column(name = "max_bets_to_send") int maxBetsToSend;
+
     @Column(name = "date_of_created_account")
     private Date dateOfCreatedAccount;
 

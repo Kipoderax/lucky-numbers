@@ -63,16 +63,14 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Poziom</td>
-                    <td th:text="${level} + '. Do nastepnego ' + ${toNextLevel} + ' punktow doswiadczenia.'"></td>
+                    <td th:text="${level} + '. Wbito ' + ${onehundred &#45; toNextLevel} + '/' + ${onehundred} + ' punktow doswiadczenia.'"></td>
                 </tr>
 
                 <tr>
                     <td>
-                        <div id="hello">
                         <a th:href="@{/zaklady}">
                             <img src="images/button-dodaj-liczby.png" height="30px">
                         </a>
-                        </div>
                     </td>
                     <td>
                         <table>
@@ -120,7 +118,7 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">rozegranych gier:</td>
-                    <td th:text="${numberGame}"></td>
+                    <td th:text="${numberGame != null} ? ${numberGame} : '0'"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Punkty doświadczenia:</td>
@@ -149,12 +147,12 @@
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Z trafionych liczb uzbierano</td>
-                    <td th:text="${#numbers.formatInteger(addup, 3, 'COMMA')} + ' pln'"></td>
+                    <td th:text="${addup} >= 1000 ? ${#numbers.formatInteger(addup, 3, 'COMMA')} : ${addup} + ' pln'"></td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
 
                     <td class="table-desc">Rezultat:</td>
-                    <td th:if="${result gt 0}">
+                    <td th:if="${result >= 0}">
                         <b>
                             <font color="green" th:text="${'Zyskales ' + result}"></font>
                         </b>
@@ -164,6 +162,7 @@
                             <font color="red" th:text="${'Straciles ' + (-result)}"></font>
                         </b>
                     </td>
+                    <td>0</td>
 
                 </tr>
                 </tbody>
@@ -173,28 +172,5 @@
     </div>
 
     <div class="content-bot"></div>
-
-    <script type="text/javascript">
-
-function ShowHide()
-{
-  var d = new Date();
-  var dayofweek = d.getDay();
-  var hourofday = d.getHours();
-  if (dayofweek === 3)
-  {
-    $("#hello a").click(function(e){
-    e.preventDefault();});
-  }
-
-}
-
-$(document).ready(function(){
-
-    ShowHide();
-
-});
-
-</script>
 
 </div>

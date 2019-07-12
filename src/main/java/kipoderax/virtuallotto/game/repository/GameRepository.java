@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
-    @Query("select g.numberGame from Game g join g.user u on g.user = u.id where u.username=:username")
-    Integer findNumberGameByLogin(@Param("username") String username);
     @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.username=:username")
     Integer findCountOfThreeByLogin(@Param("username") String username);
     @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.username=:username")
