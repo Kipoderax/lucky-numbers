@@ -10,6 +10,7 @@
             <br>
             <a th:href="@{/register}">Utwórz konto</a>, jeśli jeszcze tego nie zrobiłeś.
             <br>
+            <p style="color: red" th:text="${info}"></p>
             <br>
             <form onsubmit="" method="post" th:action="@{/login}" th:object="${loginForm}">
                 <table width="100%" cellspacing="1" cellpadding="4" border="0">

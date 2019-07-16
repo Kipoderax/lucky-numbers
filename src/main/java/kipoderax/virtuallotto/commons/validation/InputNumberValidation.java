@@ -1,6 +1,14 @@
 package kipoderax.virtuallotto.commons.validation;
 
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
+
+@Data
 public class InputNumberValidation {
+
+    @Value("${game.duplicateNumbers}")
+    private String duplicateNumbersExist;
 
     public boolean isDifferentNumberPairs(int[] number) {
 
@@ -21,6 +29,19 @@ public class InputNumberValidation {
             if (number[i] < 1 || number[i] > 49) {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    public boolean isInputNumbersCorrect(int[] number, Model model) {
+        if (!isDifferentNumberPairs(number)) {
+
+            model.addAttribute("range", duplicateNumbersExist);
+            if (rangeNumbers(number)) {
+                return false;
+            }
+            return false;
         }
 
         return true;

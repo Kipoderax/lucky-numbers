@@ -6,9 +6,11 @@ import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
+import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,9 @@ public class AccountController {
     private UserService userService;
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
+
+    @Value("${game.whileLottery}")
+    private String whileLottery;
 
     public AccountController(UserSession userSession,
 
@@ -127,6 +132,11 @@ public class AccountController {
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
+        CheckDate checkDate = new CheckDate();
+        if (checkDate.isLottery()) {
+
+            model.addAttribute("wait", whileLottery);
+        }
 
         return "auth/myaccount";
     }

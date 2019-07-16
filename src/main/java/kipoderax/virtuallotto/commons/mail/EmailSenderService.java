@@ -33,7 +33,7 @@ public class EmailSenderService implements EmailSender {
             helper.setTo(email.getAddress());
             helper.setFrom(from);
             helper.setSubject(email.getSubject());
-            helper.setText(email.getBody(), true);
+            helper.setText(email.getBody(), false);
 
         } catch (MessagingException e) {
 

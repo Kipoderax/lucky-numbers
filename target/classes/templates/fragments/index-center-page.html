@@ -10,10 +10,10 @@
             <div class="news-txt">
                 <p th:text="${'Wyniki ostatniego losowania: ' + result}"></p>
                 <br>
-                W 74321 zakładach padła 3 <br>
-                W 1328 zakładach padła 4 <br>
-                W 15 zakładach padła 5 <br>
-                Nikt nie trafił sześciu liczb
+                <p>Wygrana za trojke - 24 zl</p>
+                <p th:text="'Wygrana za czworke - ' + ${fourth} + ' pln'"></p>
+                <p th:text="'Wygrana za piatke - ' + ${fifth}  + ' pln'"></p>
+                <p th:text="'Wygrana za szostke - ' + ${sixth}  + ' pln'"></p>
                 <br>
                 <br>
                 Rezultat graczy wirtualnego miliona

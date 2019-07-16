@@ -61,7 +61,7 @@ public class EmailController {
 
         linkPassword = LostAccount.randomStringGenerator();
 
-        email.setBody(body + linkPassword);
+        email.setBody(body + linkPassword + " Link aktywny przez 24 godziny.");
         email.setSubject(subject);
 
         if (existsMail.isPresent() && userTokenRepository.amountToken(existsMail.get().getId()) != 1) {

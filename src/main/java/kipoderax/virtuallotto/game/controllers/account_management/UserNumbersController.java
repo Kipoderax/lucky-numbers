@@ -3,6 +3,7 @@ package kipoderax.virtuallotto.game.controllers.account_management;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
@@ -68,17 +69,14 @@ public class UserNumbersController {
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
 
-        Date date = new Date();
-
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
-        if ( (date.getDay() == 2 || date.getDay() == 4 || date.getDay() == 6)
-                && (date.getHours() >= 21 && date.getMinutes() >= 30) &&
-                (date.getHours() <= 22 && date.getMinutes() <= 30)) {
+        CheckDate checkDate = new CheckDate();
+        if ( checkDate.isLottery() ) {
 
             return "redirect:/konto";
         }

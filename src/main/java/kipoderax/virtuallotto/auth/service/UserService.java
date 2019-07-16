@@ -11,8 +11,10 @@ import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -22,6 +24,15 @@ public class UserService {
     public enum Response {
         SUCCESS, FAILED
     }
+
+    @Value("${error.usernameExist}")
+    private String usernameExist;
+    @Value("${error.loginExist}")
+    private String loginExist;
+    @Value(("${error.emailExist}"))
+    private String emailExist;
+    @Value("${error.passwordNotMatch}")
+    private String shortPassword;
 
     private final UserSession userSession;
 
@@ -43,7 +54,7 @@ public class UserService {
         this.apiNumberRepository = apiNumberRepository;
     }
 
-    public boolean register(RegisterForm registerForm) {
+    public boolean register(RegisterForm registerForm, Model model) {
         GameModel gameModel = new GameModel();
 
         User user = new User();
@@ -53,16 +64,19 @@ public class UserService {
 
         if (isUsernameFree(registerForm.getUsername())){
 
+            model.addAttribute("username", usernameExist);
             return false;
         }
 
         if (isLoginFree(registerForm.getLogin())) {
 
+            model.addAttribute("login", loginExist);
             return false;
         }
 
         if (isEmailFree(registerForm.getEmail())) {
 
+            model.addAttribute("email", emailExist);
             return false;
         }
 
@@ -74,6 +88,8 @@ public class UserService {
             if (registerForm.getPassword().length() > 7) {
                 user.setPassword(bCryptPasswordEncoder().encode(registerForm.getPassword()));
             } else {
+
+                model.addAttribute("short", shortPassword);
                 return false;
             }
         } else { return false; }

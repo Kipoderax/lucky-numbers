@@ -50,8 +50,7 @@ public class RegisterController {
     public String register(@ModelAttribute RegisterForm registerForm,
                            Model model) {
 
-        if (!userService.register(registerForm)) {
-            model.addAttribute("info", "Login is already use");
+        if (!userService.register(registerForm, model)) {
 
             return "auth/register";
         }

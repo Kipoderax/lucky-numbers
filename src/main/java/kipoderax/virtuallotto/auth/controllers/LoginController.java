@@ -7,6 +7,7 @@ import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ public class LoginController {
     private UserRepository userRepository;
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
+
+    @Value("${error.wrongLogin}")
+    private String loginError;
 
     @Autowired
     public LoginController(UserService userService,
@@ -53,7 +57,7 @@ public class LoginController {
         UserService.Response loginResponse = userService.login(loginForm);
 
         if (loginResponse != UserService.Response.SUCCESS) {
-            model.addAttribute("info", loginResponse);
+            model.addAttribute("info", loginError);
 
             return "auth/login";
         }

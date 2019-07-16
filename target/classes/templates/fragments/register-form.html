@@ -6,6 +6,12 @@
 
     <div class="content-bg">
         <div class="content-txt">
+            <br>
+            <font color="red" th:text="${username}"></font>
+            <font color="red" th:text="${login}"></font>
+            <font color="red" th:text="${email}"></font>
+            <font color="red" th:text="${short}"></font>
+
             <form th:action="@{/register}" onsubmit="" method="post" th:object="${registerForm}">
                 <table width="100%" cellspacing="1" cellpadding="4" border="0">
                     <tbody>
@@ -34,7 +40,7 @@
 
                     <tr bgcolor="#d4c0a1">
                         <td width="150" valign="top">
-                            <b>Hasło</b>
+                            <b>Hasło <small>Minimum 8 znaków</small></b>
                         </td>
                         <td colspan="2">
                             <input type="password" value="" size="30" maxlength="50" th:field="*{password}">
