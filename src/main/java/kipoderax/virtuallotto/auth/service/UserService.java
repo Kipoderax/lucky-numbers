@@ -27,8 +27,6 @@ public class UserService {
 
     @Value("${error.usernameExist}")
     private String usernameExist;
-    @Value("${error.loginExist}")
-    private String loginExist;
     @Value(("${error.emailExist}"))
     private String emailExist;
     @Value("${error.passwordNotMatch}")
@@ -68,12 +66,6 @@ public class UserService {
             return false;
         }
 
-        if (isLoginFree(registerForm.getLogin())) {
-
-            model.addAttribute("login", loginExist);
-            return false;
-        }
-
         if (isEmailFree(registerForm.getEmail())) {
 
             model.addAttribute("email", emailExist);
@@ -81,7 +73,6 @@ public class UserService {
         }
 
         user.setUsername(registerForm.getUsername());
-        user.setLogin(registerForm.getLogin());
 
         if (registerForm.getPassword().equals(registerForm.getConfirmPassword())) {
 
@@ -133,10 +124,6 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public boolean isLoginFree(String login) {
-
-        return userRepository.existsByLogin(login);
-    }
 
     public boolean isEmailFree(String email) {
 
@@ -152,7 +139,7 @@ public class UserService {
 
     public Response login(LoginForm loginForm) {
         Optional<User> userOptional =
-                userRepository.findByLogin(loginForm.getLogin());
+                userRepository.findByUsername(loginForm.getUsername());
 
         if (!userOptional.isPresent()) {
 
@@ -163,6 +150,7 @@ public class UserService {
             return Response.FAILED;
         }
 
+        userSession.setUsername(loginForm.getUsername());
         userSession.setUserLogin(true);
         userSession.setUser(userOptional.get());
 

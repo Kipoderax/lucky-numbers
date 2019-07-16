@@ -8,7 +8,6 @@
         <div class="content-txt">
             <br>
             <font color="red" th:text="${username}"></font>
-            <font color="red" th:text="${login}"></font>
             <font color="red" th:text="${email}"></font>
             <font color="red" th:text="${short}"></font>
 
@@ -26,15 +25,6 @@
                         <td width="150" valign="top"><b>Nazwa użytkownika</b></td>
                         <td colspan="2">
                             <input type="text" value="" size="30" maxlength="16" th:field="*{username}">
-                        </td>
-                    </tr>
-
-                    <tr bgcolor="#f1e0c6">
-                        <td width="150" valign="top">
-                            <b>Login</b>
-                        </td>
-                        <td colspan="2">
-                            <input type="text" value="" size="30" maxlength="50" th:field="*{login}">
                         </td>
                     </tr>
 

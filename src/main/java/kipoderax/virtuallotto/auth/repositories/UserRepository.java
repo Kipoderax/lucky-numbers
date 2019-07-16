@@ -18,14 +18,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
     List<User> findAllOrderByLevel();
 
-    Optional<User> findByLogin(String login);
+    Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
 
     @Query(value = "select id from user order by id desc limit 1", nativeQuery = true)
     Integer findMaxId();
 
     boolean existsByUsername(String username);
-    boolean existsByLogin(String login);
     boolean existsByEmail(String email);
 
     @Query("select username from User where username=:username")

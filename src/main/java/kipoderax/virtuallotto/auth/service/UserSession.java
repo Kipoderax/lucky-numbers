@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserSession {
 
-    private String login;
+    private String username;
     private boolean isUserLogin;
     private User user;
 
