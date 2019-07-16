@@ -1,12 +1,8 @@
 package kipoderax.virtuallotto.game.controllers;
 
-import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +31,7 @@ public class StatisticsController {
         model.addAttribute("userDto", statisticsService.getAllDtoUsersDefault());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
@@ -49,7 +45,7 @@ public class StatisticsController {
         model.addAttribute("userDto", statisticsService.getAllDtoUsersBy(by));
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());

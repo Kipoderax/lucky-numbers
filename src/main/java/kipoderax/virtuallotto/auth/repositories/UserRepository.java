@@ -38,6 +38,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
+    @Query("update User u set u.active=:active where u.username=:username")
+    void updateUserActive(@Param("active") int active,
+                          @Param("username") String username);
+
+    @Query("select count(active) from User where active = 1")
+    Integer findAllActiveUsers();
+
+    @Transactional
+    @Modifying
     @Query("update User set saldo=:saldo where id=:user_id")
     void updateUserSaldoByLogin(@Param("saldo") int saldo,
                                 @Param("user_id") int userId);

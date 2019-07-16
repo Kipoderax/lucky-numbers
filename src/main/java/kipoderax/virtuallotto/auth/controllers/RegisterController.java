@@ -2,7 +2,6 @@ package kipoderax.virtuallotto.auth.controllers;
 
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -38,7 +37,7 @@ public class RegisterController {
 
         model.addAttribute("registerForm", new RegisterForm());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
@@ -54,6 +53,8 @@ public class RegisterController {
 
             return "auth/register";
         }
+
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/login";
     }

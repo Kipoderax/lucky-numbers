@@ -2,7 +2,6 @@ package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
@@ -128,7 +127,7 @@ public class AccountController {
 
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
@@ -142,9 +141,10 @@ public class AccountController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(Model model) {
 
         userService.logout();
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/login";
     }
@@ -153,18 +153,21 @@ public class AccountController {
     public String changePassword(Model model) {
 
         model.addAttribute("passwordForm", new RegisterForm());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "auth/change-password";
     }
 
     @PostMapping("/change-password")
-    private String changePassword(@ModelAttribute RegisterForm registerForm) {
+    private String changePassword(@ModelAttribute RegisterForm registerForm, Model model) {
 
 
         if (userService.changePassword(registerForm)) {
 
             return "redirect:/";
         }
+
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/konto";
     }
@@ -178,12 +181,13 @@ public class AccountController {
         }
 
         model.addAttribute("delete", new RegisterForm());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "auth/delete-account";
     }
 
     @PostMapping("/delete-account")
-    public String deleteAccount(@ModelAttribute RegisterForm registerForm) {
+    public String deleteAccount(@ModelAttribute RegisterForm registerForm, Model model) {
 
         if (userService.isCorrectCurrentPassword(registerForm)) {
             userService.deleteAccount(userSession.getUser().getId());
@@ -191,6 +195,7 @@ public class AccountController {
             return "redirect:/";
         }
 
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
         return "redirect:/delete-account";
     }
 
@@ -199,6 +204,7 @@ public class AccountController {
         RegisterForm registerForm = new RegisterForm();
 
         model.addAttribute("nick", registerForm);
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "game/search-player";
     }
@@ -268,7 +274,7 @@ public class AccountController {
 
             //STATUS CONTENT
             model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
             model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
             model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 

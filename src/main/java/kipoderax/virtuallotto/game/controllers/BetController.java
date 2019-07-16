@@ -2,7 +2,6 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
@@ -52,7 +51,8 @@ public class BetController {
         model.addAttribute("numbersForm", new NumbersForm());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         CheckDate checkDate = new CheckDate();
@@ -94,6 +94,9 @@ public class BetController {
                 userSession.getUser().getId());
 
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+
 
         return "game/bet-for-register-users";
     }
@@ -109,6 +112,9 @@ public class BetController {
                     userSession.getUser().getId());
         }
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+
 
         return "game/bet-for-register-users";
     }

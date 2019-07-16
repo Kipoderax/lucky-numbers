@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.auth.service;
 
 import kipoderax.virtuallotto.auth.entity.User;
+import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
