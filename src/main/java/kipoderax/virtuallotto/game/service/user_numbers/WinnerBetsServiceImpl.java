@@ -16,7 +16,6 @@ public class WinnerBetsServiceImpl implements WinnerBetsService {
 
     @Override
     public void addWinnerBetsWith3Numbers(WinnerBets winnerBets) {
-
         this.with3Numbers.add(winnerBets);
     }
 

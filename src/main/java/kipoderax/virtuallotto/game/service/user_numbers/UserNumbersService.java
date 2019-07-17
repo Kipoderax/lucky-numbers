@@ -118,7 +118,10 @@ public class UserNumbersService {
     }
 
     public ResultForm checkUserNumbers(GameModel gameModel, int userId, String username) {
-
+        winnerBetsService.getWinnerBetsWith3Numbers().clear();
+        winnerBetsService.getWinnerBetsWith4Numbers().clear();
+        winnerBetsService.getWinnerBetsWith5Numbers().clear();
+        winnerBetsService.getWinnerBetsWith6Numbers().clear();
 
         ResultForm resultForm = new ResultForm();
         HistoryGame historyGame = new HistoryGame();
