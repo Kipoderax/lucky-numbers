@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -36,7 +37,7 @@ public class HistoryGameController {
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         return "auth/history-game";
     }

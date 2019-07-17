@@ -1,6 +1,7 @@
 package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collections;
+import java.util.Date;
 
 @Controller
 public class UserNumbersController {
@@ -60,7 +62,7 @@ public class UserNumbersController {
         model.addAttribute("usersavenumbers", userNumbersService.getAllUserNumbersById(userSession.getUser().getId()));
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
         return "auth/user-numbers";
     }
 
@@ -71,7 +73,7 @@ public class UserNumbersController {
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         CheckDate checkDate = new CheckDate();
         if ( checkDate.isLottery() ) {

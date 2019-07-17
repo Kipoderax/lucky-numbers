@@ -48,7 +48,6 @@ public class EmailController {
     public String sendEmail(Model model) {
 
         model.addAttribute("mail", new Email());
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "auth/lost-account";
     }
@@ -74,8 +73,6 @@ public class EmailController {
 
         emailSender.sendEmail(email);
         userTokenRepository.updateToken(linkPassword, existsMail.get().getId(), new Date(), 1);
-
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/send-mail";
     }
@@ -103,13 +100,11 @@ public class EmailController {
             return "redirect:/send-mail";
         }
 
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
-
         return "auth/change-password-by-link";
     }
 
     @PostMapping("/linkPassword={linkPassword}")
-    public String sendEmail(RegisterForm registerForm, @PathVariable("linkPassword") String linkPasswords, Model model) {
+    public String sendEmail(RegisterForm registerForm, @PathVariable("linkPassword") String linkPasswords) {
 
         String linkPassword = userTokenRepository.findTokenByUserId(userId);
 
@@ -118,8 +113,6 @@ public class EmailController {
             userTokenRepository.updateActiveLinkByUserId(userId, 0);
             return "redirect:/login";
         }
-
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/linkPassword=" + linkPassword;
     }

@@ -2,6 +2,7 @@ package kipoderax.virtuallotto.auth.controllers;
 
 import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -21,8 +22,8 @@ public class LoginController {
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
 
-    @Value("${error.wrongLogin}")
-    private String loginError;
+//    @Value("${error.wrongLogin}")
+//    private String loginError;
 
     @Autowired
     public LoginController(UserService userService,
@@ -41,7 +42,7 @@ public class LoginController {
 
         model.addAttribute("loginForm", new LoginForm());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
         model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
@@ -56,12 +57,10 @@ public class LoginController {
         UserService.Response loginResponse = userService.login(loginForm);
 
         if (loginResponse != UserService.Response.SUCCESS) {
-            model.addAttribute("info", loginError);
+//            model.addAttribute("info", loginError);
 
             return "auth/login";
         }
-
-        model.addAttribute("amountOnline", userRepository.findAllActiveUsers());
 
         return "redirect:/konto";
     }

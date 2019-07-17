@@ -154,8 +154,6 @@ public class UserService {
         userSession.setUserLogin(true);
         userSession.setUser(userOptional.get());
 
-        userRepository.updateUserActive(1, loginForm.getUsername());
-
         return Response.SUCCESS;
     }
 
@@ -163,8 +161,6 @@ public class UserService {
 
         userSession.setUserLogin(false);
         userSession.setUser(null);
-
-        userRepository.updateUserActive(0, userSession.getUsername());
     }
 
     public void deleteAccount(int userId) {

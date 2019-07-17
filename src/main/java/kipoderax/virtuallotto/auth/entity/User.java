@@ -25,8 +25,6 @@ public class User {
 
     private int saldo;
 
-    private int active;
-
     @Column(name = "date_of_created_account")
     private Date dateOfCreatedAccount;
 
