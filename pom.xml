@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>kipoderax</groupId>
-    <artifactId>virtual-lotto</artifactId>
+    <artifactId>lucky-numbers</artifactId>
     <version>1.0</version>
-    <name>virtual-lotto</name>
+    <name>lucky-numbers</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.6.1</version>
             </plugin>
         </plugins>
 
