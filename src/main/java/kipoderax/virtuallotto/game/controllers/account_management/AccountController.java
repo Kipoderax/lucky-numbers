@@ -7,6 +7,7 @@ import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
+import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -207,6 +208,7 @@ public class AccountController {
     public String showPlayer(Model model, @RequestParam("username") String username) {
         Experience experience = new Experience();
         model.addAttribute("nick", new RegisterForm());
+        GameModel gameModel = new GameModel();
 
         if (userRepository.existsByUsername(username)) {
 
@@ -235,7 +237,8 @@ public class AccountController {
                 six = historyGameRepository.amountGoalSixes(username);
             } else { six = 0; }
 
-            Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+            Integer addUp = (three * 24) + (four * gameModel.getRewardsMoney()[1])
+                    + (five * gameModel.getRewardsMoney()[2]) + (six * gameModel.getRewardsMoney()[3]);
             if (addUp == null) {
                 addUp = 0;
             }

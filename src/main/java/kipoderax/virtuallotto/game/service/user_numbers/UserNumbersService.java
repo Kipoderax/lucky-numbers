@@ -73,13 +73,12 @@ public class UserNumbersService {
     }
 
 
-    public List<UserNumbersDto> userNumbersDtos(List<UserNumbersDto> userNumbersDtos, int userId) {
+    public void userNumbersDtos(List<UserNumbersDto> userNumbersDtos, int userId) {
 
         userBetsRepository.findAllById(userId).stream()
                 .map(n -> userNumbersDtos.add(userNumbersMapper.map(n)))
                 .collect(Collectors.toList());
 
-        return userNumbersDtos;
     }
 
     public List<UserNumbersDto> getAllUserNumbersById(int userId) {
@@ -91,13 +90,11 @@ public class UserNumbersService {
     }
 
 
-    public List<ApiNumberDto> userApiNumbers(List<ApiNumberDto> apiNumberDtos, int userId) {
+    private void userApiNumbers(List<ApiNumberDto> apiNumberDtos, int userId) {
 
         apiNumberRepository.findAllByUserId(userId).stream()
                 .map(n -> apiNumberDtos.add(apiNumberMapper.map(n)))
                 .collect(Collectors.toList());
-
-        return apiNumberDtos;
 
     }
 
@@ -131,7 +128,6 @@ public class UserNumbersService {
         userNumbersDtos(userNumbersDtos, userId);
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
 
-        theNumberOfTheGame(maxBetsId);
         int currentUserNumberGame;
 
         if (historyGameRepository.amountBets(username) != null) {
@@ -140,8 +136,6 @@ public class UserNumbersService {
 
         int newUserNumberGame = currentUserNumberGame + maxBetsId;
         gameRepository.updateNumberGame(newUserNumberGame, userId);
-
-
 
         int[] goalNumbers = {resultForm.getFailGoal(), resultForm.getGoalOneNumber(), resultForm.getGoal2Numbers(),
                 resultForm.getGoal3Numbers(), resultForm.getGoal4Numbers(), resultForm.getGoal5Numbers(),
@@ -264,7 +258,7 @@ public class UserNumbersService {
 
     }
 
-    public int addUserExperience(GameModel gameModel, int[] goalNumbers, ResultForm resultForm) {
+    public void addUserExperience(GameModel gameModel, int[] goalNumbers, ResultForm resultForm) {
 
         Experience experience = new Experience();
         int currentUserExperience = userExperienceRepository.findExpByLogin(userSession.getUser().getUsername());
@@ -279,22 +273,15 @@ public class UserNumbersService {
         int newUserExperience = currentUserExperience + resultForm.getTotalExp();
         userExperienceRepository.updateExperienceById(userSession.getUser().getId(), newUserExperience);
         userExperienceRepository.updateLevelById(userSession.getUser().getId(), experience.currentLevel(newUserExperience));
-        return resultForm.getTotalExp();
     }
 
-    public int theNumberOfTheGame(int number) {
-
-        return number;
-    }
-
-    public int costBets(int number, GameModel gameModel, ResultForm resultForm) {
+    public void costBets(int number, GameModel gameModel, ResultForm resultForm) {
 
         resultForm.setTotalCostBets(number * gameModel.getRewardsMoney()[0]);
 
-        return resultForm.getTotalCostBets();
     }
 
-    public int earnFromGoalNumbers(int[] goalNumbers, ResultForm resultForm) {
+    public void earnFromGoalNumbers(int[] goalNumbers, ResultForm resultForm) {
 
         ConvertToJson convertToJson = new ConvertToJson();
 
@@ -306,13 +293,11 @@ public class UserNumbersService {
 
         resultForm.setTotalEarn(sumEarnMoney);
 
-        return resultForm.getTotalEarn();
     }
 
-    public int resultEarn(int totalCost, int winPrice, ResultForm resultForm) {
+    public void resultEarn(int totalCost, int winPrice, ResultForm resultForm) {
         resultForm.setFinishResult(winPrice + totalCost);
 
-        return resultForm.getFinishResult();
     }
 
     public boolean isNewNumberApi(List<Integer> lastApiNumberList, List<Integer> apiNumberList) {
