@@ -33,6 +33,8 @@ package-lock.json
 .idea/workspace.xml
 dist
 .idea/*
-*.properties
+config.properties
+application.properties
+
 target/*
 lucky_numbers_app.pem
