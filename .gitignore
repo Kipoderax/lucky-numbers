@@ -36,5 +36,11 @@ dist
 config.properties
 application.properties
 
+.project
+.classpath
+.mvn
+*.iml
+atlassian-ide-plugin.xml
+target
+
 target/*
-lucky_numbers_app.pem
