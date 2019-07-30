@@ -41,5 +41,6 @@ dist
 *.iml
 atlassian-ide-plugin.xml
 target
+utils
 
 target/*
