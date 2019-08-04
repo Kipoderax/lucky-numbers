@@ -29,7 +29,7 @@
                                         <input th:field="*{number6}" value="" size="2" maxlength="2" style="padding-left: 10px">
                                     </td>
                                     <td>
-                                        <input type="image" name="submit" src="images/button-submit.png" width="120" height="22" border="0">
+                                        <input type="image" name="submit" src="images/button-send.png" width="120" height="22" border="0">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -39,17 +39,22 @@
                                 </tr>
                             </table>
                             </form>
+                        </td>
+                    </tr>
 
-                            <form th:action="@{/zaklady}" method="post" th:object="${numbersForm}">
+                    <tr>
+                        <td bgcolor="#d4c0a1">
+                            <form th:action="@{/zaklady-generate}" method="post" th:object="${numbersForm}">
                                 <p th:text="'Zakladow do wyslania: ' + ${saldo}"></p>
                                 <table cellpadding="1" border="0">
                                     <tbody>
                                     <tr>
-                                        <input type="image" src="images/button-loss.png" width="120" height="35">
+                                        <input type="image" src="images/button-generate.png" width="120" height="35">
                                     </tr>
                                     </tbody>
                                 </table>
                             </form>
+
                         </td>
                     </tr>
                     </tbody>

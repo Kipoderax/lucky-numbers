@@ -1,0 +1,68 @@
+<div class="cnt-center" th:fragment="information-frag" xmlns:th="http://www.thymeleaf.org">
+
+    <div class="content-top">
+        <div class="title">Informacje</div>
+    </div>
+
+    <div class="content-bg">
+        <div class="content-txt">
+            <div class="pageheader">Opis gry</div>
+            <p class="news-txt">
+                <b>Ilość puszczanych zakładów</b>
+                <br>
+                <p>
+                    Maksymalna ilość zakładów jaką można wysłać wynosi dwukrotność posiadanego lvla.
+                </p>
+                <br><hr>
+                <b>Odnawianie salda</b>
+                <br>
+                <p>
+                    Gracz po utworzeniu konta otrzymuje 30 monet.
+                </p>
+                <p>
+                    Po każdym sprawdzeniu wyników w przypadku możliwie maksymalnej ilości wysłanych zakładów
+                    saldo odnawia się według wzoru:
+                </p>
+                <p align="center">
+                    <b style="color: purple">
+                        <font color="orange">30</font>
+                        + (2 * poziom) + zysk w wyniku trafienia 3 lub więcej liczb
+                    </b>
+                </p>
+                <p>
+                    Jeśli puszczono mniej niż 10 zakładów - zamiast <b><font color="orange">30</font></b>
+                    uzupełnia
+                </p>
+                <p align="center">
+                    <b style="color: purple">
+                        ilość wysłanych zakładów * 3 + zysk w wyniku trafienia 3 lub więcej liczb
+                    </b>
+                </p>
+                <p>Natomiast powyżej 10 pozostaje wzór jak w przypadku maksymalnej liczby wysłanych.</p>
+                <p>
+                    W przypadku gdy gracz wysłał maksymalną ilość zakładów - reszta monet będzie dodana do salda,
+                    które uzupełnione będzie po sprawdzeniu wyników.
+                </p>
+
+                <br><hr>
+                <b>Exp</b>
+                <br>
+                <p>
+                    Gracz otrzymuje expa za poszczególną ilość trafionych liczb
+                </p>
+                <p>
+                    1 liczba - 1 exp <br>
+                    2 liczby - 3 expa <br>
+                    3 liczby - 21 expa <br>
+                    4 liczby - 186 expa <br>
+                    5 liczb - 1985 expa <br>
+                    6 liczb - 15134 expa
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content-bot"></div>
+
+</div>

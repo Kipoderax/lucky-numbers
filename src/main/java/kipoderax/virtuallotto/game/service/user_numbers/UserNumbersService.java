@@ -201,7 +201,7 @@ public class UserNumbersService {
 
     public void renewUserSaldo(String username, int userId, int totalEarn, int betsSended) {
         int renewSaldo;
-        int currentUserSaldo = userRepository.findSaldoByLogin(userId);
+        int currentUserSaldo = userRepository.findSaldoByUserId(userId);
         int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(username) * 2);
         int maxBetsToSend = gameRepository.findMaxBetsToSend(userId);
 
@@ -320,7 +320,7 @@ public class UserNumbersService {
 
     public void maxBetsForSend(int userId, String username) {
         int level = userExperienceRepository.findLevelByLogin(username);
-        int userSaldo = userRepository.findSaldoByLogin(userId);
+        int userSaldo = userRepository.findSaldoByUserId(userId);
         int leftBets;
 
         if (level > 5) {
@@ -349,7 +349,7 @@ public class UserNumbersService {
         InputNumberValidation inputNumberValidation = new InputNumberValidation();
         inputNumberValidation.sort(numbers);
 
-        int currentSaldo = userRepository.findSaldoByLogin(id);
+        int currentSaldo = userRepository.findSaldoByUserId(id);
         userBetsRepository.saveInputNumbersByIdUser(id, numbers[0], numbers[1], numbers[2], numbers[3],
                 numbers[4], numbers[5]);
 

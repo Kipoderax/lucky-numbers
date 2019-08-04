@@ -50,6 +50,8 @@ public class RegisterController {
     public String register(@ModelAttribute RegisterForm registerForm,
                            Model model) {
 
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 

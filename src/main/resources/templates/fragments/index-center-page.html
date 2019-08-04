@@ -6,9 +6,9 @@
 
     <div class="content-bg">
         <div class="content-txt">
-            <div class="pageheader">Data - tytuł</div>
+            <div class="pageheader"><font th:text="'Wyniki z dnia - ' + ${date}"></font></div>
             <div class="news-txt">
-                <p th:text="${'Wyniki ostatniego losowania: ' + result}"></p>
+                <p th:text="${'Wylosowane liczby: ' + result}"></p>
                 <br>
                 <p>Wygrana za trojke - 24 zl</p>
                 <p th:text="'Wygrana za czworke - ' + ${fourth} + ' pln'"></p>

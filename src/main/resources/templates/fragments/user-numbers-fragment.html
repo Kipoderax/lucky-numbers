@@ -22,15 +22,23 @@
 
     <div class="content-bg">
         <div class="content-txt">
+            <form th:action="@{/mojeliczby}" method="post">
+                <table cellpadding="1" border="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="image" name="submit" src="images/button-generate.png" width="120" height="22" border="0">
+                        </td>
+                        <td>
+                            <p th:text="'Jeszcze ' + ${lefts}"></p>
+                        </td>
+                    </tr>
             <table class="stats_table" width="100%" cellspacing="1" cellpadding="4" border="0">
                 <tbody>
                 <tr>
                     <td style="font-weight: bold; color: white" bgcolor="#505050">
                         <b>Moje liczby</b>
                     </td>
-<!--                    <td style="font-weight: bold; color: white" bgcolor="#505050">-->
-<!--                        <b>Podsumowanie</b>-->
-<!--                    </td>-->
                 </tr>
                 <tr>
 
@@ -53,22 +61,6 @@
                     </tr>
                     </tbody>
             </table>
-
-            <form th:action="@{/zakladygenerate}" method="post">
-                <td>
-                    <table width="100%" style="margin-left: 100px">
-                        <tbody>
-                        <tr>
-                            <td align="center">
-                                <a th:href="@{/zakladygenerate}" style="text-decoration: none">
-                                    <input type="image" src="images/button-loss.png" width="120" height="35">
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </form>
 
         </div>
     </div>

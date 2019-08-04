@@ -56,6 +56,11 @@ public class LoginController {
 
         UserService.Response loginResponse = userService.login(loginForm);
 
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
         if (loginResponse != UserService.Response.SUCCESS) {
 //            model.addAttribute("info", loginError);
 

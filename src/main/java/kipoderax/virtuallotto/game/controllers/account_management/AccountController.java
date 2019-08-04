@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.Locale;
 
 @Controller
 public class AccountController {
@@ -110,7 +109,7 @@ public class AccountController {
         model.addAttribute("email", userRepository.findEmailByUserId(userId));
         model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
         model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
-        model.addAttribute("saldo", userRepository.findSaldoByLogin(userId));
+        model.addAttribute("saldo", userRepository.findSaldoByUserId(userId));
         model.addAttribute("level", experience.currentLevel(userExperience));
         model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperience));
         model.addAttribute("onehundred", experience.needExpForAllLevel(userExperience));
@@ -161,6 +160,9 @@ public class AccountController {
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
         model.addAttribute("passwordForm", new RegisterForm());
 
         return "auth/change-password";
@@ -172,6 +174,9 @@ public class AccountController {
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
         if (userService.changePassword(registerForm)) {
 
             return "redirect:/";
@@ -185,6 +190,9 @@ public class AccountController {
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
         if (!userSession.isUserLogin()) {
 
             return "redirect:/login";
@@ -200,6 +208,9 @@ public class AccountController {
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
         if (userService.isCorrectCurrentPassword(registerForm)) {
             userService.deleteAccount(userSession.getUser().getId());
 
@@ -215,6 +226,9 @@ public class AccountController {
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
         model.addAttribute("nick", registerForm);
 
         return "game/search-player";

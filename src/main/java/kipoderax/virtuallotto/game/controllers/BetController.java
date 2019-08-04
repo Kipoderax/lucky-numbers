@@ -52,9 +52,9 @@ public class BetController {
     @GetMapping("/zaklady")
     public String saveInputNumbers(Model model, GameModel gameModel) {
 
-        if (userSession.getUser() == null) {
+        if (!userSession.isUserLogin()) {
 
-            return "auth/login";
+            return "redirect:/login";
         }
 
         model.addAttribute("numbersForm", new NumbersForm());
@@ -89,6 +89,11 @@ public class BetController {
 
         if (!inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
+            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            model.addAttribute("top5level", statisticsService.get5BestPlayers());
+            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
             model.addAttribute("duplicate", duplicateNumbersExist);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
             return "game/bet-for-register-users";
@@ -96,10 +101,17 @@ public class BetController {
 
         if (!inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
+            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            model.addAttribute("top5level", statisticsService.get5BestPlayers());
+            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
             model.addAttribute("range", awayRangeNumber);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
             return "game/bet-for-register-users";
         }
+
+
 
         if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
@@ -107,22 +119,35 @@ public class BetController {
                     userSession.getUser().getId());
         }
 
-            model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+        numbersForm.setNumber1(0);
+        numbersForm.setNumber2(0);
+        numbersForm.setNumber3(0);
+        numbersForm.setNumber4(0);
+        numbersForm.setNumber5(0);
+        numbersForm.setNumber6(0);
+
+        model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         return "game/bet-for-register-users";
     }
 
-    @PostMapping("/zaklady")
+    @PostMapping("/zaklady-generate")
     public String saveGenerateNumbers(Model model, @ModelAttribute NumbersForm numbersForm) {
         GameModel gameModel = new GameModel();
 
         if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
             gameService.generateNumber(gameModel, numbersForm);
-            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
-                    userSession.getUser().getId());
         }
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         return "game/bet-for-register-users";
     }

@@ -3,10 +3,12 @@ package kipoderax.virtuallotto.game.controllers.account_management;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
+import kipoderax.virtuallotto.game.service.GameService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
 
@@ -27,6 +31,7 @@ public class UserNumbersController {
     private WinnerBetsServiceImpl winnerBetsService;
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
+    private GameService gameService;
 
     private UserRepository userRepository;
     private UserBetsRepository userBetsRepository;
@@ -41,7 +46,8 @@ public class UserNumbersController {
                                  UserRepository userRepository,
                                  UserBetsRepository userBetsRepository,
                                  ApiNumberRepository apiNumberRepository,
-                                 WinnerBetsServiceImpl winnerBetsService) {
+                                 WinnerBetsServiceImpl winnerBetsService,
+                                 GameService gameService) {
 
 
         this.userNumbersService = userNumbersService;
@@ -51,13 +57,14 @@ public class UserNumbersController {
         this.userRepository = userRepository;
         this.userBetsRepository = userBetsRepository;
         this.apiNumberRepository = apiNumberRepository;
-
+        this.gameService = gameService;
         this.winnerBetsService = winnerBetsService;
     }
 
     @GetMapping("/mojeliczby")
     public String getUserNumbers(Model model) {
 
+        model.addAttribute("lefts", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
         model.addAttribute("usersavenumbers", userNumbersService.getAllUserNumbersById(userSession.getUser().getId()));
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
@@ -65,6 +72,25 @@ public class UserNumbersController {
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         return "auth/user-numbers";
+    }
+
+    @PostMapping("/mojeliczby")
+    public String QuickAddBets(Model model, @ModelAttribute NumbersForm numbersForm) {
+        GameModel gameModel = new GameModel();
+        if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+
+            gameService.generateNumber(gameModel, numbersForm);
+            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+                    userSession.getUser().getId());
+        }
+
+        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        model.addAttribute("lefts", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+
+        return "redirect:/mojeliczby";
     }
 
     @GetMapping("/wyniki")
@@ -82,9 +108,12 @@ public class UserNumbersController {
             return "redirect:/konto";
         }
 
-        if (!userNumbersService.isNewNumberApi(
+        if (userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),
                 gameModel.getLastNumbers())) {
+
+            return "redirect:/konto";
+        } else {
 
             model.addAttribute("userResult", userNumbersService.checkUserNumbers(gameModel, userSession.getUser().getId(),
                     userSession.getUser().getUsername()));

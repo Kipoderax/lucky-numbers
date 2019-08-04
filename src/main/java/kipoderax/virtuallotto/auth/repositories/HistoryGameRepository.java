@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface HistoryGameRepository extends JpaRepository<HistoryGame, Integer> {
 
+    @Query("select count(h) from HistoryGame h where user_id=:user_id")
+    Integer amountRecords(@Param("user_id") int userId);
+
     @Query("select hg from HistoryGame hg join hg.user u on hg.user = u.id" +
             " where hg.user.id=:user_id")
     List<HistoryGame> findAllById(@Param("user_id") int userId);

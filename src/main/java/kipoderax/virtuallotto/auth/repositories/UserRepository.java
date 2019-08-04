@@ -19,6 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
     List<User> findAllOrderByLevel();
 
+    Optional<User> findById(int userId);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
 
@@ -35,7 +36,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     String findEmailByUserId(@Param("user_id") int userId);
 
     @Query("select saldo from User where id=:user_id")
-    Integer findSaldoByLogin(@Param("user_id") int userId);
+    Integer findSaldoByUserId(@Param("user_id") int userId);
 
     @Transactional
     @Modifying
