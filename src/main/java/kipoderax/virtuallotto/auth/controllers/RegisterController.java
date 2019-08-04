@@ -40,7 +40,7 @@ public class RegisterController {
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         return "auth/register";
@@ -49,6 +49,9 @@ public class RegisterController {
     @PostMapping("/register")
     public String register(@ModelAttribute RegisterForm registerForm,
                            Model model) {
+
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         if (!userService.register(registerForm, model)) {
 

@@ -36,8 +36,9 @@ public class IndexController {
         model.addAttribute("fifth", gameModel.getRewardsMoney()[3]);
         model.addAttribute("sixth", gameModel.getRewardsMoney()[4]);
 
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());

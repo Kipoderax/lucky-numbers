@@ -6,6 +6,9 @@ import kipoderax.virtuallotto.auth.repositories.UserTokenRepository;
 import kipoderax.virtuallotto.auth.service.LostAccount;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
+import kipoderax.virtuallotto.game.service.StatisticsService;
+import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,9 @@ import java.util.Optional;
 @Controller
 @PropertySource(value={"classpath:messages.properties"})
 public class EmailController {
+
+    private StatisticsService statisticsService;
+    private HistoryGameDtoService historyGameDtoService;
 
     private final EmailSender emailSender;
     private final UserRepository userRepository;
@@ -36,12 +42,16 @@ public class EmailController {
     public EmailController(EmailSender emailSender,
                            UserRepository userRepository,
                            UserTokenRepository userTokenRepository,
-                           UserService userService) {
+                           UserService userService,
+                           StatisticsService statisticsService,
+                           HistoryGameDtoService historyGameDtoService) {
 
         this.emailSender = emailSender;
         this.userRepository = userRepository;
         this.userTokenRepository = userTokenRepository;
         this.userService = userService;
+        this.statisticsService = statisticsService;
+        this.historyGameDtoService = historyGameDtoService;
     }
 
     @GetMapping({"/send-mail"})
@@ -57,6 +67,9 @@ public class EmailController {
     @PostMapping("/send-mail")
     public String send(Model model, @ModelAttribute Email email) {
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
         Optional<User> existsMail = userRepository.findByEmail(email.getAddress());
 
         linkPassword = LostAccount.randomStringGenerator();
@@ -67,7 +80,7 @@ public class EmailController {
         if (existsMail.isPresent() && userTokenRepository.amountToken(existsMail.get().getId()) != 1) {
 
             emailSender.sendEmail(email);
-            userTokenRepository.saveToken(existsMail.get().getId(), linkPassword, new Date());
+            userTokenRepository.saveToken(existsMail.get().getId(), linkPassword, new Date(), 1);
             return "redirect:/";
         }
 

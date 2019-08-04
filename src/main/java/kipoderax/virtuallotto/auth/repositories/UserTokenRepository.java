@@ -13,11 +13,12 @@ public interface UserTokenRepository extends JpaRepository<UserToken, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into user_token (user_id, token, date_creation_token) values(:user_id, :token, :date_creation)",
+    @Query(value = "insert into user_token (user_id, token, date_creation_token, active) values(:user_id, :token, :date_creation, :active)",
             nativeQuery = true)
     void saveToken(@Param("user_id") int userId,
                    @Param("token") String token,
-                   @Param("date_creation") Date dateCreation);
+                   @Param("date_creation") Date dateCreation,
+                   @Param("active") int active);
 
     @Transactional
     @Modifying

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Repository
@@ -17,7 +18,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u join u.userExperience ue on u.id = ue.user.id order by ue.experience desc")
     List<User> findAllOrderByLevel();
-//    List<User> findAllByUserExperienceLevelOrderByUserExperience();
 
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);

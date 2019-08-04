@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Locale;
 
 @Controller
 public class AccountController {
@@ -130,10 +131,12 @@ public class AccountController {
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
+
         CheckDate checkDate = new CheckDate();
+        System.out.println("s"+checkDate.getCurrent()+"e");
         if (checkDate.isLottery()) {
 
             model.addAttribute("wait", whileLottery);
@@ -143,7 +146,10 @@ public class AccountController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(Model model) {
+
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         userService.logout();
 
@@ -153,15 +159,19 @@ public class AccountController {
     @GetMapping("/change-password")
     public String changePassword(Model model) {
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         model.addAttribute("passwordForm", new RegisterForm());
 
         return "auth/change-password";
     }
 
     @PostMapping("/change-password")
-    private String changePassword(@ModelAttribute RegisterForm registerForm) {
+    private String changePassword(@ModelAttribute RegisterForm registerForm, Model model) {
 
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         if (userService.changePassword(registerForm)) {
 
             return "redirect:/";
@@ -173,6 +183,8 @@ public class AccountController {
     @GetMapping("/delete-account")
     public String deleteAccount(Model model) {
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         if (!userSession.isUserLogin()) {
 
             return "redirect:/login";
@@ -184,8 +196,10 @@ public class AccountController {
     }
 
     @PostMapping("/delete-account")
-    public String deleteAccount(@ModelAttribute RegisterForm registerForm) {
+    public String deleteAccount(@ModelAttribute RegisterForm registerForm, Model model) {
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         if (userService.isCorrectCurrentPassword(registerForm)) {
             userService.deleteAccount(userSession.getUser().getId());
 
@@ -199,6 +213,8 @@ public class AccountController {
     public String showPlayer(Model model) {
         RegisterForm registerForm = new RegisterForm();
 
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         model.addAttribute("nick", registerForm);
 
         return "game/search-player";
@@ -272,7 +288,7 @@ public class AccountController {
             //STATUS CONTENT
             model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
             model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+            model.addAttribute("top5level", statisticsService.get5BestPlayers());
             model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
             return "auth/player-account";

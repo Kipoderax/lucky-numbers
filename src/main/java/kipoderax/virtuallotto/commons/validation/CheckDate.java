@@ -16,9 +16,9 @@ public class CheckDate {
     String after = "21:30:00";
     String before = "22:30:00";
 
-    LocalTime start = LocalTime.parse(after, format);
-    LocalTime end = LocalTime.parse(before, format);
-    LocalTime current = LocalTime.parse(
+    private LocalTime start = LocalTime.parse(after, format);
+    private LocalTime end = LocalTime.parse(before, format);
+    private LocalTime current = LocalTime.parse(
             date.toString()
                     .substring(date.toString().length() - 18, date.toString().length() - 10),
             format);

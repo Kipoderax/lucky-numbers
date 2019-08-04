@@ -8,6 +8,8 @@ import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.service.GameService;
+import kipoderax.virtuallotto.game.service.StatisticsService;
+import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class BetController {
      private UserSession userSession;
      private UserRepository userRepository;
      private UserNumbersService userNumbersService;
+     private StatisticsService statisticsService;
+     private HistoryGameDtoService historyGameDtoService;
 
      @Value("${game.rangeNumbers}")
      private String awayRangeNumber;
@@ -33,12 +37,16 @@ public class BetController {
     public BetController(GameService gameService,
                          UserSession userSession,
                          UserRepository userRepository,
-                         UserNumbersService userNumbersService) {
+                         UserNumbersService userNumbersService,
+                         StatisticsService statisticsService,
+                         HistoryGameDtoService historyGameDtoService) {
 
         this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
         this.userNumbersService = userNumbersService;
+        this.statisticsService = statisticsService;
+        this.historyGameDtoService = historyGameDtoService;
     }
 
     @GetMapping("/zaklady")
@@ -53,6 +61,9 @@ public class BetController {
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
         CheckDate checkDate = new CheckDate();
@@ -90,8 +101,11 @@ public class BetController {
             return "game/bet-for-register-users";
         }
 
-        userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
-                userSession.getUser().getId());
+        if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+
+            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+                    userSession.getUser().getId());
+        }
 
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 

@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.service.dto;
 
+import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.HistoryMapper;
@@ -51,17 +52,23 @@ public class HistoryGameDtoService {
         List<HistoryGameDto> getExperience;
         GameModel gameModel = new GameModel();
 
-        for (int j = 1; j <= userRepository.findMaxId(); j++) {
+        if (userRepository.findMaxId() != null) {
+            System.out.println("maxId: " + userRepository.findMaxId());
+            for (int j = 1; j <= userRepository.findMaxId(); j++) {
 
-            putAllHistoryGames(j, historyGameDtos);
+                putAllHistoryGames(j, historyGameDtos);
+            }
         }
 
         getExperience = historyGameDtos.stream()
                 .filter(n -> n.getDateGame().equals(gameModel.getDateGame().get(0)))
                 .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
-                .limit(5)
+//                .limit(5)
                 .collect(Collectors.toList());
 
-        return getExperience;
+        if (getExperience.size() < 5) {
+            return getExperience;
+        }
+        return getExperience.subList(0, 5);
     }
 }

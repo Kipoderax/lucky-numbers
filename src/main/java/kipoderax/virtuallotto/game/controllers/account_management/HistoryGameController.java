@@ -34,7 +34,7 @@ public class HistoryGameController {
 
         model.addAttribute("history", historyGameDtoService.getAllHistoryGames(userSession.getUser().getId()));
 
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());

@@ -7,7 +7,7 @@
         </div>
         <div class="menu-cnt">
             <ul><li><a th:href="@{/}">Ostatnie newsy</a></li></ul>
-            <ul><li class="last"><a href="#">Archiwum</a></li></ul>
+<!--            <ul><li class="last"><a href="#">Archiwum</a></li></ul>-->
         </div>
         <div class="menu-bottom">&nbsp;</div>
 
@@ -31,7 +31,6 @@
         </div>
         <div class="menu-cnt">
             <ul>
-                <li><a th:href="@{/zaklad}">Zakłady</a></li>
                 <li><a th:href="@{/player}">Wyszukiwarka</a></li>
                 <li class="last"><a th:href="@{/statystyki}">Statystyki</a></li>
             </ul>
@@ -67,7 +66,7 @@
     </div>
     <div class="menu-cnt">
 
-        <ul th:each="top_players : ${top5level}">
+        <ul th:if="${top5level != null}" th:each="top_players : ${top5level}">
             <li>
                 <i th:text="${top_players.username}"></i>
                 <span class="pull-right" th:text="${top_players.level} + ' ' + lv"></span>
@@ -83,7 +82,7 @@
     </div>
     <div class="menu-cnt">
 
-        <ul th:each="topxp : ${toplastxp}">
+        <ul th:if="${toplastxp != null}" th:each="topxp : ${toplastxp}">
             <li>
                 <i th:text="${topxp.username}">-</i>
                 <span class="pull-right" th:text="'+ ' + ${topxp.experience}">0</span>

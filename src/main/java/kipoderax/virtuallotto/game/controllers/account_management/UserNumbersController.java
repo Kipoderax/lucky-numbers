@@ -62,13 +62,15 @@ public class UserNumbersController {
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
+        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         return "auth/user-numbers";
     }
 
     @GetMapping("/wyniki")
     public String getUserResults(Model model, GameModel gameModel) {
 
-        model.addAttribute("top5level", statisticsService.getAllDtoUsersDefault().subList(0, 5));
+        model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());

@@ -31,6 +31,21 @@ public class StatisticsService {
         return userDtos;
     }
 
+    public List<UserDto> get5BestPlayers() {
+        List<UserDto> userDtoList = new ArrayList<>();
+
+        getAllDtoUsers(userDtoList);
+
+        if (userDtoList.isEmpty()) {
+            return null;
+        }
+        if (userDtoList.size() < 5) {
+            return userDtoList;
+        } else {
+            return userDtoList.subList(0, 5);
+        }
+    }
+
     public List<UserDto> getAllDtoUsersDefault() {
         List<UserDto> userDtos = new ArrayList<>();
 
@@ -40,6 +55,9 @@ public class StatisticsService {
                 thenComparing(UserDto::getNumberGame).
                 thenComparing(UserDto::getUsername).reversed());
 
+        if (userDtos.isEmpty()) {
+            return null;
+        }
         return userDtos.subList(0, get50RecordsOfUsers());
     }
 
