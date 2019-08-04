@@ -37,3 +37,4 @@ dist
 
 target/*
 lucky_numbers_app.pem
+utils
