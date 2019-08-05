@@ -17,6 +17,13 @@
                 <br>
                 <br>
 
+                <p th:if="${totalSendBets > 0}" th:text="'Podsumowanie dnia ' + ${sumUpDate}"></p>
+                <p th:if="${totalSendBets > 0}" th:text="'Wyslano ' + ${totalSendBets} + ' zakladow'"></p>
+                <p th:if="${totalScoreOfThrees > 0}" th:text="'Trafiono ' + ${totalScoreOfThrees} + ' trojek'"></p>
+                <p th:if="${totalScoreOfFours > 0}" th:text="'Trafiono ' + ${totalScoreOfFours} + ' czworek'"></p>
+                <p th:if="${totalScoreOfFives > 0}" th:text="'Trafiono ' + ${totalScoreOfFives} + ' piatek'"></p>
+                <p th:if="${totalScoreOfSixes > 0}" th:text="'Trafiono' + ${totalScoreOfSixies} + ' szostek'"></p>
+
             </div>
         </div>
     </div>

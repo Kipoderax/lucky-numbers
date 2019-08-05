@@ -41,11 +41,4 @@ public interface HistoryGameRepository extends JpaRepository<HistoryGame, Intege
     @Query("select sum(hg.experience) from HistoryGame hg join  hg.user u on hg.user = u.id" +
             " where hg.user.username=:username")
     Integer userExperience(@Param("username") String username);
-
-    @Query(value = "select history_game_id from history_game order by history_game_id desc limit 1", nativeQuery = true)
-    Integer findMaxId();
-
-//    @Query(value = "SELECT hg.experience FROM history_game hg join hg.user u on hg.user where user_id := user_id order by history_game_id desc limit 1"
-//            , nativeQuery = true)
-//    Integer findLastGame(@Param("user_id") int userId);
 }

@@ -1,11 +1,10 @@
 package kipoderax.virtuallotto.game.controllers;
 
-import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.game.model.GameModel;
+import kipoderax.virtuallotto.game.repository.LatestInfoFromAllPlayersRepository;
 import kipoderax.virtuallotto.game.service.StatisticsService;
-import kipoderax.virtuallotto.game.service.SumUpInformation;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,20 +18,17 @@ public class IndexController {
     private UserRepository userRepository;
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
-    private HistoryGameRepository historyGameRepository;
-    private SumUpInformation sumUpInformation;
+    private LatestInfoFromAllPlayersRepository latestInfoFromAllPlayersRepository;
 
     public IndexController(UserRepository userRepository,
                            StatisticsService statisticsService,
                            HistoryGameDtoService historyGameDtoService,
-                           HistoryGameRepository historyGameRepository,
-                           SumUpInformation sumUpInformation) {
+                           LatestInfoFromAllPlayersRepository latestInfoFromAllPlayersRepository) {
 
         this.userRepository = userRepository;
         this.statisticsService = statisticsService;
         this.historyGameDtoService = historyGameDtoService;
-        this.historyGameRepository = historyGameRepository;
-        this.sumUpInformation = sumUpInformation;
+        this.latestInfoFromAllPlayersRepository = latestInfoFromAllPlayersRepository;
     }
 
     @GetMapping({"/"})
@@ -43,16 +39,25 @@ public class IndexController {
         model.addAttribute("date", date);
 
         Collections.sort(gameModel.getLastNumbers().subList(0, 6));
+
         model.addAttribute("result", gameModel.getLastNumbers().subList(0, 6));
         model.addAttribute("fourth", gameModel.getRewardsMoney()[2]);
         model.addAttribute("fifth", gameModel.getRewardsMoney()[3]);
         model.addAttribute("sixth", gameModel.getRewardsMoney()[4]);
 
+        //Server status
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+
+        // SumUp latest player games
+        model.addAttribute("sumUpDate", latestInfoFromAllPlayersRepository.findPreviousDate());
+        model.addAttribute("totalSendBets", latestInfoFromAllPlayersRepository.findTotalSendBets());
+        model.addAttribute("totalScoreOfThrees", latestInfoFromAllPlayersRepository.findTotalScoreOfThrees());
+        model.addAttribute("totalScoreOfFours", latestInfoFromAllPlayersRepository.findTotalScoreOfFours());
+        model.addAttribute("totalScoreOfFives", latestInfoFromAllPlayersRepository.findTotalScoreOfFives());
+        model.addAttribute("totalScoreOfSixes", latestInfoFromAllPlayersRepository.findTotalScoreOfSixes());
 
         return "index";
     }

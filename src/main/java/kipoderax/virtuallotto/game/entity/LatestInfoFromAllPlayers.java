@@ -1,9 +1,12 @@
 package kipoderax.virtuallotto.game.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "latest_info_from_all_players")
+@Data
 public class LatestInfoFromAllPlayers {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
