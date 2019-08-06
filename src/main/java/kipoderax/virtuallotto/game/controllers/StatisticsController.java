@@ -46,6 +46,7 @@ public class StatisticsController {
     @PostMapping("/statystyki")
     public String statistics(Model model, @RequestParam("by") String by) {
 
+        model.addAttribute("by", by);
         model.addAttribute("userDto", statisticsService.getAllDtoUsersBy(by));
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());

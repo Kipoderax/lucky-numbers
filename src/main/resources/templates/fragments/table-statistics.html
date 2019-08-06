@@ -27,12 +27,12 @@
                 <center>
                     Sortuj wedlug:
                     <select style="margin-bottom: 5px" name="by">
-                        <option value="level">Level</option>
-                        <option value="numberGame">Ilosc gier</option>
-                        <option value="three">Ilosc trojek</option>
-                        <option value="four">Ilosc czworek</option>
-                        <option value="five">Ilosc piatek</option>
-                        <option value="six">Ilosc szostek</option>
+                        <option value="ym poziomem">Poziom</option>
+                        <option value="a iloscia gier">Ilosc gier</option>
+                        <option value="a iloscia trojek">Ilosc trojek</option>
+                        <option value="a iloscia czworek">Ilosc czworek</option>
+                        <option value="a iloscia piatek">Ilosc piatek</option>
+                        <option value="a iloscia szostek">Ilosc szostek</option>
                     </select>
                     <input type="image" name="submit" src="images/button-sort.png" width="100" height="25" border="0">
                 </center>
@@ -44,7 +44,8 @@
 
                 <tr bgcolor="#505050">
                     <td colspan="9" style="font-weight: bold; color: white">
-                        Gracze z największym szczęściem wirtualnego miliona
+                        <b th:if="${by != null}" th:text="'Gracze z najwieksz' + ${by}"></b>
+                        <b th:if="${by == null}" th:text="'Gracze z najwiekszym poziomem'"></b>
                     </td>
                 </tr>
 

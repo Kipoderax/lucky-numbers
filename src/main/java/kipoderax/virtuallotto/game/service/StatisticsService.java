@@ -66,41 +66,41 @@ public class StatisticsService {
         getAllDtoUsers(userDtos);
 
         switch (by) {
-            case "level":
+            case "ym poziomem":
 
                 userDtos.sort(Comparator.comparing(UserDto::getExperience).
                         thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
-            case "numberGame":
+            case "a iloscia gier":
                 userDtos.sort(Comparator.comparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
-            case "three":
+            case "a iloscia trojek":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfThree).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
-            case "four":
+            case "a iloscia czworek":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfFour).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
-            case "five":
+            case "a iloscia piatek":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfFive).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getNumberGame).
                         thenComparing(UserDto::getUsername).reversed());
                 break;
 
-            case "six":
+            case "a iloscia szostek":
                 userDtos.sort(Comparator.comparing(UserDto::getAmountOfSix).
                         thenComparing(UserDto::getExperience).
                         thenComparing(UserDto::getNumberGame).
