@@ -19,6 +19,7 @@ public class Game {
     private @Column(name = "count_of_five") int countOfFive;
     private @Column(name = "count_of_six") int countOfSix;
     private @Column(name = "number_game") int numberGame;
+    private int profit;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST,

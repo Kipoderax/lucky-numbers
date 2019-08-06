@@ -22,8 +22,8 @@ public class LoginController {
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
 
-//    @Value("${error.wrongLogin}")
-//    private String loginError;
+    @Value("${error.wrongLogin}")
+    private String loginError;
 
     @Autowired
     public LoginController(UserService userService,
@@ -62,8 +62,8 @@ public class LoginController {
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         if (loginResponse != UserService.Response.SUCCESS) {
-//            model.addAttribute("info", loginError);
 
+            model.addAttribute("info", loginError);
             return "auth/login";
         }
 

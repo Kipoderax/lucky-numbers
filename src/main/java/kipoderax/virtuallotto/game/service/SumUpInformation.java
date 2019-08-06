@@ -35,7 +35,7 @@ public class SumUpInformation {
     }
 
     @Transactional
-    @Scheduled(cron = "00 30 20 * * 2,4,6")
+    @Scheduled(cron = "00 30 19 * * 2,4,6")
     public void getTotalBets() {
         LatestInfoFromAllPlayers latestInfoFromAllPlayers = new LatestInfoFromAllPlayers();
         GameModel gameModel = new GameModel();
@@ -50,7 +50,7 @@ public class SumUpInformation {
             Optional<User> optionalUser =
                     userRepository.findById(i);
 
-            if (optionalUser.isPresent() && historyGameRepository.amountRecords(i) > 1) {
+            if (optionalUser.isPresent() && historyGameRepository.amountRecords(i) > 0) {
 
                 if (historyGameDtoService.getAllHistoryGames(i).get(0).getDateGame().equals(
                         latestInfoFromAllPlayersRepository.findDate()
@@ -61,15 +61,6 @@ public class SumUpInformation {
                     totalScoreOfFours += historyGameDtoService.getAllHistoryGames(i).get(0).getAmountGoalFours();
                     totalScoreOfFives += historyGameDtoService.getAllHistoryGames(i).get(0).getAmountGoalFives();
                     totalScoreOfSixes += historyGameDtoService.getAllHistoryGames(i).get(0).getAmountGoalSixes();
-                }
-                if (historyGameDtoService.getAllHistoryGames(i).get(1).getDateGame().equals(
-                        latestInfoFromAllPlayersRepository.findDate())) {
-
-                    totalSendBets += historyGameDtoService.getAllHistoryGames(i).get(1).getAmountBets();
-                    totalScoreOfThrees += historyGameDtoService.getAllHistoryGames(i).get(1).getAmountGoalThrees();
-                    totalScoreOfFours += historyGameDtoService.getAllHistoryGames(i).get(1).getAmountGoalFours();
-                    totalScoreOfFives += historyGameDtoService.getAllHistoryGames(i).get(1).getAmountGoalFives();
-                    totalScoreOfSixes += historyGameDtoService.getAllHistoryGames(i).get(1).getAmountGoalSixes();
                 }
              }
         }

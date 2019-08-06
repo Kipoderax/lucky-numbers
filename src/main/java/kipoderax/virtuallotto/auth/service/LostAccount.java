@@ -1,22 +1,8 @@
 package kipoderax.virtuallotto.auth.service;
 
-import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.security.SecureRandom;
 
 public class LostAccount {
-
-    private final UserRepository userRepository;
-
-    public LostAccount(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public boolean checkEmail(String email) {
-
-        return userRepository.existsByEmail(email);
-    }
 
     public static String randomStringGenerator() {
         String randomString = "";
@@ -33,13 +19,4 @@ public class LostAccount {
 
         return randomString;
     }
-
-    public void sendEmailAfterCheckMail(String email) {
-
-        if (checkEmail(email)) {
-
-            randomStringGenerator();
-        }
-    }
-
 }

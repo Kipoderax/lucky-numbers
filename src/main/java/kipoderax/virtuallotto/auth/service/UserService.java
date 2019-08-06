@@ -4,6 +4,7 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
+import kipoderax.virtuallotto.commons.validation.RegexValidation;
 import kipoderax.virtuallotto.game.entity.ApiNumber;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
@@ -31,6 +32,8 @@ public class UserService {
     private String emailExist;
     @Value("${error.passwordNotMatch}")
     private String shortPassword;
+    @Value("${error.usernameIsTooShort}")
+    private String shortUsername;
 
     private final UserSession userSession;
 
@@ -60,9 +63,14 @@ public class UserService {
         UserExperience userExperience = new UserExperience();
         ApiNumber apiNumber = new ApiNumber();
 
-        if (isUsernameFree(registerForm.getUsername())){
+        if (isUsernameFree(registerForm.getUsername().toLowerCase())){
 
             model.addAttribute("username", usernameExist);
+            return false;
+        }
+
+        if (!RegexValidation.isCorrectPattern(RegexValidation.USERNAME_PATTERN, registerForm.getUsername())) {
+            model.addAttribute("usernameIsTooShort", shortUsername);
             return false;
         }
 
@@ -95,6 +103,7 @@ public class UserService {
         game.setCountOfFour(0);
         game.setCountOfFive(0);
         game.setCountOfSix(0);
+        game.setProfit(0);
 
         userExperience.setLevel(1);
         userExperience.setExperience(0);
@@ -119,18 +128,18 @@ public class UserService {
         return true;
     }
 
-    public boolean isUsernameFree(String username) {
+    private boolean isUsernameFree(String username) {
 
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsername(username.toLowerCase());
     }
 
 
-    public boolean isEmailFree(String email) {
+    private boolean isEmailFree(String email) {
 
         return userRepository.existsByEmail(email);
     }
 
-    public boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
+    private boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
 
         return bCryptPasswordEncoder().matches(
                 password, userOptional.get().getPassword()
@@ -213,7 +222,7 @@ public class UserService {
         return true;
     }
 
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    private BCryptPasswordEncoder bCryptPasswordEncoder() {
 
         return new BCryptPasswordEncoder();
     }

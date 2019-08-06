@@ -113,6 +113,6 @@ public class StatisticsService {
 
     public int get50RecordsOfUsers() {
 
-        return userRepository.getAllRegisterUsers() > 50 ? 50 : userRepository.getAllRegisterUsers();
+        return userRepository.getAllRegisterUsers() > 100 ? 100 : userRepository.getAllRegisterUsers();
     }
 }

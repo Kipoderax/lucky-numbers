@@ -68,8 +68,8 @@
 
         <ul th:if="${top5level != null}" th:each="top_players : ${top5level}">
             <li>
-                <i th:text="${top_players.username}"></i>
-                <span class="pull-right" th:text="${top_players.level} + ' ' + lv"></span>
+                <i th:text="${top_players.username}">-</i>
+                <span class="pull-right" th:text="${top_players.level} + ' ' + lv">-</span>
             </li>
         </ul>
 
@@ -78,15 +78,22 @@
 
     <div class="menu-top">
         <div class="menu-exten"></div>
-        <div class="menu-text">Best Last Xp</div>
+        <div class="menu-text">Best 5 Last Xp</div>
     </div>
     <div class="menu-cnt">
 
         <ul th:if="${toplastxp != null}" th:each="topxp : ${toplastxp}">
             <li>
                 <i th:text="${topxp.username}">-</i>
-                <span class="pull-right" th:text="'+ ' + ${topxp.experience}">0</span>
+                <span class="pull-right" th:text="'+ ' + ${topxp.experience}">-</span>
             </li>
+        </ul>
+        <ul th:if="${toplastxp.size() == 0}">
+            <li th:text="'-'">-</li>
+            <li th:text="'-'"></li>
+            <li th:text="'-'"></li>
+            <li th:text="'-'"></li>
+            <li th:text="'-'"></li>
         </ul>
 
 

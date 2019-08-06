@@ -53,7 +53,7 @@
     display: block;
     width: 651px;
     height: 87px;
-    background: url("images/content-top.png") no-repeat scroll center top transparent;
+    background: url("images/content-top-ln.png") no-repeat scroll center top transparent;
 }
 
 .content-bg {
@@ -100,7 +100,7 @@ ul {
 }
 
 .menu-top {
-    background: url("images/small-top.png") no-repeat scroll 0 0 transparent;
+    background: url("images/small-top-ln.png") no-repeat scroll 0 0 transparent;
     color: #d4c0a1;
     float: left;
     height: 127px;
@@ -133,7 +133,7 @@ ul {
     color: #ccc;
     float: left;
     height: 0px;
-    padding-top: 18px;
+    padding-top: 0px;
     width: 264px;
     position: absolute;
 }

@@ -129,6 +129,7 @@ public class UserNumbersService {
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
 
         int currentUserNumberGame;
+        int currentProfit = gameRepository.findProfit(username);
 
         if (historyGameRepository.amountBets(username) != null) {
             currentUserNumberGame = historyGameRepository.amountBets(username);
@@ -186,8 +187,9 @@ public class UserNumbersService {
         historyGame.setExperience(resultForm.getTotalExp());
         historyGame.setResult(resultForm.getFinishResult());
         historyGame.setUser(user);
-        historyGameRepository.save(historyGame);
         maxBetsForSend(userId, username);
+        historyGameRepository.save(historyGame);
+        gameRepository.updateProfit(currentProfit + resultForm.getTotalEarn(), userId);
 
         return resultForm;
     }
@@ -288,6 +290,9 @@ public class UserNumbersService {
         int sumEarnMoney = 0;
         for (int i = 3; i <= 6; i++) {
             convertToJson.getMoneyRew()[0] = 24;
+            if (convertToJson.getMoneyRew()[3] == 0) {
+                convertToJson.getMoneyRew()[3] = 2_000_000;
+            }
             sumEarnMoney += goalNumbers[i] * convertToJson.getLastWins(convertToJson.getMoneyRew()[i - 3]);
         }
 

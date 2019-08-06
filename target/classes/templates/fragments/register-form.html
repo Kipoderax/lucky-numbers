@@ -6,10 +6,11 @@
 
     <div class="content-bg">
         <div class="content-txt">
-            <br>
+
             <font color="red" th:text="${username}"></font>
             <font color="red" th:text="${email}"></font>
             <font color="red" th:text="${short}"></font>
+            <font color="red" th:text="${usernameIsTooShort}"></font> <br>
 
             <form th:action="@{/register}" onsubmit="" method="post" th:object="${registerForm}">
                 <table width="100%" cellspacing="1" cellpadding="4" border="0">

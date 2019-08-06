@@ -8,6 +8,7 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
+import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.service.Experience;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
@@ -25,6 +26,7 @@ public class AccountController {
 
     private UserRepository userRepository;
     private HistoryGameRepository historyGameRepository;
+    private GameRepository gameRepository;
 
     private UserService userService;
     private StatisticsService statisticsService;
@@ -32,11 +34,14 @@ public class AccountController {
 
     @Value("${game.whileLottery}")
     private String whileLottery;
+    @Value("${error.usernameNotExist}")
+    private String usernameNotExist;
 
     public AccountController(UserSession userSession,
 
                              UserRepository userRepository,
                              HistoryGameRepository historyGameRepository,
+                             GameRepository gameRepository,
 
                              UserService userService,
                              StatisticsService statisticsService,
@@ -46,6 +51,7 @@ public class AccountController {
 
         this.userRepository = userRepository;
         this.historyGameRepository = historyGameRepository;
+        this.gameRepository = gameRepository;
 
         this.userService = userService;
         this.statisticsService = statisticsService;
@@ -90,10 +96,10 @@ public class AccountController {
             six = historyGameRepository.amountGoalSixes(username);
         } else { six = 0; }
 
-        Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
-        if (addUp == null) {
-            addUp = 0;
-        }
+//        Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
+//        if (addUp == null) {
+//            addUp = 0;
+//        }
 
         int userExperience;
         if (historyGameRepository.userExperience(username) != null) {
@@ -124,8 +130,8 @@ public class AccountController {
 
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
-        model.addAttribute("addup", addUp);
-        model.addAttribute("result", (addUp - (numberGame * 3)));
+        model.addAttribute("addup", gameRepository.findProfit(username));
+        model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
 
         //STATUS CONTENT
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
@@ -267,11 +273,11 @@ public class AccountController {
                 six = historyGameRepository.amountGoalSixes(username);
             } else { six = 0; }
 
-            Integer addUp = (three * 24) + (four * gameModel.getRewardsMoney()[1])
-                    + (five * gameModel.getRewardsMoney()[2]) + (six * gameModel.getRewardsMoney()[3]);
-            if (addUp == null) {
-                addUp = 0;
-            }
+//            Integer addUp = (three * 24) + (four * gameModel.getRewardsMoney()[1])
+//                    + (five * gameModel.getRewardsMoney()[2]) + (six * gameModel.getRewardsMoney()[3]);
+//            if (addUp == null) {
+//                addUp = 0;
+//            }
 
             int userExperience;
             if (historyGameRepository.userExperience(username) != null) {
@@ -296,8 +302,8 @@ public class AccountController {
 
             //STATISTICS CONTENT
             model.addAttribute("expense", numberGame * 3);
-            model.addAttribute("addup", addUp);
-            model.addAttribute("result", (addUp - (numberGame * 3)));
+            model.addAttribute("addup", gameRepository.findProfit(username));
+            model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
 
             //STATUS CONTENT
             model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
@@ -306,8 +312,14 @@ public class AccountController {
             model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
             return "auth/player-account";
-        }
+        } else {
+            model.addAttribute("usernameNotExist", usernameNotExist);
+            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
+            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            model.addAttribute("top5level", statisticsService.get5BestPlayers());
+            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
-        return "game/search-player";
+            return "game/search-player";
+        }
     }
 }

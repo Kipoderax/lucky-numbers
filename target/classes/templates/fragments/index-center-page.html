@@ -13,7 +13,8 @@
                 <p>Wygrana za trojke - 24 zl</p>
                 <p th:text="'Wygrana za czworke - ' + ${fourth} + ' pln'"></p>
                 <p th:text="'Wygrana za piatke - ' + ${fifth}  + ' pln'"></p>
-                <p th:text="'Wygrana za szostke - ' + ${sixth}  + ' pln'"></p>
+                <p th:if="${sixth > 0}" th:text="'Wygrana za szostke - ' + ${sixth}  + ' pln'"></p>
+                <p th:if="${sixth == 0}" th:text="'Nikt nie trafil szostki'"></p>
                 <br>
                 <br>
 
