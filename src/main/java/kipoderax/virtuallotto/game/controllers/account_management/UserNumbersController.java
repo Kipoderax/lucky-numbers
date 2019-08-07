@@ -77,12 +77,27 @@ public class UserNumbersController {
     @PostMapping("/mojeliczby")
     public String QuickAddBets(Model model, @ModelAttribute NumbersForm numbersForm) {
         GameModel gameModel = new GameModel();
-        if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+        CheckDate checkDate = new CheckDate();
+
+        if (checkDate.isLottery()) {
+
+            return "redirect:/mojeliczby";
+
+        } else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
             gameService.generateNumber(gameModel, numbersForm);
             userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
                     userSession.getUser().getId());
+
         }
+
+        if (!userNumbersService.isNewNumberApi(
+                userNumbersService.getUserApiNumber(userSession.getUser().getId()),
+                gameModel.getLastNumbers())) {
+
+            return "redirect:/wyniki";
+        }
+
 
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());

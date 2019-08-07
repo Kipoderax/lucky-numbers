@@ -24,5 +24,4 @@ public class SessionCounter implements HttpSessionListener {
     public static int getActiveSessions() {
         return activeSessions;
     }
-
 }

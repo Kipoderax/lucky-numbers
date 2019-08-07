@@ -11,7 +11,8 @@ public interface LatestInfoFromAllPlayersRepository extends JpaRepository<Latest
     @Query(value = "select date from latest_info_from_all_players order by total_gain_id desc limit 1", nativeQuery = true)
     String findDate();
 
-    @Query(value = "select date from latest_info_from_all_players order by total_gain_id desc limit 1, 2", nativeQuery = true)
+    @Query(value = "select date from latest_info_from_all_players where total_gain_id = " +
+            "(select max(total_gain_id) - 1 from latest_info_from_all_players)", nativeQuery = true)
     String findPreviousDate();
 
     @Query(value = "select total_send_bets from latest_info_from_all_players order by total_gain_id desc limit 1", nativeQuery = true)

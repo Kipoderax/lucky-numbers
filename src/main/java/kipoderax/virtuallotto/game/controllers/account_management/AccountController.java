@@ -70,7 +70,6 @@ public class AccountController {
         String username = userSession.getUser().getUsername();
         int userId = userSession.getUser().getId();
 
-
         int numberGame;
         if (historyGameRepository.amountBets(username) != null) {
             numberGame = historyGameRepository.amountBets(username);
@@ -95,11 +94,6 @@ public class AccountController {
         if (historyGameRepository.amountGoalSixes(username) != null) {
             six = historyGameRepository.amountGoalSixes(username);
         } else { six = 0; }
-
-//        Integer addUp = (three * 24) + (four * 120) + (five * 6000) + (six * 2_000_000);
-//        if (addUp == null) {
-//            addUp = 0;
-//        }
 
         int userExperience;
         if (historyGameRepository.userExperience(username) != null) {
@@ -244,7 +238,6 @@ public class AccountController {
     public String showPlayer(Model model, @RequestParam("username") String username) {
         Experience experience = new Experience();
         model.addAttribute("nick", new RegisterForm());
-        GameModel gameModel = new GameModel();
 
         if (userRepository.existsByUsername(username)) {
 
@@ -272,12 +265,6 @@ public class AccountController {
             if (historyGameRepository.amountGoalSixes(username) != null) {
                 six = historyGameRepository.amountGoalSixes(username);
             } else { six = 0; }
-
-//            Integer addUp = (three * 24) + (four * gameModel.getRewardsMoney()[1])
-//                    + (five * gameModel.getRewardsMoney()[2]) + (six * gameModel.getRewardsMoney()[3]);
-//            if (addUp == null) {
-//                addUp = 0;
-//            }
 
             int userExperience;
             if (historyGameRepository.userExperience(username) != null) {
