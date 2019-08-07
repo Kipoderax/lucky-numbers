@@ -1,19 +1,19 @@
 package kipoderax.virtuallotto.game.service.user_numbers;
 
-import kipoderax.virtuallotto.game.model.WinnerBets;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 
 import java.util.List;
 
 public interface WinnerBetsService{
 
-    void addWinnerBetsWith3Numbers(WinnerBets winnerBets);
-    void addWinnerBetsWith4Numbers(WinnerBets winnerBets);
-    void addWinnerBetsWith5Numbers(WinnerBets winnerBets);
-    void addWinnerBetsWith6Numbers(WinnerBets winnerBets);
+    void addWinnerBetsWith3Numbers(NumbersForm numbersForm);
+    void addWinnerBetsWith4Numbers(NumbersForm numbersForm);
+    void addWinnerBetsWith5Numbers(NumbersForm numbersForm);
+    void addWinnerBetsWith6Numbers(NumbersForm numbersForm);
 
-    List<WinnerBets> getWinnerBetsWith3Numbers();
-    List<WinnerBets> getWinnerBetsWith4Numbers();
-    List<WinnerBets> getWinnerBetsWith5Numbers();
-    List<WinnerBets> getWinnerBetsWith6Numbers();
+    List<NumbersForm> getWinnerBetsWith3Numbers();
+    List<NumbersForm> getWinnerBetsWith4Numbers();
+    List<NumbersForm> getWinnerBetsWith5Numbers();
+    List<NumbersForm> getWinnerBetsWith6Numbers();
 
 }

@@ -11,19 +11,19 @@
                 <p th:text="${'Wylosowane liczby: ' + result}"></p>
                 <br>
                 <p>Wygrana za trojke - 24 zl</p>
-                <p th:text="'Wygrana za czworke - ' + ${fourth} + ' pln'"></p>
-                <p th:text="'Wygrana za piatke - ' + ${fifth}  + ' pln'"></p>
-                <p th:if="${sixth > 0}" th:text="'Wygrana za szostke - ' + ${sixth}  + ' pln'"></p>
+                <p th:text="'Wygrana za czworke - ' + ${fourth} + ' zl'"></p>
+                <p th:text="'Wygrana za piatke - ' + ${fifth}  + ' zl'"></p>
+                <p th:if="${sixth > 0}" th:text="'Wygrana za szostke - ' + ${sixth}  + ' zl'"></p>
                 <p th:if="${sixth == 0}" th:text="'Nikt nie trafil szostki'"></p>
                 <br>
                 <br>
 
                 <p th:if="${totalSendBets > 0}" th:text="'Podsumowanie dnia ' + ${sumUpDate}"></p>
                 <p th:if="${totalSendBets > 0}" th:text="'Wyslano ' + ${totalSendBets} + ' zakladow'"></p>
-                <p th:if="${totalScoreOfThrees > 0}" th:text="'Trafiono ' + ${totalScoreOfThrees} + ' trojek'"></p>
-                <p th:if="${totalScoreOfFours > 0}" th:text="'Trafiono ' + ${totalScoreOfFours} + ' czworek'"></p>
-                <p th:if="${totalScoreOfFives > 0}" th:text="'Trafiono ' + ${totalScoreOfFives} + ' piatek'"></p>
-                <p th:if="${totalScoreOfSixes > 0}" th:text="'Trafiono' + ${totalScoreOfSixies} + ' szostek'"></p>
+                <p th:if="${totalScoreOfThrees > 0}" th:text="'Trafionych trojek: ' + ${totalScoreOfThrees}"></p>
+                <p th:if="${totalScoreOfFours > 0}" th:text="'Trafionych czworek: ' + ${totalScoreOfFours}"></p>
+                <p th:if="${totalScoreOfFives > 0}" th:text="'Trafionych piatek: ' + ${totalScoreOfFives}"></p>
+                <p th:if="${totalScoreOfSixes > 0}" th:text="'Trafionych szostek:' + ${totalScoreOfSixies}"></p>
 
             </div>
         </div>

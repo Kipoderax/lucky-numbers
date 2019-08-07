@@ -20,11 +20,10 @@ public class GameModel {
 
     private ConvertToJson convertToJson = new ConvertToJson();
 
-    private int number; //komponent numberSet
+    private int number;
     private int experience;
     private int level;
 
-//    convertToJson.getLastWins(convertToJson.getMoneyRew()[0])
     private int[] rewardsMoney = {-3,
             convertToJson.getLastWins(convertToJson.getMoneyRew()[0]),
             convertToJson.getLastWins(convertToJson.getMoneyRew()[1]),
@@ -33,12 +32,12 @@ public class GameModel {
     private int[] rewardsExperience = {1, 3, 21, 186, 1_985, 15_134};
 
     private int saldo;
-    private int winPerOneGame; //przedstawia zysk dla aktualnej gry
+    private int winPerOneGame;
 
     private List<String> dateGame = convertToJson.getLastDate(convertToJson.getDate());
     private List<Integer> lastNumbers = convertToJson.getLastNumbers(convertToJson.getLastLottoNumbers());
 
-    private List<Integer> numberSet = new ArrayList<>(); //zbior 6 wylosowanych liczb
-    private List<Integer> addGoalNumbers = new ArrayList<>(); //zbiór trafionych liczb
+    private List<Integer> numberSet = new ArrayList<>();
+    private List<Integer> addGoalNumbers = new ArrayList<>();
 
 }

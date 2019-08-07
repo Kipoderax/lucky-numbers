@@ -13,7 +13,7 @@ import kipoderax.virtuallotto.commons.dtos.models.ApiNumberDto;
 import kipoderax.virtuallotto.commons.dtos.models.UserNumbersDto;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.model.WinnerBets;
+import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
@@ -364,25 +364,25 @@ public class UserNumbersService {
 
     public void goalBetsWithSuccess(int success, List<Integer> listUserBets) {
 
-        WinnerBets winnerBets = new WinnerBets(listUserBets.get(0), listUserBets.get(1),
+        NumbersForm numbersForm = new NumbersForm(listUserBets.get(0), listUserBets.get(1),
                 listUserBets.get(2), listUserBets.get(3), listUserBets.get(4), listUserBets.get(5));
 
         switch (success) {
             case 3:
 
-                winnerBetsService.addWinnerBetsWith3Numbers(winnerBets);
+                winnerBetsService.addWinnerBetsWith3Numbers(numbersForm);
                 break;
             case 4:
 
-                winnerBetsService.addWinnerBetsWith4Numbers(winnerBets);
+                winnerBetsService.addWinnerBetsWith4Numbers(numbersForm);
                 break;
             case 5:
 
-                winnerBetsService.addWinnerBetsWith5Numbers(winnerBets);
+                winnerBetsService.addWinnerBetsWith5Numbers(numbersForm);
                 break;
             case 6:
 
-                winnerBetsService.addWinnerBetsWith6Numbers(winnerBets);
+                winnerBetsService.addWinnerBetsWith6Numbers(numbersForm);
                 break;
         }
     }
