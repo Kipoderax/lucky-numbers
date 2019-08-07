@@ -8,7 +8,6 @@ import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
-import kipoderax.virtuallotto.game.service.GameService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
@@ -31,7 +30,6 @@ public class UserNumbersController {
     private WinnerBetsServiceImpl winnerBetsService;
     private StatisticsService statisticsService;
     private HistoryGameDtoService historyGameDtoService;
-    private GameService gameService;
 
     private UserRepository userRepository;
     private UserBetsRepository userBetsRepository;
@@ -46,8 +44,7 @@ public class UserNumbersController {
                                  UserRepository userRepository,
                                  UserBetsRepository userBetsRepository,
                                  ApiNumberRepository apiNumberRepository,
-                                 WinnerBetsServiceImpl winnerBetsService,
-                                 GameService gameService) {
+                                 WinnerBetsServiceImpl winnerBetsService) {
 
 
         this.userNumbersService = userNumbersService;
@@ -57,7 +54,6 @@ public class UserNumbersController {
         this.userRepository = userRepository;
         this.userBetsRepository = userBetsRepository;
         this.apiNumberRepository = apiNumberRepository;
-        this.gameService = gameService;
         this.winnerBetsService = winnerBetsService;
     }
 
@@ -85,7 +81,7 @@ public class UserNumbersController {
 
         } else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-            gameService.generateNumber(gameModel, numbersForm);
+            userNumbersService.generateNumber(gameModel, numbersForm);
             userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
                     userSession.getUser().getId());
 

@@ -22,8 +22,11 @@ import kipoderax.virtuallotto.game.service.ConvertToJson;
 import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Service
@@ -385,5 +388,28 @@ public class UserNumbersService {
                 winnerBetsService.addWinnerBetsWith6Numbers(numbersForm);
                 break;
         }
+    }
+
+    public NumbersForm generateNumber(GameModel gameModel, NumbersForm numbersForm) {
+        SecureRandom randomNumber = new SecureRandom();
+
+        Set<Integer> numberSet = new TreeSet<>();
+
+        while (numberSet.size() != 6) {
+
+            gameModel.setNumber(randomNumber.nextInt(49) + 1);
+            numberSet.add(gameModel.getNumber());
+        }
+
+        gameModel.getNumberSet().addAll(numberSet);
+
+        numbersForm.setNumber1(gameModel.getNumberSet().get(0));
+        numbersForm.setNumber2(gameModel.getNumberSet().get(1));
+        numbersForm.setNumber3(gameModel.getNumberSet().get(2));
+        numbersForm.setNumber4(gameModel.getNumberSet().get(3));
+        numbersForm.setNumber5(gameModel.getNumberSet().get(4));
+        numbersForm.setNumber6(gameModel.getNumberSet().get(5));
+
+        return numbersForm;
     }
 }

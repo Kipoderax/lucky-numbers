@@ -7,7 +7,6 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.service.GameService;
 import kipoderax.virtuallotto.game.service.StatisticsService;
 import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class BetController {
 
-     private GameService gameService;
      private UserSession userSession;
      private UserRepository userRepository;
      private UserNumbersService userNumbersService;
@@ -34,14 +32,12 @@ public class BetController {
      @Value("${game.duplicateNumbers}")
      private String duplicateNumbersExist;
 
-    public BetController(GameService gameService,
-                         UserSession userSession,
+    public BetController(UserSession userSession,
                          UserRepository userRepository,
                          UserNumbersService userNumbersService,
                          StatisticsService statisticsService,
                          HistoryGameDtoService historyGameDtoService) {
 
-        this.gameService = gameService;
         this.userRepository = userRepository;
         this.userSession = userSession;
         this.userNumbersService = userNumbersService;
@@ -141,7 +137,7 @@ public class BetController {
 
         if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-            gameService.generateNumber(gameModel, numbersForm);
+            userNumbersService.generateNumber(gameModel, numbersForm);
         }
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
