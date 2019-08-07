@@ -2,16 +2,13 @@ package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
-import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.service.Experience;
-import kipoderax.virtuallotto.game.service.StatisticsService;
-import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +20,13 @@ import java.util.Date;
 public class AccountController {
 
     private UserSession userSession;
+    private MainPageDisplay mainPageDisplay;
 
     private UserRepository userRepository;
     private HistoryGameRepository historyGameRepository;
     private GameRepository gameRepository;
 
     private UserService userService;
-    private StatisticsService statisticsService;
-    private HistoryGameDtoService historyGameDtoService;
 
     @Value("${game.whileLottery}")
     private String whileLottery;
@@ -38,24 +34,22 @@ public class AccountController {
     private String usernameNotExist;
 
     public AccountController(UserSession userSession,
+                             MainPageDisplay mainPageDisplay,
 
                              UserRepository userRepository,
                              HistoryGameRepository historyGameRepository,
                              GameRepository gameRepository,
 
-                             UserService userService,
-                             StatisticsService statisticsService,
-                             HistoryGameDtoService historyGameDtoService){
+                             UserService userService){
 
         this.userSession = userSession;
+        this.mainPageDisplay = mainPageDisplay;
 
         this.userRepository = userRepository;
         this.historyGameRepository = historyGameRepository;
         this.gameRepository = gameRepository;
 
         this.userService = userService;
-        this.statisticsService = statisticsService;
-        this.historyGameDtoService = historyGameDtoService;
     }
 
     @GetMapping({"/konto"})
@@ -122,16 +116,13 @@ public class AccountController {
         model.addAttribute("numberGame", numberGame);
         model.addAttribute("exp", userExperience);
 
+        mainPageDisplay.displayGameStatus(model);
+
         //STATISTICS CONTENT
         model.addAttribute("expense", numberGame * 3);
         model.addAttribute("addup", gameRepository.findProfit(username));
         model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
 
-        //STATUS CONTENT
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
 
         CheckDate checkDate = new CheckDate();
@@ -145,10 +136,7 @@ public class AccountController {
     }
 
     @GetMapping("/logout")
-    public String logout(Model model) {
-
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+    public String logout() {
 
         userService.logout();
 
@@ -158,24 +146,14 @@ public class AccountController {
     @GetMapping("/change-password")
     public String changePassword(Model model) {
 
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-
+        mainPageDisplay.displayGameStatus(model);
         model.addAttribute("passwordForm", new RegisterForm());
 
         return "auth/change-password";
     }
 
     @PostMapping("/change-password")
-    private String changePassword(@ModelAttribute RegisterForm registerForm, Model model) {
-
-
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+    private String changePassword(@ModelAttribute RegisterForm registerForm) {
 
         if (userService.changePassword(registerForm)) {
 
@@ -188,28 +166,19 @@ public class AccountController {
     @GetMapping("/delete-account")
     public String deleteAccount(Model model) {
 
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-
         if (!userSession.isUserLogin()) {
 
             return "redirect:/login";
         }
 
+        mainPageDisplay.displayGameStatus(model);
         model.addAttribute("delete", new RegisterForm());
 
         return "auth/delete-account";
     }
 
     @PostMapping("/delete-account")
-    public String deleteAccount(@ModelAttribute RegisterForm registerForm, Model model) {
-
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+    public String deleteAccount(@ModelAttribute RegisterForm registerForm) {
 
         if (userService.isCorrectCurrentPassword(registerForm)) {
             userService.deleteAccount(userSession.getUser().getId());
@@ -224,11 +193,7 @@ public class AccountController {
     public String showPlayer(Model model) {
         RegisterForm registerForm = new RegisterForm();
 
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-
+        mainPageDisplay.displayGameStatus(model);
         model.addAttribute("nick", registerForm);
 
         return "game/search-player";
@@ -292,19 +257,12 @@ public class AccountController {
             model.addAttribute("addup", gameRepository.findProfit(username));
             model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
 
-            //STATUS CONTENT
-            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.get5BestPlayers());
-            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+            mainPageDisplay.displayGameStatus(model);
 
             return "auth/player-account";
         } else {
             model.addAttribute("usernameNotExist", usernameNotExist);
-            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.get5BestPlayers());
-            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+            mainPageDisplay.displayGameStatus(model);
 
             return "game/search-player";
         }

@@ -4,11 +4,9 @@ import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.repositories.UserTokenRepository;
 import kipoderax.virtuallotto.auth.service.LostAccount;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
+import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
-import kipoderax.virtuallotto.game.service.StatisticsService;
-import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
@@ -22,16 +20,14 @@ import java.util.Optional;
 @PropertySource(value={"classpath:messages.properties"})
 public class EmailController {
 
-    private StatisticsService statisticsService;
-    private HistoryGameDtoService historyGameDtoService;
-
     private final EmailSender emailSender;
     private final UserRepository userRepository;
     private final UserTokenRepository userTokenRepository;
     private final UserService userService;
+    private MainPageDisplay mainPageDisplay;
 
-    private static int userId = 0;
-    private static String linkPassword = "";
+    private int userId = 0;
+    private String linkPassword = "";
 
     @Value("${mail.body}")
     private String body;
@@ -49,15 +45,13 @@ public class EmailController {
                            UserRepository userRepository,
                            UserTokenRepository userTokenRepository,
                            UserService userService,
-                           StatisticsService statisticsService,
-                           HistoryGameDtoService historyGameDtoService) {
+                           MainPageDisplay mainPageDisplay) {
 
         this.emailSender = emailSender;
         this.userRepository = userRepository;
         this.userTokenRepository = userTokenRepository;
         this.userService = userService;
-        this.statisticsService = statisticsService;
-        this.historyGameDtoService = historyGameDtoService;
+        this.mainPageDisplay = mainPageDisplay;
     }
 
     @GetMapping({"/send-mail"})
@@ -65,10 +59,7 @@ public class EmailController {
 
         model.addAttribute("mail", new Email());
 
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "auth/lost-account";
     }
@@ -77,9 +68,6 @@ public class EmailController {
 
     @PostMapping("/send-mail")
     public String send(Model model, @ModelAttribute Email email) {
-
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
 
         Optional<User> existsMail = userRepository.findByEmail(email.getAddress());
 
@@ -97,17 +85,13 @@ public class EmailController {
         }
         if (!existsMail.isPresent()){
 
-            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+            mainPageDisplay.displayGameStatus(model);
             model.addAttribute("mailNotExist", emailNotExist);
             return "auth/lost-account";
         }
 
         model.addAttribute("mailSended", mailSended);
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         emailSender.sendEmail(email);
         userTokenRepository.updateToken(linkPassword, existsMail.get().getId(), new Date(), 1);
@@ -135,10 +119,7 @@ public class EmailController {
             return "redirect:/send-mail";
         }
 
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "auth/change-password-by-link";
     }
@@ -154,11 +135,7 @@ public class EmailController {
             return "redirect:/login";
         }
 
-
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "redirect:/linkPassword=" + linkPassword;
     }

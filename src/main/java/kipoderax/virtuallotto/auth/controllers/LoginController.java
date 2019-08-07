@@ -1,12 +1,8 @@
 package kipoderax.virtuallotto.auth.controllers;
 
+import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.LoginForm;
-import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserService;
-import kipoderax.virtuallotto.game.service.StatisticsService;
-import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,35 +13,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
-    private final UserService userService;
-    private UserRepository userRepository;
-    private StatisticsService statisticsService;
-    private HistoryGameDtoService historyGameDtoService;
+    private UserService userService;
+    private MainPageDisplay mainPageDisplay;
 
     @Value("${error.wrongLogin}")
     private String loginError;
 
-    @Autowired
     public LoginController(UserService userService,
-                           UserRepository userRepository,
-                           StatisticsService statisticsService,
-                           HistoryGameDtoService historyGameDtoService) {
+                           MainPageDisplay mainPageDisplay) {
 
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.statisticsService = statisticsService;
-        this.historyGameDtoService = historyGameDtoService;
+        this.mainPageDisplay = mainPageDisplay;
     }
 
     @GetMapping("/login")
     public String getLogin(Model model) {
 
         model.addAttribute("loginForm", new LoginForm());
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
 
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "auth/login";
     }
@@ -56,10 +42,7 @@ public class LoginController {
 
         UserService.Response loginResponse = userService.login(loginForm);
 
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         if (loginResponse != UserService.Response.SUCCESS) {
 

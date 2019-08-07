@@ -1,14 +1,11 @@
 package kipoderax.virtuallotto.game.controllers;
 
+import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.NumbersForm;
-import kipoderax.virtuallotto.auth.repositories.UserRepository;
-import kipoderax.virtuallotto.auth.service.SessionCounter;
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.game.service.StatisticsService;
-import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import kipoderax.virtuallotto.game.service.user_numbers.UserNumbersService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,10 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BetController {
 
      private UserSession userSession;
-     private UserRepository userRepository;
+     private MainPageDisplay mainPageDisplay;
      private UserNumbersService userNumbersService;
-     private StatisticsService statisticsService;
-     private HistoryGameDtoService historyGameDtoService;
 
      @Value("${game.rangeNumbers}")
      private String awayRangeNumber;
@@ -33,16 +28,12 @@ public class BetController {
      private String duplicateNumbersExist;
 
     public BetController(UserSession userSession,
-                         UserRepository userRepository,
-                         UserNumbersService userNumbersService,
-                         StatisticsService statisticsService,
-                         HistoryGameDtoService historyGameDtoService) {
+                         MainPageDisplay mainPageDisplay,
+                         UserNumbersService userNumbersService) {
 
-        this.userRepository = userRepository;
+        this.mainPageDisplay = mainPageDisplay;
         this.userSession = userSession;
         this.userNumbersService = userNumbersService;
-        this.statisticsService = statisticsService;
-        this.historyGameDtoService = historyGameDtoService;
     }
 
     @GetMapping("/zaklady")
@@ -55,10 +46,7 @@ public class BetController {
 
         model.addAttribute("numbersForm", new NumbersForm());
 
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
@@ -85,10 +73,7 @@ public class BetController {
 
         if (!inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.get5BestPlayers());
-            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+            mainPageDisplay.displayGameStatus(model);
 
             model.addAttribute("duplicate", duplicateNumbersExist);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
@@ -97,10 +82,7 @@ public class BetController {
 
         if (!inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
 
-            model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-            model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-            model.addAttribute("top5level", statisticsService.get5BestPlayers());
-            model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+            mainPageDisplay.displayGameStatus(model);
 
             model.addAttribute("range", awayRangeNumber);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
@@ -123,10 +105,7 @@ public class BetController {
         numbersForm.setNumber6(0);
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "game/bet-for-register-users";
     }
@@ -140,10 +119,7 @@ public class BetController {
             userNumbersService.generateNumber(gameModel, numbersForm);
         }
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
-        model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
-        model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
-        model.addAttribute("top5level", statisticsService.get5BestPlayers());
-        model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
+        mainPageDisplay.displayGameStatus(model);
 
         return "game/bet-for-register-users";
     }
