@@ -1,8 +1,10 @@
 package kipoderax.virtuallotto.commons.forms;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @AllArgsConstructor @NoArgsConstructor
 public class HistoryGameForm {
 
     private int historyGameId;

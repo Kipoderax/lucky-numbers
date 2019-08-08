@@ -1,14 +1,15 @@
 package kipoderax.virtuallotto.game.controllers.account_management;
 
-import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.displays.AccountDisplay;
 import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
+import kipoderax.virtuallotto.commons.forms.HistoryGameForm;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
-import kipoderax.virtuallotto.game.repository.GameRepository;
+import kipoderax.virtuallotto.game.service.AccountService;
 import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,15 @@ public class AccountController {
     private UserSession userSession;
     private MainPageDisplay mainPageDisplay;
     private FormDisplay formDisplay;
+    private AccountDisplay accountDisplay;
 
     private UserRepository userRepository;
-    private HistoryGameRepository historyGameRepository;
-    private GameRepository gameRepository;
 
     private UserService userService;
+    private AccountService accountService;
+
+    private HistoryGameForm historyGameForm = new HistoryGameForm();
+    private Experience experience = new Experience();
 
     @Value("${game.whileLottery}")
     private String whileLottery;
@@ -38,27 +42,26 @@ public class AccountController {
     public AccountController(UserSession userSession,
                              MainPageDisplay mainPageDisplay,
                              FormDisplay formDisplay,
+                             AccountDisplay accountDisplay,
 
                              UserRepository userRepository,
-                             HistoryGameRepository historyGameRepository,
-                             GameRepository gameRepository,
 
-                             UserService userService){
+                             UserService userService,
+                             AccountService accountService){
 
         this.userSession = userSession;
         this.mainPageDisplay = mainPageDisplay;
         this.formDisplay = formDisplay;
+        this.accountDisplay = accountDisplay;
 
         this.userRepository = userRepository;
-        this.historyGameRepository = historyGameRepository;
-        this.gameRepository = gameRepository;
 
         this.userService = userService;
+        this.accountService = accountService;
     }
 
     @GetMapping({"/konto"})
     public String index(Model model) {
-        Experience experience = new Experience();
 
         if (!userSession.isUserLogin()) {
 
@@ -67,67 +70,15 @@ public class AccountController {
 
         String username = userSession.getUser().getUsername();
         int userId = userSession.getUser().getId();
-
-        int numberGame;
-        if (historyGameRepository.amountBets(username) != null) {
-            numberGame = historyGameRepository.amountBets(username);
-        } else { numberGame = 0; }
-
-        int three;
-        if (historyGameRepository.amountGoalThrees(username) != null) {
-            three = historyGameRepository.amountGoalThrees(username);
-        } else { three = 0; }
-
-        int four;
-        if (historyGameRepository.amountGoalFours(username) != null) {
-            four = historyGameRepository.amountGoalFours(username);
-        } else { four = 0; }
-
-        int five;
-        if (historyGameRepository.amountGoalFives(username) != null) {
-            five = historyGameRepository.amountGoalFives(username);
-        } else { five = 0; }
-
-        int six;
-        if (historyGameRepository.amountGoalSixes(username) != null) {
-            six = historyGameRepository.amountGoalSixes(username);
-        } else { six = 0; }
-
-        int userExperience;
-        if (historyGameRepository.userExperience(username) != null) {
-            userExperience = historyGameRepository.userExperience(username);
-        } else { userExperience = 0; }
-
-        userRepository.updateLastLoginByLogin(new Date(), userId);
-
         model.addAttribute("currentUser", userSession.getUser().getUsername());
 
-        //MAIN INFORMATION CONTENT
-        model.addAttribute("username", userRepository.findUsernameByUsername(username));
-        model.addAttribute("email", userRepository.findEmailByUserId(userId));
-        model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
-        model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
-        model.addAttribute("saldo", userRepository.findSaldoByUserId(userId));
-        model.addAttribute("level", experience.currentLevel(userExperience));
-        model.addAttribute("toNextLevel", experience.needExpToNextLevel(userExperience));
-        model.addAttribute("onehundred", experience.needExpForAllLevel(userExperience));
+        accountService.setDefaultValues(historyGameForm, username);
+        userRepository.updateLastLoginByLogin(new Date(), userId);
 
-        //GAME CONTENT
-        model.addAttribute("amountOfThree", three);
-        model.addAttribute("amountOfFour", four);
-        model.addAttribute("amountOfFive", five);
-        model.addAttribute("amountOfSix", six);
-        model.addAttribute("numberGame", numberGame);
-        model.addAttribute("exp", userExperience);
-
+        accountDisplay.mainInformation(model, username, userId, experience, historyGameForm);
+        accountDisplay.amountGoal(model, historyGameForm);
+        accountDisplay.statisticsInformation(model, username,historyGameForm);
         mainPageDisplay.displayGameStatus(model);
-
-        //STATISTICS CONTENT
-        model.addAttribute("expense", numberGame * 3);
-        model.addAttribute("addup", gameRepository.findProfit(username));
-        model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
-
-
 
         CheckDate checkDate = new CheckDate();
         if (checkDate.isLottery()) {
@@ -156,7 +107,7 @@ public class AccountController {
     }
 
     @PostMapping("/change-password")
-    private String changePassword(@ModelAttribute RegisterForm registerForm) {
+    public String changePassword(@ModelAttribute RegisterForm registerForm) {
 
         if (userService.changePassword(registerForm)) {
 
@@ -203,63 +154,19 @@ public class AccountController {
 
     @PostMapping("/player")
     public String showPlayer(Model model, @RequestParam("username") String username) {
-        Experience experience = new Experience();
         formDisplay.registerForm(model);
 
         if (userRepository.existsByUsername(username)) {
 
-            int numberGame;
-            if (historyGameRepository.amountBets(username) != null) {
-                numberGame = historyGameRepository.amountBets(username);
-            } else { numberGame = 0; }
+            accountService.setDefaultValues(historyGameForm, username);
 
-            int three;
-            if (historyGameRepository.amountGoalThrees(username) != null) {
-                three = historyGameRepository.amountGoalThrees(username);
-            } else { three = 0; }
-
-            int four;
-            if (historyGameRepository.amountGoalFours(username) != null) {
-                four = historyGameRepository.amountGoalFours(username);
-            } else { four = 0; }
-
-            int five;
-            if (historyGameRepository.amountGoalFives(username) != null) {
-                five = historyGameRepository.amountGoalFives(username);
-            } else { five = 0; }
-
-            int six;
-            if (historyGameRepository.amountGoalSixes(username) != null) {
-                six = historyGameRepository.amountGoalSixes(username);
-            } else { six = 0; }
-
-            int userExperience;
-            if (historyGameRepository.userExperience(username) != null) {
-                userExperience = historyGameRepository.userExperience(username);
-            } else { userExperience = 0; }
-
-            model.addAttribute("player", userRepository.findUsernameByUsername(username));
-
-            //MAIN INFORMATION CONTENT
-            model.addAttribute("username", userRepository.findUsernameByUsername(username));
-            model.addAttribute("createAccount", userRepository.findDateOfCreateAccountByUserId(username));
-            model.addAttribute("lastLogin", userRepository.findLastLoginDateByUserId(username));
-            model.addAttribute("level", experience.currentLevel(userExperience));
-
-            //GAME CONTENT
-            model.addAttribute("amountOfThree", three);
-            model.addAttribute("amountOfFour", four);
-            model.addAttribute("amountOfFive", five);
-            model.addAttribute("amountOfSix", six);
-            model.addAttribute("numberGame", numberGame);
-            model.addAttribute("exp", userExperience);
+            accountDisplay.mainInformation(model, username, 1, experience, historyGameForm);
+            accountDisplay.amountGoal(model, historyGameForm);
+            mainPageDisplay.displayGameStatus(model);
 
             //STATISTICS CONTENT
-            model.addAttribute("expense", numberGame * 3);
-            model.addAttribute("addup", gameRepository.findProfit(username));
-            model.addAttribute("result", (gameRepository.findProfit(username) - (numberGame * 3)));
+            accountDisplay.statisticsInformation(model, username, historyGameForm);
 
-            mainPageDisplay.displayGameStatus(model);
 
             return "auth/player-account";
         } else {
@@ -269,4 +176,5 @@ public class AccountController {
             return "game/search-player";
         }
     }
+
 }
