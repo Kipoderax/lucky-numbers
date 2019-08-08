@@ -5,6 +5,7 @@ import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.repositories.UserTokenRepository;
 import kipoderax.virtuallotto.auth.service.LostAccount;
 import kipoderax.virtuallotto.auth.service.UserService;
+import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,11 +21,12 @@ import java.util.Optional;
 @PropertySource(value={"classpath:messages.properties"})
 public class EmailController {
 
-    private final EmailSender emailSender;
-    private final UserRepository userRepository;
-    private final UserTokenRepository userTokenRepository;
-    private final UserService userService;
+    private EmailSender emailSender;
+    private UserRepository userRepository;
+    private UserTokenRepository userTokenRepository;
+    private UserService userService;
     private MainPageDisplay mainPageDisplay;
+    private FormDisplay formDisplay;
 
     private int userId = 0;
     private String linkPassword = "";
@@ -45,20 +47,21 @@ public class EmailController {
                            UserRepository userRepository,
                            UserTokenRepository userTokenRepository,
                            UserService userService,
-                           MainPageDisplay mainPageDisplay) {
+                           MainPageDisplay mainPageDisplay,
+                           FormDisplay formDisplay) {
 
         this.emailSender = emailSender;
         this.userRepository = userRepository;
         this.userTokenRepository = userTokenRepository;
         this.userService = userService;
         this.mainPageDisplay = mainPageDisplay;
+        this.formDisplay = formDisplay;
     }
 
     @GetMapping({"/send-mail"})
     public String sendEmail(Model model) {
 
-        model.addAttribute("mail", new Email());
-
+        formDisplay.mailForm(model);
         mainPageDisplay.displayGameStatus(model);
 
         return "auth/lost-account";
@@ -104,7 +107,7 @@ public class EmailController {
 
         userId = userTokenRepository.findUserMailByToken(linkPasswords);
 
-        model.addAttribute("passwordForm", new RegisterForm());
+        formDisplay.registerForm(model);
 
         if (emailSender.tokenRemaining(new Date(), userTokenRepository.getTime(userId)) > 86400000) { //24h
 

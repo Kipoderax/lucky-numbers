@@ -4,6 +4,7 @@ import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserService;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
@@ -21,6 +22,7 @@ public class AccountController {
 
     private UserSession userSession;
     private MainPageDisplay mainPageDisplay;
+    private FormDisplay formDisplay;
 
     private UserRepository userRepository;
     private HistoryGameRepository historyGameRepository;
@@ -35,6 +37,7 @@ public class AccountController {
 
     public AccountController(UserSession userSession,
                              MainPageDisplay mainPageDisplay,
+                             FormDisplay formDisplay,
 
                              UserRepository userRepository,
                              HistoryGameRepository historyGameRepository,
@@ -44,6 +47,7 @@ public class AccountController {
 
         this.userSession = userSession;
         this.mainPageDisplay = mainPageDisplay;
+        this.formDisplay = formDisplay;
 
         this.userRepository = userRepository;
         this.historyGameRepository = historyGameRepository;
@@ -126,7 +130,6 @@ public class AccountController {
 
 
         CheckDate checkDate = new CheckDate();
-        System.out.println("s"+checkDate.getCurrent()+"e");
         if (checkDate.isLottery()) {
 
             model.addAttribute("wait", whileLottery);
@@ -147,7 +150,7 @@ public class AccountController {
     public String changePassword(Model model) {
 
         mainPageDisplay.displayGameStatus(model);
-        model.addAttribute("passwordForm", new RegisterForm());
+        formDisplay.registerForm(model);
 
         return "auth/change-password";
     }
@@ -157,10 +160,10 @@ public class AccountController {
 
         if (userService.changePassword(registerForm)) {
 
-            return "redirect:/";
+            return "redirect:/konto";
         }
 
-        return "redirect:/konto";
+        return "redirect:/change-password";
     }
 
     @GetMapping("/delete-account")
@@ -172,7 +175,7 @@ public class AccountController {
         }
 
         mainPageDisplay.displayGameStatus(model);
-        model.addAttribute("delete", new RegisterForm());
+        formDisplay.registerForm(model);
 
         return "auth/delete-account";
     }
@@ -191,10 +194,9 @@ public class AccountController {
 
     @GetMapping("/player")
     public String showPlayer(Model model) {
-        RegisterForm registerForm = new RegisterForm();
 
         mainPageDisplay.displayGameStatus(model);
-        model.addAttribute("nick", registerForm);
+        formDisplay.registerForm(model);
 
         return "game/search-player";
     }
@@ -202,7 +204,7 @@ public class AccountController {
     @PostMapping("/player")
     public String showPlayer(Model model, @RequestParam("username") String username) {
         Experience experience = new Experience();
-        model.addAttribute("nick", new RegisterForm());
+        formDisplay.registerForm(model);
 
         if (userRepository.existsByUsername(username)) {
 

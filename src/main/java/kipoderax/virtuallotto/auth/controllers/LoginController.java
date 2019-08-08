@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.auth.controllers;
 
+import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.LoginForm;
 import kipoderax.virtuallotto.auth.service.UserService;
@@ -14,23 +15,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private UserService userService;
+
     private MainPageDisplay mainPageDisplay;
+    private FormDisplay formDisplay;
 
     @Value("${error.wrongLogin}")
     private String loginError;
 
     public LoginController(UserService userService,
-                           MainPageDisplay mainPageDisplay) {
+
+                           MainPageDisplay mainPageDisplay,
+                           FormDisplay formDisplay) {
 
         this.userService = userService;
+
         this.mainPageDisplay = mainPageDisplay;
+        this.formDisplay = formDisplay;
     }
 
     @GetMapping("/login")
     public String getLogin(Model model) {
 
-        model.addAttribute("loginForm", new LoginForm());
-
+        formDisplay.loginForm(model);
         mainPageDisplay.displayGameStatus(model);
 
         return "auth/login";

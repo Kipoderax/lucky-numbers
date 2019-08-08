@@ -179,7 +179,10 @@ public class UserService {
 
     public boolean changePassword(RegisterForm registerForm) {
 
-        if (isCorrectCurrentPassword(registerForm))
+        if (!isCorrectCurrentPassword(registerForm)) {
+
+            return false;
+        }
         if (!registerForm.getNewPassword().equals(registerForm.getConfirmNewPassword())) {
 
             return false;

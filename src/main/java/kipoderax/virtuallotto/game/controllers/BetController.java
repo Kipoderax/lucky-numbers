@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.game.controllers;
 
+import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.service.UserSession;
@@ -19,6 +20,7 @@ public class BetController {
 
      private UserSession userSession;
      private MainPageDisplay mainPageDisplay;
+     private FormDisplay formDisplay;
      private UserNumbersService userNumbersService;
 
      @Value("${game.rangeNumbers}")
@@ -29,10 +31,12 @@ public class BetController {
 
     public BetController(UserSession userSession,
                          MainPageDisplay mainPageDisplay,
+                         FormDisplay formDisplay,
                          UserNumbersService userNumbersService) {
 
-        this.mainPageDisplay = mainPageDisplay;
         this.userSession = userSession;
+        this.mainPageDisplay = mainPageDisplay;
+        this.formDisplay = formDisplay;
         this.userNumbersService = userNumbersService;
     }
 
@@ -44,7 +48,7 @@ public class BetController {
             return "redirect:/login";
         }
 
-        model.addAttribute("numbersForm", new NumbersForm());
+        formDisplay.numbersForm(model);
 
         mainPageDisplay.displayGameStatus(model);
 

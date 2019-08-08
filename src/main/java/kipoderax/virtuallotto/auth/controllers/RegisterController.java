@@ -1,5 +1,6 @@
 package kipoderax.virtuallotto.auth.controllers;
 
+import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.auth.service.UserService;
@@ -13,19 +14,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegisterController {
 
     private UserService userService;
+
     private MainPageDisplay mainPageDisplay;
+    private FormDisplay formDisplay;
 
     public RegisterController(UserService userService,
-                              MainPageDisplay mainPageDisplay) {
+
+                              MainPageDisplay mainPageDisplay,
+                              FormDisplay formDisplay) {
 
         this.userService = userService;
+
         this.mainPageDisplay = mainPageDisplay;
+        this.formDisplay = formDisplay;
     }
 
     @GetMapping("/register")
     public String register(Model model) {
 
-        model.addAttribute("registerForm", new RegisterForm());
+        formDisplay.registerForm(model);
         mainPageDisplay.displayGameStatus(model);
 
         return "auth/register";
