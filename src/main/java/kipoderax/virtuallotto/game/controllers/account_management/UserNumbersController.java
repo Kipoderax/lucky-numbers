@@ -2,7 +2,7 @@ package kipoderax.virtuallotto.game.controllers.account_management;
 
 import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
+import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
@@ -56,7 +56,7 @@ public class UserNumbersController {
     }
 
     @PostMapping("/mojeliczby")
-    public String QuickAddBets(Model model, @ModelAttribute NumbersForm numbersForm) {
+    public String QuickAddBets(Model model, @ModelAttribute LottoNumbersDto lottoNumbersDto) {
         GameModel gameModel = new GameModel();
         CheckDate checkDate = new CheckDate();
 
@@ -66,8 +66,8 @@ public class UserNumbersController {
 
         } else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-            userNumbersService.generateNumber(gameModel, numbersForm);
-            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+            userNumbersService.generateNumber(gameModel, lottoNumbersDto);
+            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
                     userSession.getUser().getId());
 
         }

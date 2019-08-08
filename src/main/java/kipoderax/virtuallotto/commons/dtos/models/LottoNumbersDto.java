@@ -1,11 +1,11 @@
-package kipoderax.virtuallotto.commons.forms;
+package kipoderax.virtuallotto.commons.dtos.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor
-public class NumbersForm {
+@Data @AllArgsConstructor @NoArgsConstructor
+public class LottoNumbersDto {
 
     private int number1;
     private int number2;
@@ -13,4 +13,5 @@ public class NumbersForm {
     private int number4;
     private int number5;
     private int number6;
+
 }

@@ -1,7 +1,7 @@
 package kipoderax.virtuallotto.commons.displays;
 
+import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import kipoderax.virtuallotto.commons.forms.LoginForm;
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.commons.forms.RegisterForm;
 import kipoderax.virtuallotto.commons.mail.Email;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,8 @@ public class FormDisplay {
         model.addAttribute("mail", new Email());
     }
 
-    public void numbersForm(Model model) {
+    public void numbersForm(Model model, LottoNumbersDto lottoNumbersDto) {
 
-        model.addAttribute("numbersForm", new NumbersForm());
+        model.addAttribute("numbersForm", lottoNumbersDto);
     }
 }

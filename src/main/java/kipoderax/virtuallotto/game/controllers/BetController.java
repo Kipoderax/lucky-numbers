@@ -2,8 +2,8 @@ package kipoderax.virtuallotto.game.controllers;
 
 import kipoderax.virtuallotto.commons.displays.FormDisplay;
 import kipoderax.virtuallotto.commons.displays.MainPageDisplay;
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.auth.service.UserSession;
+import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import kipoderax.virtuallotto.commons.validation.CheckDate;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
@@ -48,8 +48,7 @@ public class BetController {
             return "redirect:/login";
         }
 
-        formDisplay.numbersForm(model);
-
+        formDisplay.numbersForm(model, new LottoNumbersDto());
         mainPageDisplay.displayGameStatus(model);
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
@@ -71,11 +70,11 @@ public class BetController {
     }
 
     @PostMapping("/zakladyinput")
-    public String saveInputNumbers(@ModelAttribute NumbersForm numbersForm, Model model) {
+    public String saveInputNumbers(@ModelAttribute LottoNumbersDto lottoNumbersDto, Model model) {
         GameModel gameModel = new GameModel();
         InputNumberValidation inputNumberValidation = new InputNumberValidation();
 
-        if (!inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(numbersForm))) {
+        if (!inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(lottoNumbersDto))) {
 
             mainPageDisplay.displayGameStatus(model);
 
@@ -84,7 +83,7 @@ public class BetController {
             return "game/bet-for-register-users";
         }
 
-        if (!inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(numbersForm))) {
+        if (!inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto))) {
 
             mainPageDisplay.displayGameStatus(model);
 
@@ -93,20 +92,12 @@ public class BetController {
             return "game/bet-for-register-users";
         }
 
-
-
         if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(numbersForm),
+            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
                     userSession.getUser().getId());
+            return "redirect:/zaklady";
         }
-
-        numbersForm.setNumber1(0);
-        numbersForm.setNumber2(0);
-        numbersForm.setNumber3(0);
-        numbersForm.setNumber4(0);
-        numbersForm.setNumber5(0);
-        numbersForm.setNumber6(0);
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
         mainPageDisplay.displayGameStatus(model);
@@ -114,16 +105,14 @@ public class BetController {
         return "game/bet-for-register-users";
     }
 
-    @PostMapping("/zaklady-generate")
-    public String saveGenerateNumbers(Model model, @ModelAttribute NumbersForm numbersForm) {
+    @GetMapping("/zaklady-generate")
+    public String saveGenerateNumbers(Model model, @ModelAttribute LottoNumbersDto lottoNumbersDto) {
         GameModel gameModel = new GameModel();
 
-        if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
-
-            userNumbersService.generateNumber(gameModel, numbersForm);
-        }
+        userNumbersService.generateNumber(gameModel, lottoNumbersDto);
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
         mainPageDisplay.displayGameStatus(model);
+        formDisplay.numbersForm(model, lottoNumbersDto);
 
         return "game/bet-for-register-users";
     }

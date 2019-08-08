@@ -1,6 +1,6 @@
 package kipoderax.virtuallotto.game.model;
 
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
+import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import kipoderax.virtuallotto.game.service.ConvertToJson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import java.util.*;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class GameModel {
 
-    public int[] createNumbersOfNumbersForm(NumbersForm numbersForm) {
-        int numbers[] = {numbersForm.getNumber1(), numbersForm.getNumber2(), numbersForm.getNumber3(),
-                numbersForm.getNumber4(), numbersForm.getNumber5(), numbersForm.getNumber6()};
+    public int[] createNumbersOfNumbersForm(LottoNumbersDto lottoNumbersDto) {
+        int numbers[] = {lottoNumbersDto.getNumber1(), lottoNumbersDto.getNumber2(), lottoNumbersDto.getNumber3(),
+                lottoNumbersDto.getNumber4(), lottoNumbersDto.getNumber5(), lottoNumbersDto.getNumber6()};
 
         return numbers;
     }

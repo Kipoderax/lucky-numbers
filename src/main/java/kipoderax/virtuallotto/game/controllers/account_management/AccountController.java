@@ -164,9 +164,7 @@ public class AccountController {
             accountDisplay.amountGoal(model, historyGameForm);
             mainPageDisplay.displayGameStatus(model);
 
-            //STATISTICS CONTENT
             accountDisplay.statisticsInformation(model, username, historyGameForm);
-
 
             return "auth/player-account";
         } else {

@@ -2,18 +2,16 @@ package kipoderax.virtuallotto.game.service.user_numbers;
 
 import kipoderax.virtuallotto.auth.entity.HistoryGame;
 import kipoderax.virtuallotto.auth.entity.User;
+import kipoderax.virtuallotto.commons.dtos.mapper.ApiNumbersMapper;
 import kipoderax.virtuallotto.commons.forms.HistoryGameForm;
 import kipoderax.virtuallotto.commons.forms.ResultForm;
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.auth.service.UserSession;
-import kipoderax.virtuallotto.commons.dtos.mapper.ApiNumberMapper;
-import kipoderax.virtuallotto.commons.dtos.mapper.UserNumbersMapper;
-import kipoderax.virtuallotto.commons.dtos.models.ApiNumberDto;
-import kipoderax.virtuallotto.commons.dtos.models.UserNumbersDto;
+import kipoderax.virtuallotto.commons.dtos.mapper.BetNumbersMapper;
+import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import kipoderax.virtuallotto.commons.validation.InputNumberValidation;
 import kipoderax.virtuallotto.game.model.GameModel;
-import kipoderax.virtuallotto.commons.forms.NumbersForm;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
@@ -32,8 +30,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserNumbersService {
 
-    private UserNumbersMapper userNumbersMapper;
-    private ApiNumberMapper apiNumberMapper;
+    private BetNumbersMapper betNumbersMapper;
+    private ApiNumbersMapper apiNumbersMapper;
 
     private UserBetsRepository userBetsRepository;
     private GameRepository gameRepository;
@@ -46,8 +44,8 @@ public class UserNumbersService {
 
     private UserSession userSession;
 
-    public UserNumbersService(UserNumbersMapper userNumbersMapper,
-                              ApiNumberMapper apiNumberMapper,
+    public UserNumbersService(BetNumbersMapper betNumbersMapper,
+                              ApiNumbersMapper apiNumbersMapper,
 
                               UserBetsRepository userBetsRepository,
                               GameRepository gameRepository,
@@ -60,8 +58,8 @@ public class UserNumbersService {
 
                               UserSession userSession) {
 
-        this.userNumbersMapper = userNumbersMapper;
-        this.apiNumberMapper = apiNumberMapper;
+        this.betNumbersMapper = betNumbersMapper;
+        this.apiNumbersMapper = apiNumbersMapper;
 
         this.userBetsRepository = userBetsRepository;
         this.gameRepository = gameRepository;
@@ -76,43 +74,43 @@ public class UserNumbersService {
     }
 
 
-    public void userNumbersDtos(List<UserNumbersDto> userNumbersDtos, int userId) {
+    public void userNumbersDtos(List<LottoNumbersDto> lottoNumbersDtos, int userId) {
 
         userBetsRepository.findAllById(userId).stream()
-                .map(n -> userNumbersDtos.add(userNumbersMapper.map(n)))
+                .map(n -> lottoNumbersDtos.add(betNumbersMapper.map(n)))
                 .collect(Collectors.toList());
 
     }
 
-    public List<UserNumbersDto> getAllUserNumbersById(int userId) {
-        List<UserNumbersDto> userNumbersDtos = new ArrayList<>();
+    public List<LottoNumbersDto> getAllUserNumbersById(int userId) {
+        List<LottoNumbersDto> lottoNumbersDtos = new ArrayList<>();
 
-        userNumbersDtos(userNumbersDtos, userId);
+        userNumbersDtos(lottoNumbersDtos, userId);
 
-        return userNumbersDtos;
+        return lottoNumbersDtos;
     }
 
 
-    private void userApiNumbers(List<ApiNumberDto> apiNumberDtos, int userId) {
+    private void userApiNumbers(List<LottoNumbersDto> lottoNumbersDtos, int userId) {
 
         apiNumberRepository.findAllByUserId(userId).stream()
-                .map(n -> apiNumberDtos.add(apiNumberMapper.map(n)))
+                .map(n -> lottoNumbersDtos.add(apiNumbersMapper.map(n)))
                 .collect(Collectors.toList());
 
     }
 
     public List<Integer> getUserApiNumber(int userId) {
-        List<ApiNumberDto> apiNumberDtos = new ArrayList<>();
+        List<LottoNumbersDto> numbersForms = new ArrayList<>();
 
-        userApiNumbers(apiNumberDtos, userId);
+        userApiNumbers(numbersForms, userId);
 
         List<Integer> intApiDtos = new ArrayList<>();
-        intApiDtos.add(apiNumberDtos.get(0).getNumber1());
-        intApiDtos.add(apiNumberDtos.get(0).getNumber2());
-        intApiDtos.add(apiNumberDtos.get(0).getNumber3());
-        intApiDtos.add(apiNumberDtos.get(0).getNumber4());
-        intApiDtos.add(apiNumberDtos.get(0).getNumber5());
-        intApiDtos.add(apiNumberDtos.get(0).getNumber6());
+        intApiDtos.add(numbersForms.get(0).getNumber1());
+        intApiDtos.add(numbersForms.get(0).getNumber2());
+        intApiDtos.add(numbersForms.get(0).getNumber3());
+        intApiDtos.add(numbersForms.get(0).getNumber4());
+        intApiDtos.add(numbersForms.get(0).getNumber5());
+        intApiDtos.add(numbersForms.get(0).getNumber6());
 
         return intApiDtos;
     }
@@ -127,8 +125,8 @@ public class UserNumbersService {
         HistoryGame historyGame = new HistoryGame();
         User user = userSession.getUser();
 
-        List<UserNumbersDto> userNumbersDtos = new ArrayList<>();
-        userNumbersDtos(userNumbersDtos, userId);
+        List<LottoNumbersDto> lottoNumbersDtos = new ArrayList<>();
+        userNumbersDtos(lottoNumbersDtos, userId);
         Integer maxBetsId = userBetsRepository.AmountBetsByUserId(userId);
 
         int currentUserNumberGame;
@@ -153,12 +151,12 @@ public class UserNumbersService {
                 List<Integer> currentNumbers = new ArrayList<>();
 
                 for (int value : gameModel.getLastNumbers().subList(0, 6)) {
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber1());
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber2());
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber3());
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber4());
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber5());
-                    currentNumbers.add(userNumbersDtos.get(i).getNumber6());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber1());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber2());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber3());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber4());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber5());
+                    currentNumbers.add(lottoNumbersDtos.get(i).getNumber6());
 
                     for (int j = 0; j <= 5; j++) {
                         if (value == currentNumbers.get(j)) {
@@ -367,32 +365,31 @@ public class UserNumbersService {
 
     public void goalBetsWithSuccess(int success, List<Integer> listUserBets) {
 
-        NumbersForm numbersForm = new NumbersForm(listUserBets.get(0), listUserBets.get(1),
+        LottoNumbersDto lottoNumbersDto = new LottoNumbersDto(listUserBets.get(0), listUserBets.get(1),
                 listUserBets.get(2), listUserBets.get(3), listUserBets.get(4), listUserBets.get(5));
 
         switch (success) {
             case 3:
 
-                winnerBetsService.addWinnerBetsWith3Numbers(numbersForm);
+                winnerBetsService.addWinnerBetsWith3Numbers(lottoNumbersDto);
                 break;
             case 4:
 
-                winnerBetsService.addWinnerBetsWith4Numbers(numbersForm);
+                winnerBetsService.addWinnerBetsWith4Numbers(lottoNumbersDto);
                 break;
             case 5:
 
-                winnerBetsService.addWinnerBetsWith5Numbers(numbersForm);
+                winnerBetsService.addWinnerBetsWith5Numbers(lottoNumbersDto);
                 break;
             case 6:
 
-                winnerBetsService.addWinnerBetsWith6Numbers(numbersForm);
+                winnerBetsService.addWinnerBetsWith6Numbers(lottoNumbersDto);
                 break;
         }
     }
 
-    public NumbersForm generateNumber(GameModel gameModel, NumbersForm numbersForm) {
+    public void generateNumber(GameModel gameModel, LottoNumbersDto lottoNumbersDto) {
         SecureRandom randomNumber = new SecureRandom();
-
         Set<Integer> numberSet = new TreeSet<>();
 
         while (numberSet.size() != 6) {
@@ -403,13 +400,12 @@ public class UserNumbersService {
 
         gameModel.getNumberSet().addAll(numberSet);
 
-        numbersForm.setNumber1(gameModel.getNumberSet().get(0));
-        numbersForm.setNumber2(gameModel.getNumberSet().get(1));
-        numbersForm.setNumber3(gameModel.getNumberSet().get(2));
-        numbersForm.setNumber4(gameModel.getNumberSet().get(3));
-        numbersForm.setNumber5(gameModel.getNumberSet().get(4));
-        numbersForm.setNumber6(gameModel.getNumberSet().get(5));
+        lottoNumbersDto.setNumber1(gameModel.getNumberSet().get(0));
+        lottoNumbersDto.setNumber2(gameModel.getNumberSet().get(1));
+        lottoNumbersDto.setNumber3(gameModel.getNumberSet().get(2));
+        lottoNumbersDto.setNumber4(gameModel.getNumberSet().get(3));
+        lottoNumbersDto.setNumber5(gameModel.getNumberSet().get(4));
+        lottoNumbersDto.setNumber6(gameModel.getNumberSet().get(5));
 
-        return numbersForm;
     }
 }

@@ -44,7 +44,7 @@
 
                     <tr>
                         <td bgcolor="#d4c0a1">
-                            <form th:action="@{/zaklady-generate}" method="post" th:object="${numbersForm}">
+                            <form th:action="@{/zaklady-generate}" method="get" th:object="${numbersForm}">
                                 <p th:text="'Zakladow do wyslania: ' + ${saldo}"></p>
                                 <table cellpadding="1" border="0">
                                     <tbody>
