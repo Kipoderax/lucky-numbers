@@ -77,6 +77,7 @@ public class BetController {
         if (!inputNumberValidation.isDifferentNumberPairs(gameModel.createNumbersOfNumbersForm(lottoNumbersDto))) {
 
             mainPageDisplay.displayGameStatus(model);
+            formDisplay.numbersForm(model, lottoNumbersDto);
 
             model.addAttribute("duplicate", duplicateNumbersExist);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
@@ -86,6 +87,7 @@ public class BetController {
         if (!inputNumberValidation.rangeNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto))) {
 
             mainPageDisplay.displayGameStatus(model);
+            formDisplay.numbersForm(model, lottoNumbersDto);
 
             model.addAttribute("range", awayRangeNumber);
             model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));

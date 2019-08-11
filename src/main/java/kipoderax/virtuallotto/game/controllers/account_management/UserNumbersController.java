@@ -64,7 +64,8 @@ public class UserNumbersController {
 
             return "redirect:/mojeliczby";
 
-        } else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
+        }
+        else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
             userNumbersService.generateNumber(gameModel, lottoNumbersDto);
             userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),

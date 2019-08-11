@@ -24,7 +24,7 @@ public class ConvertToJson {
     private List<String> moneyRewards = new ArrayList<>();
     private int[] moneyRew = new int[4];
 
-    public String getJSON(String url) {
+    private String getJSON(String url) {
 
         HttpURLConnection c = null;
         try {

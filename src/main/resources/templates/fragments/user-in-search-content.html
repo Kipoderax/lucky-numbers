@@ -41,19 +41,35 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">trafionych 3:</td>
-                    <td style="width:90%" th:text="${amountOfThree}"></td>
+                    <td style="width:90%">
+                        <i th:text="${amountOfThree}"></i>
+                        <span class="pull-right" style="color: #5a2800" th:if="${amountOfThree > 0}"
+                              th:text="'Szansa trafienia trojki: ' + ${percentChanceForThrees} + '%'"></span>
+                    </td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">trafionych 4:</td>
-                    <td th:text="${amountOfFour}"></td>
+                    <td>
+                        <i th:text="${amountOfFour}"></i>
+                        <span class="pull-right" style="color: #5a2800" th:if="${amountOfFour > 0}"
+                              th:text="'Szansa trafienia czworki: ' + ${percentChanceForFours} + '%'"></span>
+                    </td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">trafionych 5:</td>
-                    <td th:text="${amountOfFive}"></td>
+                    <td>
+                        <i th:text="${amountOfFive}"></i>
+                        <span class="pull-right" style="color: #5a2800" th:if="${amountOfFive > 0}"
+                              th:text="'Szansa trafienia piatki: ' + ${percentChanceForFives} + '%'"></span>
+                    </td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">trafionych 6:</td>
-                    <td th:text="${amountOfSix}"></td>
+                    <td>
+                        <i th:text="${amountOfSix}"></i>
+                        <span class="pull-right" style="color: #5a2800" th:if="${amountOfSix > 0}"
+                              th:text="'Szansa trafienia szostki: ' + ${percentChanceForSixes} + '%'"></span>
+                    </td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">rozegranych gier:</td>

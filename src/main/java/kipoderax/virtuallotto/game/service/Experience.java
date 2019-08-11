@@ -19,7 +19,7 @@ public class Experience {
 
     public int needExpForAllLevel(int experience) {
 
-        return (int) ((0.176777 * Math.pow(currentLevel(experience) + 1, 2.5) + 1) -
+        return (int) ((0.176777 * Math.pow(currentLevel(experience) + 1, 2.5)) -
                 (0.176777 * Math.pow(currentLevel(experience), 2.5)));
     }
 

@@ -14,13 +14,13 @@ public class CheckDate {
     Calendar calendar = Calendar.getInstance();
     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
     String after = "19:30:00";
-    String before = "20:30:00";
+    String before = "20:40:00";
 
     private LocalTime start = LocalTime.parse(after, format);
     private LocalTime end = LocalTime.parse(before, format);
     private LocalTime current = LocalTime.parse(
             date.toString()
-                    .substring(date.toString().length() - 18, date.toString().length() - 10),
+                    .substring(date.toString().length() - 17, date.toString().length() - 9),
             format);
 
     public boolean isLottery() {

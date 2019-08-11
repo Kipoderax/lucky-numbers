@@ -7,6 +7,8 @@ import kipoderax.virtuallotto.game.service.Experience;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.DecimalFormat;
+
 @Service
 public class AccountDisplay {
 
@@ -19,11 +21,24 @@ public class AccountDisplay {
     }
 
     public void amountGoal(Model model, HistoryGameForm historyGameForm) {
+        int amountBets = historyGameForm.getAmountBets();
+        double percentChanceForThrees = ((double) historyGameForm.getAmountGoalThrees() / amountBets) * 100;
+        double percentChanceForFours = ((double) historyGameForm.getAmountGoalFours() / amountBets) * 100;
+        double percentChanceForFives = ((double) historyGameForm.getAmountGoalFives() / amountBets) * 100;
+        double percentChanceForSixes = ((double) historyGameForm.getAmountGoalSixes() / amountBets) * 100;
 
         model.addAttribute("amountOfThree", historyGameForm.getAmountGoalThrees());
+        model.addAttribute("percentChanceForThrees", new DecimalFormat("##.##").format(percentChanceForThrees));
+
         model.addAttribute("amountOfFour", historyGameForm.getAmountGoalFours());
+        model.addAttribute("percentChanceForFours", new DecimalFormat("##.##").format(percentChanceForFours));
+
         model.addAttribute("amountOfFive", historyGameForm.getAmountGoalFives());
+        model.addAttribute("percentChanceForFives", new DecimalFormat("##.###").format(percentChanceForFives));
+
         model.addAttribute("amountOfSix", historyGameForm.getAmountGoalSixes());
+        model.addAttribute("percentChangeForSixes", new DecimalFormat("##.####").format(percentChanceForSixes));
+
         model.addAttribute("numberGame", historyGameForm.getAmountBets());
         model.addAttribute("exp", historyGameForm.getExperience());
     }
@@ -43,8 +58,8 @@ public class AccountDisplay {
     }
 
     public void statisticsInformation(Model model, String username, HistoryGameForm historyGameForm) {
-        model.addAttribute("expense", historyGameForm.getExperience() * 3);
+        model.addAttribute("expense", historyGameForm.getAmountBets() * 3);
         model.addAttribute("addup", gameRepository.findProfit(username));
-        model.addAttribute("result", (gameRepository.findProfit(username) - (historyGameForm.getExperience() * 3)));
+        model.addAttribute("result", (gameRepository.findProfit(username) - (historyGameForm.getAmountBets() * 3)));
     }
 }
