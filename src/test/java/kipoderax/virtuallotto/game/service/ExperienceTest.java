@@ -1,10 +1,13 @@
 package kipoderax.virtuallotto.game.service;
 
+import kipoderax.virtuallotto.tags.ServiceTests;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ExperienceTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ExperienceTest implements ServiceTests {
 
     private Experience exp;
 
@@ -16,17 +19,14 @@ class ExperienceTest {
     @Test
     void currentLevel() {
 
-        int experience = 100;
-        Assert.assertEquals(12, exp.currentLevel(experience));
+        int experience = 89;
+        assertThat(exp.currentLevel(experience)).isEqualTo(12);
 
-        experience = 50;
-        Assert.assertEquals(9, exp.currentLevel(experience));
+        experience = 100;
+        assertThat(exp.currentLevel(experience)).isEqualTo(12);
 
-        experience = 9;
-        Assert.assertEquals(4, exp.currentLevel(experience));
-
-        experience = 10;
-        Assert.assertEquals(5, exp.currentLevel(experience));
+        experience = 107;
+        assertThat(exp.currentLevel(experience)).isEqualTo(12);
 
         experience = 0;
         Assert.assertEquals(1, exp.currentLevel(experience));
@@ -37,19 +37,27 @@ class ExperienceTest {
 
     @Test
     void needExpToNextLevel() {
-        int experience = 65;
-        Assert.assertEquals(6, exp.needExpToNextLevel(experience));
+        int experience = 89;
+        assertThat(exp.needExpToNextLevel(experience)).isEqualTo(19);
 
-        experience = 2395;
-        Assert.assertEquals(7, exp.needExpToNextLevel(experience));
+        experience = 100;
+        assertThat(exp.needExpToNextLevel(experience)).isEqualTo(8);
+
+        experience = 108;
+        assertThat(exp.needExpToNextLevel(experience)).isEqualTo(22);
     }
 
     @Test
     void needExpForAllLevel() {
-        int experience = 65;
-        Assert.assertEquals(15, exp.needExpForAllLevel(experience));
 
-        experience = 2395;
-        Assert.assertEquals(131, exp.needExpForAllLevel(experience));
+        int needExperience = 89;
+        assertThat(exp.needExpForAllLevel(needExperience)).isEqualTo(19);
+
+        needExperience = 100;
+        assertThat(exp.needExpForAllLevel(needExperience)).isEqualTo(19);
+
+        needExperience = 108;
+        assertThat(exp.needExpForAllLevel(needExperience)).isEqualTo(21);
+
     }
 }

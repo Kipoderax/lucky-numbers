@@ -7,6 +7,7 @@ import kipoderax.virtuallotto.game.entity.UserExperience;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -52,5 +53,18 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user_token")
     private UserToken userToken;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", saldo=" + saldo +
+                ", dateOfCreatedAccount=" + dateOfCreatedAccount +
+                ", lastLogin=" + lastLogin +
+                '}';
+    }
 
 }

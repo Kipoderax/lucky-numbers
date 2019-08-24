@@ -177,9 +177,10 @@ public class UserNumbersService {
         earnFromGoalNumbers(goalNumbers, resultForm);
         resultEarn(maxBetsId * gameModel.getRewardsMoney()[0], resultForm.getTotalEarn(), resultForm);
         renewUserSaldo(username, userId, resultForm.getTotalEarn(), maxBetsId);
-        saveToHistoryUser(gameModel);
+        saveDateToHistoryUser(gameModel);
+        maxBetsForSend(userId, username);
 
-        historyGame.setDateGame(saveToHistoryUser(gameModel).substring(0, 10));
+        historyGame.setDateGame(saveDateToHistoryUser(gameModel).substring(0, 10));
         historyGame.setAmountBets(maxBetsId);
         historyGame.setAmountGoalThrees(goalNumbers[3]);
         historyGame.setAmountGoalFours(goalNumbers[4]);
@@ -188,14 +189,14 @@ public class UserNumbersService {
         historyGame.setExperience(resultForm.getTotalExp());
         historyGame.setResult(resultForm.getFinishResult());
         historyGame.setUser(user);
-        maxBetsForSend(userId, username);
+
         historyGameRepository.save(historyGame);
         gameRepository.updateProfit(currentProfit + resultForm.getTotalEarn(), userId);
 
         return resultForm;
     }
 
-    public String saveToHistoryUser(GameModel gameModel) {
+    public String saveDateToHistoryUser(GameModel gameModel) {
         HistoryGameForm historyGameForm = new HistoryGameForm();
         historyGameForm.setDateGame(gameModel.getDateGame().get(0));
 

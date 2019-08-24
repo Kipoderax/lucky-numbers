@@ -30,4 +30,17 @@ public class Game {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Game{" +
+                "idGame=" + idGame +
+                ", maxBetsToSend=" + maxBetsToSend +
+                ", countOfThree=" + countOfThree +
+                ", countOfFour=" + countOfFour +
+                ", countOfFive=" + countOfFive +
+                ", countOfSix=" + countOfSix +
+                ", numberGame=" + numberGame +
+                ", profit=" + profit +
+                '}';
+    }
 }

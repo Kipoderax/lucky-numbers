@@ -1,6 +1,5 @@
 package kipoderax.virtuallotto.game.service.dto;
 
-import kipoderax.virtuallotto.auth.entity.User;
 import kipoderax.virtuallotto.auth.repositories.HistoryGameRepository;
 import kipoderax.virtuallotto.auth.repositories.UserRepository;
 import kipoderax.virtuallotto.commons.dtos.mapper.HistoryMapper;
@@ -15,19 +14,19 @@ import java.util.stream.Collectors;
 public class HistoryGameDtoService {
 
     private HistoryGameRepository historyGameRepository;
-    private HistoryMapper historyMapper;
     private UserRepository userRepository;
+    private HistoryMapper historyMapper;
 
     public HistoryGameDtoService(HistoryGameRepository historyGameRepository,
                                  UserRepository userRepository,
                                  HistoryMapper historyMapper) {
 
         this.historyGameRepository = historyGameRepository;
-        this.historyMapper = historyMapper;
         this.userRepository = userRepository;
+        this.historyMapper = historyMapper;
     }
 
-    public List<HistoryGameDto> putAllHistoryGames(int userId, List<HistoryGameDto> historyGameDtos) {
+    private void putAllHistoryGames(int userId, List<HistoryGameDto> historyGameDtos) {
 
         historyGameRepository.findAllById(userId)
                 .stream()
@@ -36,7 +35,6 @@ public class HistoryGameDtoService {
 
         Collections.reverse(historyGameDtos);
 
-        return historyGameDtos;
     }
 
     public List<HistoryGameDto> getAllHistoryGames(int userId) {
@@ -53,7 +51,6 @@ public class HistoryGameDtoService {
         GameModel gameModel = new GameModel();
 
         if (userRepository.findMaxId() != null) {
-            System.out.println("maxId: " + userRepository.findMaxId());
             for (int j = 1; j <= userRepository.findMaxId(); j++) {
 
                 putAllHistoryGames(j, historyGameDtos);
@@ -63,7 +60,6 @@ public class HistoryGameDtoService {
         getExperience = historyGameDtos.stream()
                 .filter(n -> n.getDateGame().equals(gameModel.getDateGame().get(0)))
                 .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
-//                .limit(5)
                 .collect(Collectors.toList());
 
         if (getExperience.size() < 5) {

@@ -14,13 +14,18 @@ public class Experience {
         if (currentLevel(experience) == 1) {
             return 1;
         }
-        return (int) ((0.176777 * Math.pow(currentLevel(experience) + 1, 2.5) + 1) - (experience));
+        return (int) (
+                (0.176777 * Math.pow(currentLevel(experience) + 1, 2.5) + 1)
+                        - (experience)
+        );
     }
 
     public int needExpForAllLevel(int experience) {
 
-        return (int) ((0.176777 * Math.pow(currentLevel(experience) + 1, 2.5)) -
-                (0.176777 * Math.pow(currentLevel(experience), 2.5)));
+        return (int) (
+                (0.176777 * Math.pow(currentLevel(experience) + 1, 2.5)) -
+                (0.176777 * Math.pow(currentLevel(experience), 2.5))
+        );
     }
 
 }
