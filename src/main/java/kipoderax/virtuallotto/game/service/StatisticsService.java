@@ -6,6 +6,7 @@ import kipoderax.virtuallotto.commons.dtos.models.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class StatisticsService {
         getAllDtoUsers(userDtoList);
 
         if (userDtoList.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         if (userDtoList.size() < 5) {
             return userDtoList;
@@ -58,7 +59,7 @@ public class StatisticsService {
         if (userDtos.isEmpty()) {
             return null;
         }
-        return userDtos.subList(0, get50RecordsOfUsers());
+        return userDtos.subList(0, get100RecordsOfUsers());
     }
 
     public List<UserDto> getAllDtoUsersBy(String by) {
@@ -108,10 +109,10 @@ public class StatisticsService {
                 break;
         }
 
-        return userDtos.subList(0, get50RecordsOfUsers());
+        return userDtos.subList(0, get100RecordsOfUsers());
     }
 
-    public int get50RecordsOfUsers() {
+    public int get100RecordsOfUsers() {
 
         return userRepository.getAllRegisterUsers() > 100 ? 100 : userRepository.getAllRegisterUsers();
     }

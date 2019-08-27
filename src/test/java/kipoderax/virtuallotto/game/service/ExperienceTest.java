@@ -45,6 +45,9 @@ class ExperienceTest implements ServiceTests {
 
         experience = 108;
         assertThat(exp.needExpToNextLevel(experience)).isEqualTo(22);
+
+        experience = 0;
+        assertThat(exp.needExpToNextLevel(experience)).isEqualTo(1);
     }
 
     @Test

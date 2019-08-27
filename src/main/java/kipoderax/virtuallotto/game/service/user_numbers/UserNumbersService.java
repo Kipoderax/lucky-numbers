@@ -389,24 +389,25 @@ public class UserNumbersService {
         }
     }
 
-    public void generateNumber(GameModel gameModel, LottoNumbersDto lottoNumbersDto) {
+    public void generateNumber(LottoNumbersDto lottoNumbersDto) {
         SecureRandom randomNumber = new SecureRandom();
-        Set<Integer> numberSet = new TreeSet<>();
+        Set<Integer> orderNumberSet = new TreeSet<>();
+        int number;
 
-        while (numberSet.size() != 6) {
+        while (orderNumberSet.size() != 6) {
 
-            gameModel.setNumber(randomNumber.nextInt(49) + 1);
-            numberSet.add(gameModel.getNumber());
+            number = randomNumber.nextInt(49) + 1;
+            orderNumberSet.add(number);
         }
 
-        gameModel.getNumberSet().addAll(numberSet);
+        List<Integer> numberSet = new ArrayList<>(orderNumberSet);
 
-        lottoNumbersDto.setNumber1(gameModel.getNumberSet().get(0));
-        lottoNumbersDto.setNumber2(gameModel.getNumberSet().get(1));
-        lottoNumbersDto.setNumber3(gameModel.getNumberSet().get(2));
-        lottoNumbersDto.setNumber4(gameModel.getNumberSet().get(3));
-        lottoNumbersDto.setNumber5(gameModel.getNumberSet().get(4));
-        lottoNumbersDto.setNumber6(gameModel.getNumberSet().get(5));
+        lottoNumbersDto.setNumber1(numberSet.get(0));
+        lottoNumbersDto.setNumber2(numberSet.get(1));
+        lottoNumbersDto.setNumber3(numberSet.get(2));
+        lottoNumbersDto.setNumber4(numberSet.get(3));
+        lottoNumbersDto.setNumber5(numberSet.get(4));
+        lottoNumbersDto.setNumber6(numberSet.get(5));
 
     }
 }

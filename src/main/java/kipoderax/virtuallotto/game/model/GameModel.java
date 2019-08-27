@@ -12,7 +12,7 @@ import java.util.*;
 public class GameModel {
 
     public int[] createNumbersOfNumbersForm(LottoNumbersDto lottoNumbersDto) {
-        int numbers[] = {lottoNumbersDto.getNumber1(), lottoNumbersDto.getNumber2(), lottoNumbersDto.getNumber3(),
+        int[] numbers = {lottoNumbersDto.getNumber1(), lottoNumbersDto.getNumber2(), lottoNumbersDto.getNumber3(),
                 lottoNumbersDto.getNumber4(), lottoNumbersDto.getNumber5(), lottoNumbersDto.getNumber6()};
 
         return numbers;

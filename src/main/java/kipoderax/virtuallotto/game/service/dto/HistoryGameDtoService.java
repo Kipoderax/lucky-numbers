@@ -26,7 +26,7 @@ public class HistoryGameDtoService {
         this.historyMapper = historyMapper;
     }
 
-    private void putAllHistoryGames(int userId, List<HistoryGameDto> historyGameDtos) {
+    public void putAllHistoryGames(int userId, List<HistoryGameDto> historyGameDtos) {
 
         historyGameRepository.findAllById(userId)
                 .stream()
@@ -50,21 +50,32 @@ public class HistoryGameDtoService {
         List<HistoryGameDto> getExperience;
         GameModel gameModel = new GameModel();
 
+        findMaxId(historyGameDtos);
+
+        getExperience = getExperiences(historyGameDtos, gameModel);
+
+        if (getExperience.size() < 5) {
+            return getExperience;
+        }
+        return getExperience.subList(0, 5);
+    }
+
+    public List<HistoryGameDto> getExperiences(List<HistoryGameDto> historyGameDtos, GameModel gameModel) {
+        List<HistoryGameDto> getExperience;
+        getExperience = historyGameDtos.stream()
+                .filter(n -> n.getDateGame().equals(gameModel.getDateGame().get(0)))
+                .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
+                .collect(Collectors.toList());
+
+        return getExperience;
+    }
+
+    public void findMaxId(List<HistoryGameDto> historyGameDtos) {
         if (userRepository.findMaxId() != null) {
             for (int j = 1; j <= userRepository.findMaxId(); j++) {
 
                 putAllHistoryGames(j, historyGameDtos);
             }
         }
-
-        getExperience = historyGameDtos.stream()
-                .filter(n -> n.getDateGame().equals(gameModel.getDateGame().get(0)))
-                .sorted(Comparator.comparing(HistoryGameDto::getExperience).reversed())
-                .collect(Collectors.toList());
-
-        if (getExperience.size() < 5) {
-            return getExperience;
-        }
-        return getExperience.subList(0, 5);
     }
 }

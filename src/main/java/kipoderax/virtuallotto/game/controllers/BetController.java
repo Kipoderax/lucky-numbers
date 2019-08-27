@@ -109,9 +109,8 @@ public class BetController {
 
     @GetMapping("/zaklady-generate")
     public String saveGenerateNumbers(Model model, @ModelAttribute LottoNumbersDto lottoNumbersDto) {
-        GameModel gameModel = new GameModel();
 
-        userNumbersService.generateNumber(gameModel, lottoNumbersDto);
+        userNumbersService.generateNumber(lottoNumbersDto);
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
         mainPageDisplay.displayGameStatus(model);
         formDisplay.numbersForm(model, lottoNumbersDto);

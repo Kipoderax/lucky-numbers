@@ -3,62 +3,66 @@ package kipoderax.virtuallotto.game.service.user_numbers;
 import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class WinnerBetsServiceImplTest {
 
-    LottoNumbersDto lottoNumbersDto;
-    private List<LottoNumbersDto> with3Numbers;
-    private List<LottoNumbersDto> with4Numbers;
-    private List<LottoNumbersDto> with5Numbers;
-    private List<LottoNumbersDto> with6Numbers;
+    private LottoNumbersDto lottoNumbersDto;
 
     @BeforeEach
     void setUp() {
-
-        lottoNumbersDto = new LottoNumbersDto(11, 13, 17, 21 ,24, 31);
-        with6Numbers = new ArrayList<>();
-        with6Numbers.add(lottoNumbersDto);
-
+        //given
+        lottoNumbersDto = new LottoNumbersDto();
+        lottoNumbersDto.setNumber1(10);
+        lottoNumbersDto.setNumber2(13);
+        lottoNumbersDto.setNumber3(21);
+        lottoNumbersDto.setNumber4(26);
+        lottoNumbersDto.setNumber5(40);
+        lottoNumbersDto.setNumber6(45);
     }
 
-    @Test
-    void addWinnerBetsWith3Numbers() {
-    }
-
-    @Test
-    void addWinnerBetsWith4Numbers() {
-    }
-
-    @Test
-    void addWinnerBetsWith5Numbers() {
-    }
-
-    @Test
-    void addWinnerBetsWith6Numbers() {
-
-    }
+    @InjectMocks
+    private WinnerBetsServiceImpl winnerBetsServiceImpl;
 
     @Test
     void getWinnerBetsWith3Numbers() {
+        //when
+        winnerBetsServiceImpl.addWinnerBetsWith3Numbers(lottoNumbersDto);
+
+        //then
+        assertThat(winnerBetsServiceImpl.getWinnerBetsWith3Numbers().size()).isEqualTo(1);
+
     }
 
     @Test
     void getWinnerBetsWith4Numbers() {
+        //when
+        winnerBetsServiceImpl.addWinnerBetsWith4Numbers(lottoNumbersDto);
+
+        //then
+        assertThat(winnerBetsServiceImpl.getWinnerBetsWith4Numbers().size()).isEqualTo(1);
     }
 
     @Test
     void getWinnerBetsWith5Numbers() {
+        //when
+        winnerBetsServiceImpl.addWinnerBetsWith5Numbers(lottoNumbersDto);
+
+        //then
+        assertThat(winnerBetsServiceImpl.getWinnerBetsWith5Numbers().size()).isEqualTo(1);
     }
 
     @Test
     void getWinnerBetsWith6Numbers() {
+        //when
+        winnerBetsServiceImpl.addWinnerBetsWith6Numbers(lottoNumbersDto);
 
-        assertThat(with6Numbers.size()).isEqualTo(1);
+        //then
+        assertThat(winnerBetsServiceImpl.getWinnerBetsWith6Numbers().size()).isEqualTo(1);
     }
 }

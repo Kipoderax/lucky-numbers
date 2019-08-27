@@ -67,7 +67,7 @@ public class UserNumbersController {
         }
         else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
 
-            userNumbersService.generateNumber(gameModel, lottoNumbersDto);
+            userNumbersService.generateNumber(lottoNumbersDto);
             userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
                     userSession.getUser().getId());
 

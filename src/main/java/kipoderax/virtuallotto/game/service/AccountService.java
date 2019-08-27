@@ -14,29 +14,49 @@ public class AccountService {
     }
 
     public void setDefaultValues(HistoryGameForm historyGameForm, String username) {
-        if (historyGameRepository.amountBets(username) != null) {
-            historyGameForm.setAmountBets(historyGameRepository.amountBets(username));
-        } else { historyGameForm.setAmountBets(0); }
+        amountBets(historyGameForm, username);
+        amountGoalThrees(historyGameForm, username);
+        amountGoalFours(historyGameForm, username);
+        amountGoalFives(historyGameForm, username);
+        amountGoalSixes(historyGameForm, username);
+        experience(historyGameForm, username);
+    }
 
-
-        if (historyGameRepository.amountGoalThrees(username) != null) {
-            historyGameForm.setAmountGoalThrees( historyGameRepository.amountGoalThrees(username) );
-        } else { historyGameForm.setAmountGoalThrees(0); }
-
-        if (historyGameRepository.amountGoalFours(username) != null) {
-            historyGameForm.setAmountGoalFours( historyGameRepository.amountGoalFours(username) );
-        } else { historyGameForm.setAmountGoalFours(0); }
-
-        if (historyGameRepository.amountGoalFives(username) != null) {
-            historyGameForm.setAmountGoalFives( historyGameRepository.amountGoalFives(username) );
-        } else { historyGameForm.setAmountGoalFives(0); }
-
-        if (historyGameRepository.amountGoalSixes(username) != null) {
-            historyGameForm.setAmountGoalSixes( historyGameRepository.amountGoalSixes(username) );
-        } else { historyGameForm.setAmountGoalSixes(0); }
-
+    public int experience(HistoryGameForm historyGameForm, String username) {
         if (historyGameRepository.userExperience(username) != null) {
             historyGameForm.setExperience( historyGameRepository.userExperience(username) );
         } else { historyGameForm.setExperience(0); }
+
+        return historyGameForm.getExperience();
+    }
+
+    public void amountGoalSixes(HistoryGameForm historyGameForm, String username) {
+        if (historyGameRepository.amountGoalSixes(username) != null) {
+            historyGameForm.setAmountGoalSixes( historyGameRepository.amountGoalSixes(username) );
+        } else { historyGameForm.setAmountGoalSixes(0); }
+    }
+
+    public void amountGoalFives(HistoryGameForm historyGameForm, String username) {
+        if (historyGameRepository.amountGoalFives(username) != null) {
+            historyGameForm.setAmountGoalFives( historyGameRepository.amountGoalFives(username) );
+        } else { historyGameForm.setAmountGoalFives(0); }
+    }
+
+    public void amountGoalFours(HistoryGameForm historyGameForm, String username) {
+        if (historyGameRepository.amountGoalFours(username) != null) {
+            historyGameForm.setAmountGoalFours( historyGameRepository.amountGoalFours(username) );
+        } else { historyGameForm.setAmountGoalFours(0); }
+    }
+
+    public void amountGoalThrees(HistoryGameForm historyGameForm, String username) {
+        if (historyGameRepository.amountGoalThrees(username) != null) {
+            historyGameForm.setAmountGoalThrees( historyGameRepository.amountGoalThrees(username) );
+        } else { historyGameForm.setAmountGoalThrees(0); }
+    }
+
+    public void amountBets(HistoryGameForm historyGameForm, String username) {
+        if (historyGameRepository.amountBets(username) != null) {
+            historyGameForm.setAmountBets(historyGameRepository.amountBets(username));
+        } else { historyGameForm.setAmountBets(0); }
     }
 }
