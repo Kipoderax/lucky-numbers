@@ -22,12 +22,10 @@ public class AccountService {
         experience(historyGameForm, username);
     }
 
-    public int experience(HistoryGameForm historyGameForm, String username) {
+    public void experience(HistoryGameForm historyGameForm, String username) {
         if (historyGameRepository.userExperience(username) != null) {
             historyGameForm.setExperience( historyGameRepository.userExperience(username) );
         } else { historyGameForm.setExperience(0); }
-
-        return historyGameForm.getExperience();
     }
 
     public void amountGoalSixes(HistoryGameForm historyGameForm, String username) {
