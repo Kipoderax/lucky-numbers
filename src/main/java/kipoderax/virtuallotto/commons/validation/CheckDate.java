@@ -20,7 +20,7 @@ public class CheckDate {
     private LocalTime end = LocalTime.parse(before, format);
     private LocalTime current = LocalTime.parse(
             date.toString()
-                    .substring(date.toString().length() - 17, date.toString().length() - 9),
+                    .substring(date.toString().length() - 18, date.toString().length() - 10),
             format);
 
     public boolean isLottery() {

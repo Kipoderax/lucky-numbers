@@ -304,7 +304,6 @@ public class UserNumbersService {
 
     public void resultEarn(int totalCost, int winPrice, ResultForm resultForm) {
         resultForm.setFinishResult(winPrice + totalCost);
-
     }
 
     public boolean isNewNumberApi(List<Integer> lastApiNumberList, List<Integer> apiNumberList) {
@@ -325,25 +324,20 @@ public class UserNumbersService {
         return success == 6;
     }
 
-    public void maxBetsForSend(int userId, String username) {
+    public int maxBetsForSend(int userId, String username) {
         int level = userExperienceRepository.findLevelByLogin(username);
         int userSaldo = userRepository.findSaldoByUserId(userId);
         int leftBets;
 
         if (level > 5) {
-            if (userSaldo / 3 > level * 2) {
-
-                leftBets = level * 2;
-            } else {
-
-                leftBets = userSaldo / 3;
-            }
+            leftBets = Math.min(userSaldo / 3, level * 2);
         } else {
-
             leftBets = 10;
         }
 
         gameRepository.updateMaxBetsToSend(leftBets, userId);
+
+        return leftBets;
     }
 
     public int leftBetsToSend(int userId) {
@@ -385,6 +379,9 @@ public class UserNumbersService {
             case 6:
 
                 winnerBetsService.addWinnerBetsWith6Numbers(lottoNumbersDto);
+                break;
+
+            default:
                 break;
         }
     }

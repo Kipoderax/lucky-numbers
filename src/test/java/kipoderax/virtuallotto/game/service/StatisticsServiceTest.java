@@ -6,29 +6,31 @@ import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
 import kipoderax.virtuallotto.commons.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
+import org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, SpringExtension.class})
+@RunWith(SpringRunner.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class StatisticsServiceTest {
 
@@ -55,18 +57,22 @@ class StatisticsServiceTest {
     @Test
     void getAllDtoUsers() {
         //given
-        List<UserDto> dtoUsers = userDtoList();
-        List<UserDto> sortedListByLevel;
+        List<UserDto> dtoUsers = new ArrayList<>();
+        List<User> users = userList();
+//        users.add(userRepository.findAll().get(15));
+        System.out.println(userRepository.findSaldoByUserId(20));
+        given(userRepository.findAllOrderByLevel()).willReturn(users);
 
         //when
-        sortedListByLevel = statisticsService.getAllDtoUsers(dtoUsers);
-        dtoUsers.sort(Comparator.comparing(UserDto::getExperience).reversed());
+        statisticsService.getAllDtoUsers(dtoUsers);
+//        dtoUsers.sort(Comparator.comparing(UserDto::getExperience).reversed());
 
         //then
-        assertThat(sortedListByLevel.get(0).getUsername()).isEqualTo("player1");
-        assertThat(sortedListByLevel.get(1).getUsername()).isEqualTo("player3");
-        assertThat(sortedListByLevel.size()).isEqualTo(3);
-
+        verify(userRepository).findAllOrderByLevel();
+        verify(userMapper).map(users.get(0));
+        assertThat(dtoUsers.size()).isEqualTo(3);
+//        assertThat(dtoUsers.get(0).getUsername()).isEqualTo("player1");
+//        assertThat(dtoUsers.get(1).getUsername()).isEqualTo("player3");
     }
 
     @Test
@@ -85,19 +91,7 @@ class StatisticsServiceTest {
 
     @Test
     void get5BestPlayersWithNotEmptyListShouldBeNotEmpty() {
-        //given
-//        List<UserDto> users = moreThanOneHundredUsers();
-//        given(statisticsService.get5BestPlayers()).willReturn(users);
 
-        //when
-//        List<UserDto> list = statisticsService.get5BestPlayers();
-//        verify(userRepository).findAllOrderByLevel();
-
-//        InOrder inOrder = Mockito.inOrder(userRepository);
-//        inOrder.verify(userRepository, times(1)).findAllOrderByLevel();
-
-        //then
-//        assertThat(users.size()).isEqualTo(5);
     }
 
     @Test
