@@ -203,35 +203,33 @@ public class UserNumbersService {
         return historyGameForm.getDateGame();
     }
 
-    public void renewUserSaldo(String username, int userId, int totalEarn, int betsSended) {
+    public int renewUserSaldo(String username, int userId, int totalEarn, int betsSended) {
         int renewSaldo;
         int currentUserSaldo = userRepository.findSaldoByUserId(userId);
         int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(username) * 2);
-        int maxBetsToSend = gameRepository.findMaxBetsToSend(userId);
 
-        if (maxBetsToSend - betsSended == 0) {
+        if (betsSended >= 10) {
 
             renewSaldo = currentUserSaldo + maxSaldoForUser + totalEarn;
-        } else if (currentUserSaldo < maxSaldoForUser) {
-
-            renewSaldo = maxSaldoForUser + totalEarn;
-        } else if (maxBetsToSend - betsSended == maxBetsToSend) {
+        } else if (betsSended == 0) {
 
             renewSaldo = currentUserSaldo;
-        }
-        else {
+        } else {
 
-            renewSaldo = currentUserSaldo + (betsSended * 3) + totalEarn;
+            renewSaldo = currentUserSaldo + (betsSended * 3)
+                    + (userExperienceRepository.findLevelByLogin(username) * 2) + totalEarn;
         }
 
         userRepository.updateUserSaldoByLogin(renewSaldo, userId);
+
+        return renewSaldo;
     }
 
     public void saveAmountGoalAfterViewResult(ResultForm resultForm) {
-        int currentAmountOfThree = gameRepository.findCountOfThreeByLogin(userSession.getUser().getUsername());
-        int currentAmountOfFour = gameRepository.findCountOfFourByLogin(userSession.getUser().getUsername());
-        int currentAmountOfFive = gameRepository.findCountOfFiveByLogin(userSession.getUser().getUsername());
-        int currentAmountOfSix = gameRepository.findCountOfSixByLogin(userSession.getUser().getUsername());
+        int currentAmountOfThree = gameRepository.findCountOfThreeByUsername(userSession.getUser().getUsername());
+        int currentAmountOfFour = gameRepository.findCountOfFourByUsername(userSession.getUser().getUsername());
+        int currentAmountOfFive = gameRepository.findCountOfFiveByUsername(userSession.getUser().getUsername());
+        int currentAmountOfSix = gameRepository.findCountOfSixByUsername(userSession.getUser().getUsername());
 
         int newAmountOfThree = currentAmountOfThree + resultForm.getGoal3Numbers();
         int newAmountOfFour = currentAmountOfFour + resultForm.getGoal4Numbers();

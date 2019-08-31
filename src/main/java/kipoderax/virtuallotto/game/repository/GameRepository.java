@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
     @Query("select g.countOfThree from Game g join g.user u on g.user = u.id where u.username=:username")
-    Integer findCountOfThreeByLogin(@Param("username") String username);
+    Integer findCountOfThreeByUsername(@Param("username") String username);
     @Query("select g.countOfFour from Game g join g.user u on g.user = u.id where u.username=:username")
-    Integer findCountOfFourByLogin(@Param("username") String username);
+    Integer findCountOfFourByUsername(@Param("username") String username);
     @Query("select g.countOfFive from Game g join g.user u on g.user = u.id where u.username=:username")
-    Integer findCountOfFiveByLogin(@Param("username") String username);
+    Integer findCountOfFiveByUsername(@Param("username") String username);
     @Query("select g.countOfSix from Game g join g.user u on g.user = u.id where u.username=:username")
-    Integer findCountOfSixByLogin(@Param("username") String username);
+    Integer findCountOfSixByUsername(@Param("username") String username);
     @Query("select g.maxBetsToSend from Game g join g.user u on g.user = u.id where u.id=:user_id")
     Integer findMaxBetsToSend(@Param("user_id") int userId);
     @Query("select g.profit from Game g join g.user u on g.user = u.id where u.username=:username")

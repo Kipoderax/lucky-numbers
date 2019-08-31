@@ -7,6 +7,7 @@ import kipoderax.virtuallotto.auth.service.UserSession;
 import kipoderax.virtuallotto.commons.dtos.mapper.ApiNumbersMapper;
 import kipoderax.virtuallotto.commons.dtos.mapper.BetNumbersMapper;
 import kipoderax.virtuallotto.commons.dtos.models.LottoNumbersDto;
+import kipoderax.virtuallotto.commons.forms.HistoryGameForm;
 import kipoderax.virtuallotto.commons.forms.ResultForm;
 import kipoderax.virtuallotto.game.model.GameModel;
 import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
@@ -26,6 +27,7 @@ import org.mockito.quality.Strictness;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,10 +39,8 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 class UserNumbersServiceTest {
 
-    @Mock
-    private BetNumbersMapper betNumbersMapper;
-    @Mock
-    private ApiNumbersMapper apiNumbersMapper;
+    private @Mock BetNumbersMapper betNumbersMapper;
+    private @Mock ApiNumbersMapper apiNumbersMapper;
 
     private @Mock UserBetsRepository userBetsRepository;
     private @Mock GameRepository gameRepository;
@@ -57,21 +57,203 @@ class UserNumbersServiceTest {
     private UserNumbersService userNumbersService;
 
     private ResultForm resultForm;
+    private User user;
     private int userId;
     private String username;
     @BeforeEach
     void setUp() {
-        resultForm = new ResultForm();
         userId = 15;
         username = "player1";
+
+        resultForm = new ResultForm();
+        user = new User();
+        user.setUsername(username);
+
+    }
+
+
+
+    @Test
+    public void checkUserNumbers() {
+        //given
+        GameModel gameModel = new GameModel();
+        given(userSession.getUser()).willReturn(user);
+        given(userSession.isUserLogin()).willReturn(true);
+        given(userSession.getUsername()).willReturn(user.getUsername());
+        given(userBetsRepository.AmountBetsByUserId(userSession.getUser().getId())).willReturn(10);
+        given(gameRepository.findProfit(userSession.getUser().getUsername())).willReturn(48);
+
+        //when
+        userNumbersService.checkUserNumbers(gameModel, userId, username);
+
+        //then
+        assertThat(winnerBetsService.getWinnerBetsWith3Numbers()).isEmpty();
+        assertThat(winnerBetsService.getWinnerBetsWith3Numbers()).isEmpty();
+        assertThat(winnerBetsService.getWinnerBetsWith3Numbers()).isEmpty();
+        assertThat(winnerBetsService.getWinnerBetsWith3Numbers()).isEmpty();
+
+    }
+
+    @Test
+    public void saveDateToHistoryUser() {
+        //given
+        GameModel gameModel = new GameModel();
+        HistoryGameForm historyGameForm = new HistoryGameForm();
+        historyGameForm.setDateGame("2019-08-29");
+
+        //when
+        String dateGame = userNumbersService.saveDateToHistoryUser(gameModel);
+
+        //then
+        assertThat(dateGame).isEqualTo(historyGameForm.getDateGame());
+    }
+
+    @Test
+    public void renewUserSaldo() {
+        //given with level 10 and user saldo 2
+        given(userRepository.findSaldoByUserId(userId)).willReturn(2);
+        given(userExperienceRepository.findLevelByLogin(username)).willReturn(10);
+
+        //when user sended more than 10 bets
+        int renewSaldo = userNumbersService.renewUserSaldo(username, userId, 0, 20);
+
+        //then should return user saldo + 30 + level * 2 + total earn
+        InOrder inOrder = inOrder(userRepository, userExperienceRepository);
+        inOrder.verify(userRepository).findSaldoByUserId(userId);
+        inOrder.verify(userExperienceRepository).findLevelByLogin(username);
+        inOrder.verify(userRepository).updateUserSaldoByLogin(renewSaldo, userId);
+        assertThat(renewSaldo).isEqualTo(52);
+
+        //when user no send bets
+        renewSaldo = userNumbersService.renewUserSaldo(username, userId, 0, 0);
+
+        //then should return current user saldo
+        assertThat(renewSaldo).isEqualTo(2);
+
+        //when user sended less than 10 bets and earn 48
+        renewSaldo = userNumbersService.renewUserSaldo(username, userId, 48, 5);
+
+        //then should return current user saldo + (bets sended * 3) + (level * 2) + total earn
+        assertThat(renewSaldo).isEqualTo(85);
+
+    }
+
+    @Test
+    public void saveAmountGoalAfterViewResult() {
+        //given
+        int currentAmountOfThree = 7;
+        int currentAmountOfFour = 4;
+        int currentAmountOfFive = 1;
+        int currentAmountOfSix = 0;
+        int[] goalNumbers = new int[7];
+
+        given(userSession.getUser()).willReturn(user);
+        given(userSession.isUserLogin()).willReturn(true);
+        given(userSession.getUsername()).willReturn(user.getUsername());
+        String username = userSession.getUser().getUsername();
+
+        given(gameRepository.findCountOfThreeByUsername(username)).willReturn(currentAmountOfThree);
+        given(gameRepository.findCountOfFourByUsername(username)).willReturn(currentAmountOfFour);
+        given(gameRepository.findCountOfFiveByUsername(username)).willReturn(currentAmountOfFive);
+        given(gameRepository.findCountOfSixByUsername(username)).willReturn(currentAmountOfSix);
+
+        //when
+        int success = 3;
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+        userNumbersService.saveAmountGoalAfterViewResult(resultForm);
+
+        //then
+        int newAmountOfThree = currentAmountOfThree + resultForm.getGoal3Numbers();
+        int newAmountOfFour = currentAmountOfFour + resultForm.getGoal4Numbers();
+        int newAmountOfFive = currentAmountOfFive + resultForm.getGoal5Numbers();
+        int newAmountOfSix = currentAmountOfSix + resultForm.getGoal6Numbers();
+        assertThat(newAmountOfThree).isEqualTo(8);
+        assertThat(newAmountOfFour).isEqualTo(4);
+        assertThat(newAmountOfFive).isEqualTo(1);
+        assertThat(newAmountOfSix).isEqualTo(0);
+
+        InOrder inOrder = inOrder(gameRepository);
+        inOrder.verify(gameRepository).findCountOfThreeByUsername(username);
+        inOrder.verify(gameRepository).findCountOfFourByUsername(username);
+        inOrder.verify(gameRepository).findCountOfFiveByUsername(username);
+        inOrder.verify(gameRepository).findCountOfSixByUsername(username);
+
+        inOrder.verify(gameRepository).updateAmountOfThree(newAmountOfThree, userSession.getUser().getId());
+        inOrder.verify(gameRepository).updateAmountOfFour(newAmountOfFour, userSession.getUser().getId());
+        inOrder.verify(gameRepository).updateAmountOfFive(newAmountOfFive, userSession.getUser().getId());
+        inOrder.verify(gameRepository).updateAmountOfSix(newAmountOfSix, userSession.getUser().getId());
+    }
+
+    @Test
+    public void upgradeAmountFrom3To6() {
+        //given
+        int success = 0;
+        int[] goalNumbers = {15, 12, 9, 7, 3, 1, 0};
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getFailGoal()).isEqualTo(16);
+
+        //given
+        success = 1;
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoalOneNumber()).isEqualTo(13);
+
+        //given
+        success = 2;
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoal2Numbers()).isEqualTo(10);
+
+        //given
+        success = 3;
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoal3Numbers()).isEqualTo(8);
+
+        //given
+        success = 4;
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoal4Numbers()).isEqualTo(4);
+
+        //given
+        success = 5;
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoal5Numbers()).isEqualTo(2);
+
+        //given
+        success = 6;
+
+        //when
+        userNumbersService.upgradeAmountFrom3To6(success, goalNumbers, resultForm);
+
+        //then
+        assertThat(resultForm.getGoal6Numbers()).isEqualTo(1);
     }
 
     @Test
     public void addUserExperience() {
         //given
         GameModel gameModel = new GameModel();
-        User user = new User();
-        user.setUsername(username);
 
         int[] goalNumbers = {15, 0, 0, 0, 0, 0, 0};
         int currentUserExperience = 100;
@@ -211,7 +393,7 @@ class UserNumbersServiceTest {
         userNumbersService.earnFromGoalNumbers(goalNumbers, resultForm);
 
         //then
-        assertThat(resultForm.getTotalEarn()).isEqualTo(274);
+        assertThat(resultForm.getTotalEarn()).isEqualTo(116);
 
         //given with five goal four numbers
         goalNumbers = new int[]{15, 13, 5, 0, 5, 0, 0};
@@ -220,7 +402,7 @@ class UserNumbersServiceTest {
         userNumbersService.earnFromGoalNumbers(goalNumbers, resultForm);
 
         //then
-        assertThat(resultForm.getTotalEarn()).isEqualTo(1370);
+        assertThat(resultForm.getTotalEarn()).isEqualTo(580);
     }
 
     @Test
@@ -235,7 +417,7 @@ class UserNumbersServiceTest {
         userNumbersService.earnFromGoalNumbers(goalNumbers, resultForm);
 
         //then
-        assertThat(resultForm.getTotalEarn()).isEqualTo(4782);
+        assertThat(resultForm.getTotalEarn()).isEqualTo(4045);
 
         //given with 5 goal
         goalNumbers = new int[]{15, 13, 5, 0, 0, 5, 0};
@@ -244,7 +426,7 @@ class UserNumbersServiceTest {
         userNumbersService.earnFromGoalNumbers(goalNumbers, resultForm);
 
         //then
-        assertThat(resultForm.getTotalEarn()).isEqualTo(23910);
+        assertThat(resultForm.getTotalEarn()).isEqualTo(20225);
     }
 
     @Test
