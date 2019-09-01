@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,20 +61,15 @@ class StatisticsServiceTest {
         //given
         List<UserDto> dtoUsers = new ArrayList<>();
         List<User> users = userList();
-//        users.add(userRepository.findAll().get(15));
-        System.out.println(userRepository.findSaldoByUserId(20));
         given(userRepository.findAllOrderByLevel()).willReturn(users);
 
         //when
         statisticsService.getAllDtoUsers(dtoUsers);
-//        dtoUsers.sort(Comparator.comparing(UserDto::getExperience).reversed());
 
         //then
         verify(userRepository).findAllOrderByLevel();
         verify(userMapper).map(users.get(0));
         assertThat(dtoUsers.size()).isEqualTo(3);
-//        assertThat(dtoUsers.get(0).getUsername()).isEqualTo("player1");
-//        assertThat(dtoUsers.get(1).getUsername()).isEqualTo("player3");
     }
 
     @Test
@@ -88,6 +84,74 @@ class StatisticsServiceTest {
 
         //then
         assertThat(list.isEmpty()).isTrue();
+    }
+
+    @Test
+    void get5BestPlayersWithMoreThan5PlayersShouldReturn5Players() {
+        //given
+        List<UserDto> userDtoList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            userDtoList.add(new UserDto());
+            userList.add(new User());
+        }
+        given(statisticsService.getAllDtoUsers(new ArrayList<>())).willReturn(userDtoList);
+        given(userRepository.findAllOrderByLevel()).willReturn(userList);
+
+        //when
+
+        statisticsService.get5BestPlayers();
+        int sizeUserList = statisticsService.get5BestPlayers().size();
+
+        //then
+        verify(userRepository, times(2)).findAllOrderByLevel();
+        assertThat(sizeUserList).isEqualTo(5);
+    }
+
+    @Test
+    void get5BestPlayersWithLessThan5PlayersShouldReturnLessThan5Players() {
+        //given
+        List<UserDto> userDtoList2 = new ArrayList<>();
+        List<User> userList2 = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            userDtoList2.add(new UserDto());
+            userList2.add(new User());
+        }
+        given(statisticsService.getAllDtoUsers(new ArrayList<>())).willReturn(userDtoList2);
+        given(userRepository.findAllOrderByLevel()).willReturn(userList2);
+
+        //when
+
+        statisticsService.get5BestPlayers();
+        int sizeUserList2 = statisticsService.get5BestPlayers().size();
+
+        //then
+        assertThat(sizeUserList2).isEqualTo(3);
+    }
+
+    @Test
+    public void getAllDtoUsersDefaultWithEmptyListShouldReturnEmptyList() {
+        //when
+        List<UserDto> users = statisticsService.getAllDtoUsersDefault();
+
+        //then
+        assertThat(users).isEmpty();
+    }
+
+    @Test
+    public void getAllDtoUsersDefaultWithLessThan100UsersShouldReturnLessThan100Users() {
+        //given
+        List<UserDto> userDtoList = userDtoList();
+        List<User> userList = userList();
+
+        given(userRepository.findAllOrderByLevel()).willReturn(userList);
+        given(statisticsService.getAllDtoUsersDefault()).willReturn(userDtoList);
+
+        //when
+        statisticsService.getAllDtoUsersDefault();
+
+        //then
+        assertThat(userDtoList.size()).isEqualTo(3);
     }
 
     @Test
@@ -115,33 +179,83 @@ class StatisticsServiceTest {
         assertThat(amountUsers).isEqualTo(50);
     }
 
+    @Test
+    public void sortByExperience() {
+        //given
+        List<UserDto> userDtoList = userDtoList();
+
+        //when
+        statisticsService.sortByExperience(userDtoList);
+
+        //then
+        assertThat(userDtoList.get(1).getUsername()).isEqualTo("player3");
+    }
+
+    @Test
+    public void sortByNumberGame() {
+        //given
+        List<UserDto> userDtoList = userDtoList();
+
+        //when
+        statisticsService.sortByNumberGame(userDtoList);
+
+        //then
+        assertThat(userDtoList.get(1).getUsername()).isEqualTo("player3");
+    }
+
+    @Test
+    public void sortByAmountGoalNumbers() {
+        //given
+        List<UserDto> userDtoList = userDtoList();
+
+        //when goal three numbers
+        statisticsService.sortByAmountOfGoalNumbers(userDtoList, Comparator.comparing(UserDto::getAmountOfThree));
+
+        //then should return player3
+        assertThat(userDtoList.get(0).getUsername()).isEqualTo("player3");
+
+        //when goal four numbers
+        statisticsService.sortByAmountOfGoalNumbers(userDtoList, Comparator.comparing(UserDto::getAmountOfFour));
+
+        //then should return player2
+        assertThat(userDtoList.get(0).getUsername()).isEqualTo("player2");
+
+        //when goal five numbers
+        statisticsService.sortByAmountOfGoalNumbers(userDtoList, Comparator.comparing(UserDto::getAmountOfFive));
+
+        //then should return player2
+        assertThat(userDtoList.get(0).getUsername()).isEqualTo("player2");
+
+        //when goal six numbers
+        statisticsService.sortByAmountOfGoalNumbers(userDtoList, Comparator.comparing(UserDto::getAmountOfSix));
+
+        //then should return player2
+        assertThat(userDtoList.get(0).getUsername()).isEqualTo("player3");
+    }
+
     private List<User> userList() {
-//        User user = new User();
-//        User user2 = new User();
-//        User user3 = new User();
         user.setUsername("player1");
         user2.setUsername("player2");
         user3.setUsername("player3");
-
 
         Game game = new Game();
         Game game2 = new Game();
         Game game3 = new Game();
         game.setNumberGame(189);
         game.setCountOfThree(5);
-        game.setCountOfFour(0);
+        game.setCountOfFour(1);
         game.setCountOfFive(0);
         game.setCountOfSix(0);
         game2.setNumberGame(160);
         game2.setCountOfThree(4);
-        game2.setCountOfFour(0);
-        game2.setCountOfFive(0);
+        game2.setCountOfFour(3);
+        game2.setCountOfFive(1);
         game2.setCountOfSix(0);
         game3.setNumberGame(165);
-        game3.setCountOfThree(5);
-        game3.setCountOfFour(0);
+        game3.setCountOfThree(6);
+        game3.setCountOfFour(2);
         game3.setCountOfFive(0);
-        game3.setCountOfSix(0);
+        game3.setCountOfSix(1);
 
         UserExperience userExperience = new UserExperience();
         UserExperience userExperience2 = new UserExperience();

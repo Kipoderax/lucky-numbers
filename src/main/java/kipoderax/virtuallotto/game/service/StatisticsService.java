@@ -51,13 +51,10 @@ public class StatisticsService {
         List<UserDto> userDtos = new ArrayList<>();
 
         getAllDtoUsers(userDtos);
-
-        userDtos.sort(Comparator.comparing(UserDto::getExperience).
-                thenComparing(UserDto::getNumberGame).
-                thenComparing(UserDto::getUsername).reversed());
+        sortByExperience(userDtos);
 
         if (userDtos.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         return userDtos.subList(0, get100RecordsOfUsers());
     }
@@ -69,43 +66,31 @@ public class StatisticsService {
         switch (by) {
             case "ym poziomem":
 
-                userDtos.sort(Comparator.comparing(UserDto::getExperience).
-                        thenComparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getUsername).reversed());
+                sortByExperience(userDtos);
                 break;
 
             case "a iloscia gier":
-                userDtos.sort(Comparator.comparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getUsername).reversed());
+
+                sortByNumberGame(userDtos);
                 break;
 
             case "a iloscia trojek":
-                userDtos.sort(Comparator.comparing(UserDto::getAmountOfThree).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getUsername).reversed());
+                sortByAmountOfGoalNumbers(userDtos, Comparator.comparing(UserDto::getAmountOfThree));
                 break;
 
             case "a iloscia czworek":
-                userDtos.sort(Comparator.comparing(UserDto::getAmountOfFour).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getUsername).reversed());
+                sortByAmountOfGoalNumbers(userDtos, Comparator.comparing(UserDto::getAmountOfFour));
                 break;
 
             case "a iloscia piatek":
-                userDtos.sort(Comparator.comparing(UserDto::getAmountOfFive).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getUsername).reversed());
+                sortByAmountOfGoalNumbers(userDtos, Comparator.comparing(UserDto::getAmountOfFive));
                 break;
 
             case "a iloscia szostek":
-                userDtos.sort(Comparator.comparing(UserDto::getAmountOfSix).
-                        thenComparing(UserDto::getExperience).
-                        thenComparing(UserDto::getNumberGame).
-                        thenComparing(UserDto::getUsername).reversed());
+                sortByAmountOfGoalNumbers(userDtos, Comparator.comparing(UserDto::getAmountOfSix));
+                break;
+
+            default:
                 break;
         }
 
@@ -115,5 +100,24 @@ public class StatisticsService {
     public int get100RecordsOfUsers() {
 
         return userRepository.getAllRegisterUsers() > 100 ? 100 : userRepository.getAllRegisterUsers();
+    }
+
+    public void sortByExperience(List<UserDto> userDtos) {
+        userDtos.sort(Comparator.comparing(UserDto::getExperience).
+                thenComparing(UserDto::getNumberGame).
+                thenComparing(UserDto::getUsername).reversed());
+    }
+
+    public void sortByNumberGame(List<UserDto> userDtos) {
+        userDtos.sort(Comparator.comparing(UserDto::getNumberGame).
+                thenComparing(UserDto::getExperience).
+                thenComparing(UserDto::getUsername).reversed());
+    }
+
+    public void sortByAmountOfGoalNumbers(List<UserDto> userDtos, Comparator<UserDto> comparing) {
+        userDtos.sort(comparing.
+                thenComparing(UserDto::getExperience).
+                thenComparing(UserDto::getNumberGame).
+                thenComparing(UserDto::getUsername).reversed());
     }
 }
