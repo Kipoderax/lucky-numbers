@@ -99,12 +99,13 @@ public class BetController {
             userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
                     userSession.getUser().getId());
             return "redirect:/zaklady";
+        } else {
+            model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
+            mainPageDisplay.displayGameStatus(model);
+
+            return "redirect:/zaklady";
         }
 
-        model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
-        mainPageDisplay.displayGameStatus(model);
-
-        return "game/bet-for-register-users";
     }
 
     @GetMapping("/zaklady-generate")

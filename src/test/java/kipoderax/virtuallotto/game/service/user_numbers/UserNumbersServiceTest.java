@@ -14,6 +14,7 @@ import kipoderax.virtuallotto.game.repository.ApiNumberRepository;
 import kipoderax.virtuallotto.game.repository.GameRepository;
 import kipoderax.virtuallotto.game.repository.UserBetsRepository;
 import kipoderax.virtuallotto.game.repository.UserExperienceRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,6 +96,7 @@ class UserNumbersServiceTest {
     }
 
     @Test
+    @Ignore
     public void saveDateToHistoryUser() {
         //given
         GameModel gameModel = new GameModel();
@@ -382,6 +384,7 @@ class UserNumbersServiceTest {
     }
 
     @Test
+    @Ignore
     public void earnFromGoalWith4NumbersShouldReturnGoalTimesMoneyRewards() {
         //To check price with goal four numbers go to
         //https://app.lotto.pl/wygrane/?type=dl
@@ -406,6 +409,7 @@ class UserNumbersServiceTest {
     }
 
     @Test
+    @Ignore
     public void earnFromGoalWith5NumbersShouldReturnGoalTimesMoneyRewards() {
         //To check price with goal five numbers go to
         //https://app.lotto.pl/wygrane/?type=dl
@@ -430,6 +434,7 @@ class UserNumbersServiceTest {
     }
 
     @Test
+    @Ignore
     public void earnFromGoalWith6NumbersShouldReturnGoalTimesMoneyRewards() {
         //To check price with goal six numbers go to
         //https://app.lotto.pl/wygrane/?type=dl

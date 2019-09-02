@@ -73,11 +73,11 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">rozegranych gier:</td>
-                    <td th:text="${numberGame}"></td>
+                    <td th:text="${numberGame != null} ? (${numberGame} >= 1000 ? ${#numbers.formatInteger(numberGame, 3, 'COMMA')} : ${numberGame}) : '0'"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Punkty doświadczenia:</td>
-                    <td th:text="${exp}"></td>
+                    <td th:text="${exp} >= 1000 ? ${#numbers.formatInteger(exp, 3, 'COMMA')} : ${exp}"></td>
                 </tr>
 
                 </tbody>
@@ -92,7 +92,7 @@
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Na gry wydano:</td>
-                    <td style="width:90%" th:text="${expense} + ' pln'">552 pln</td>
+                    <td style="width:90%" th:text="${expense} >= 1000 ? ${#numbers.formatInteger(expense, 3, 'COMMA')} : ${expense} + ' pln'"></td>
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Z trafionych liczb uzbierano</td>
@@ -103,12 +103,12 @@
                     <td class="table-desc">Rezultat:</td>
                     <td th:if="${result >= 0}">
                         <b>
-                            <font color="green" th:text="${'Uzyskano ' + result}">0</font>
+                            <font color="green" th:text="'Zyskales ' + ${result} >= 1000 ? ${#numbers.formatInteger(result, 3, 'COMMA')} : ${result}"></font>
                         </b>
                     </td>
                     <td th:if="${result lt 0}">
                         <b>
-                            <font color="red" th:text="${'Stracono ' + (-result)}">0</font>
+                            <font color="red" th:text="'Straciles ' + ${#numbers.formatInteger(result, 3, 'COMMA')}"></font>
                         </b>
                     </td>
 

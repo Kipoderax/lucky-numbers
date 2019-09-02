@@ -34,7 +34,6 @@ public class HistoryGameDtoService {
                 .collect(Collectors.toList());
 
         Collections.reverse(historyGameDtos);
-
     }
 
     public List<HistoryGameDto> getAllHistoryGames(int userId) {

@@ -6,7 +6,9 @@ import kipoderax.virtuallotto.commons.dtos.mapper.UserMapper;
 import kipoderax.virtuallotto.commons.dtos.models.UserDto;
 import kipoderax.virtuallotto.game.entity.Game;
 import kipoderax.virtuallotto.game.entity.UserExperience;
+import kipoderax.virtuallotto.tags.ServiceTests;
 import org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,14 +36,14 @@ import static org.mockito.Mockito.verify;
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
 @RunWith(SpringRunner.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class StatisticsServiceTest {
+class StatisticsServiceTest implements ServiceTests {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Mock
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @InjectMocks
-    StatisticsService statisticsService;
+    private StatisticsService statisticsService;
 
     private User user;
     private User user2;

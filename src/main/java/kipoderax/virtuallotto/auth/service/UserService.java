@@ -128,18 +128,18 @@ public class UserService {
         return true;
     }
 
-    private boolean isUsernameFree(String username) {
+    public boolean isUsernameFree(String username) {
 
         return userRepository.existsByUsername(username.toLowerCase());
     }
 
 
-    private boolean isEmailFree(String email) {
+    public boolean isEmailFree(String email) {
 
         return userRepository.existsByEmail(email);
     }
 
-    private boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
+    public boolean isCorrectCurrentPassword(String password, Optional<User> userOptional) {
 
         return bCryptPasswordEncoder().matches(
                 password, userOptional.get().getPassword()
