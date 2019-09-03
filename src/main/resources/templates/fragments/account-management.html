@@ -59,11 +59,11 @@
                 </tr>
                 <tr style="background-color: #f1e0c6">
                     <td class="table-desc">Saldo</td>
-                    <td><b><font color="green" th:text="${saldo}"></font></b></td>
+                    <td><b><font color="green" th:text="${saldo >= 1000 ? #numbers.formatInteger(saldo, 3, 'COMMA') : saldo}"></font></b></td>
                 </tr>
                 <tr style="background-color: #d4c0a1">
                     <td class="table-desc">Poziom</td>
-                    <td th:text="${level} + '. Wbito ' + ${onehundred &#45; toNextLevel} + '/' + ${onehundred} + ' punktow doswiadczenia.'"></td>
+                    <td th:text="${level} + '. Wbito ' + ${(onehundred &#45; toNextLevel) + 1} + '/' + ${onehundred + 1} + ' punktow doswiadczenia.'"></td>
                 </tr>
 
                 <tr>
@@ -175,12 +175,12 @@
                     <td class="table-desc">Rezultat:</td>
                     <td th:if="${result} >= 0">
                         <b>
-                            <font color="green" th:text="'Zyskales ' + ${result} >= 1000 ? ${#numbers.formatInteger(result, 3, 'COMMA')} : ${result} + ' pln'"></font>
+                            <font color="green" th:text="'Zyskales ' + ${result >= 1000 ? #numbers.formatInteger(result, 3, 'COMMA') : result}"></font>
                         </b>
                     </td>
                     <td th:if="${result} lt 0">
 
-                        <font color="red" th:text="'Straciles ' + ${#numbers.formatInteger(result, 3, 'COMMA')}"></font>
+                        <font color="red" th:text="'Straciles ' + ${-result >= 1000 ? #numbers.formatInteger(-result, 3, 'COMMA') : -result}"></font>
 
                     </td>
 

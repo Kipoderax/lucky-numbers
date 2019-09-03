@@ -103,13 +103,13 @@
                     <td class="table-desc">Rezultat:</td>
                     <td th:if="${result >= 0}">
                         <b>
-                            <font color="green" th:text="'Zyskales ' + ${result} >= 1000 ? ${#numbers.formatInteger(result, 3, 'COMMA')} : ${result}"></font>
+                            <font color="green" th:text="'Zyskano ' + ${result >= 1000 ? #numbers.formatInteger(result, 3, 'COMMA') : result}"></font>
                         </b>
                     </td>
                     <td th:if="${result lt 0}">
-                        <b>
-                            <font color="red" th:text="'Straciles ' + ${#numbers.formatInteger(result, 3, 'COMMA')}"></font>
-                        </b>
+
+                        <font color="red" th:text="'Stracono ' + ${-result >= 1000 ? #numbers.formatInteger(-result, 3, 'COMMA') : -result}"></font>
+
                     </td>
 
                 </tr>
