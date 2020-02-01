@@ -35,7 +35,7 @@ public class SumUpInformation {
     }
 
     @Transactional
-    @Scheduled(cron = "00 40 20 * * 2,4,6")
+    @Scheduled(cron = "00 30 20 * * 2,4,6")
     public void getTotalBets() {
         LatestInfoFromAllPlayers latestInfoFromAllPlayers = new LatestInfoFromAllPlayers();
         GameModel gameModel = new GameModel();

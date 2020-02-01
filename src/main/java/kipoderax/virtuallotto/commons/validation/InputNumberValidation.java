@@ -6,11 +6,11 @@ public class InputNumberValidation {
 
         for (int i = 0; i < number.length; i++) {
             for (int j = i + 1; j < number.length; j++) {
-                if (number[i] == number[j]) {
-                    return false;
-                }
+            if (number[i] == number[j]) {
+                return false;
             }
         }
+    }
 
         return true;
     }

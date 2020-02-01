@@ -9,6 +9,7 @@ import kipoderax.virtuallotto.game.service.dto.HistoryGameDtoService;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 
 @Service
@@ -31,11 +32,25 @@ public class MainPageDisplay {
     }
 
     public void displayGameStatus(Model model) {
+        int allSendedBets = statisticsService.getAllSendedBets();
+        int allThrees = statisticsService.getAllThrees();
+        int allFours = statisticsService.getAllFours();
+        int allFives = statisticsService.getAllFives();
 
         model.addAttribute("top5level", statisticsService.get5BestPlayers());
         model.addAttribute("toplastxp", historyGameDtoService.getLast5BestExperience());
         model.addAttribute("amountRegisterPlayers", userRepository.getAllRegisterUsers());
         model.addAttribute("sessionCounter", SessionCounter.getActiveSessions());
+        model.addAttribute("allSendedBets", allSendedBets);
+        model.addAttribute("allThrees", allThrees);
+        model.addAttribute("allFours", allFours);
+        model.addAttribute("allFives", allFives);
+        model .addAttribute("percentThree", new DecimalFormat("##.##")
+                .format(((double) allThrees/allSendedBets) * 100));
+        model .addAttribute("percentFour", new DecimalFormat("##.##")
+                .format(((double) allFours/allSendedBets) * 100));
+        model .addAttribute("percentFive", new DecimalFormat("##.###")
+                .format(((double) allFives/allSendedBets) * 100));
     }
 
     public void sumUpLatestPlayersGame(Model model) {

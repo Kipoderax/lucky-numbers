@@ -22,14 +22,7 @@ public class HistoryGameDtoBuilder {
 
 
     public HistoryGameDtoBuilder dateGame(String dateGame) {
-
-//        try {
-//            this.dateGame.parse(dateGame);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         this.dateGame = dateGame;
-
         return this;
     }
 

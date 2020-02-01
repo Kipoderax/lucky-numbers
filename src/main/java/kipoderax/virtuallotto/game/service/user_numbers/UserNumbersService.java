@@ -206,7 +206,7 @@ public class UserNumbersService {
     public int renewUserSaldo(String username, int userId, int totalEarn, int betsSended) {
         int renewSaldo;
         int currentUserSaldo = userRepository.findSaldoByUserId(userId);
-        int maxSaldoForUser = 30 + (userExperienceRepository.findLevelByLogin(username) * 2);
+        int maxSaldoForUser = userExperienceRepository.findLevelByLogin(username) * 4;
 
         if (betsSended >= 10) {
 
@@ -217,7 +217,7 @@ public class UserNumbersService {
         } else {
 
             renewSaldo = currentUserSaldo + (betsSended * 3)
-                    + (userExperienceRepository.findLevelByLogin(username) * 2) + totalEarn;
+                    + (userExperienceRepository.findLevelByLogin(username) * 4) + totalEarn;
         }
 
         userRepository.updateUserSaldoByLogin(renewSaldo, userId);
@@ -343,7 +343,7 @@ public class UserNumbersService {
         return gameRepository.findMaxBetsToSend(userId) - userBetsRepository.AmountBetsByUserId(userId);
     }
 
-    public void saveUserInputNumbers(int numbers[], int id) {
+    public boolean saveUserInputNumbers(int numbers[], int id) {
         GameModel gameModel = new GameModel();
         InputNumberValidation inputNumberValidation = new InputNumberValidation();
         inputNumberValidation.sort(numbers);
@@ -354,6 +354,8 @@ public class UserNumbersService {
 
         int newSaldo = currentSaldo + gameModel.getRewardsMoney()[0];
         userRepository.updateUserSaldoByLogin(newSaldo, id);
+
+        return true;
     }
 
     public void goalBetsWithSuccess(int success, List<Integer> listUserBets) {

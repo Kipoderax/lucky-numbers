@@ -11,7 +11,8 @@ public class SessionCounter implements HttpSessionListener {
     private static int activeSessions = 0;
 
     public void sessionCreated(HttpSessionEvent event) {
-        activeSessions++;
+            activeSessions++;
+
         event.getSession().setMaxInactiveInterval(600);
     }
 

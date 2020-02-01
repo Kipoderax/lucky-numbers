@@ -54,7 +54,13 @@
                     <td th:text="${myhistory.amountGoalFives}">0</td>
                     <td th:text="${myhistory.amountGoalSixes}">0</td>
                     <td th:text="${myhistory.experience}">0</td>
-                    <td th:text="${myhistory.result}">0</td>
+                    <td>
+                        <font color="red" th:if="${myhistory.result lt 0}"
+                            th:text="${myhistory.result}"></font>
+                        <font color="green" th:if="${myhistory.result gt 0}"
+                              th:text="${myhistory.result}"></font>
+                    </td>
+<!--                    <td th:text="${myhistory.result}">0</td>-->
                 </tr>
 
                 </tbody>

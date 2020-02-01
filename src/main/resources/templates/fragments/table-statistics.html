@@ -65,13 +65,20 @@
 
                     <td class="position"></td>
                     <td th:text="${users.username}"></td>
-                    <td th:text="${users.numberGame}" align="center"></td>
+
+                    <td th:text="${users.numberGame} >= 1000 ?
+                     ${#numbers.formatInteger(users.numberGame, 3, 'COMMA')} :
+                     ${users.numberGame}" align="center"></td>
+
                     <td th:text="${users.amountOfThree}" align="center"></td>
                     <td th:text="${users.amountOfFour}" align="center"></td>
                     <td th:text="${users.amountOfFive}" align="center"></td>
                     <td th:text="${users.amountOfSix}" align="center"></td>
                     <td th:text="${users.level}" align="center"></td>
-                    <td th:text="${users.experience}" align="center"></td>
+
+                    <td th:text="${users.experience} >= 1000 ?
+                     ${#numbers.formatInteger(users.experience, 3, 'COMMA')} :
+                     ${users.experience}" align="center"></td>
                 </tr>
 
                 </tbody>

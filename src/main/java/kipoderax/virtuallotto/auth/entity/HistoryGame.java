@@ -1,10 +1,7 @@
 package kipoderax.virtuallotto.auth.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Data
@@ -12,7 +9,7 @@ import java.util.Date;
 public class HistoryGame {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Column(name = "history_game_id") int historyGameId;
+    private @Column(name = "history_game_id") Integer historyGameId;
 
     private @Column(name = "date_game") String dateGame;
     private @Column(name = "amount_bets") int amountBets;

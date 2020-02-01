@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 
@@ -55,29 +56,34 @@ public class UserNumbersController {
         return "auth/user-numbers";
     }
 
-    @PostMapping("/mojeliczby")
-    public String QuickAddBets(Model model, @ModelAttribute LottoNumbersDto lottoNumbersDto) {
+    @PostMapping("/send-all-numbers")
+    public String sendAllNumbers(Model model, @ModelAttribute LottoNumbersDto lottoNumbersDto,
+                                 @RequestParam(value = "amountBetsToSend", required = false) Integer amountBetsToSend) {
         GameModel gameModel = new GameModel();
         CheckDate checkDate = new CheckDate();
-
-        if (checkDate.isLottery()) {
-
-            return "redirect:/mojeliczby";
-
-        }
-        else if (userNumbersService.leftBetsToSend(userSession.getUser().getId()) != 0) {
-
-            userNumbersService.generateNumber(lottoNumbersDto);
-            userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
-                    userSession.getUser().getId());
-
-        }
-
+        model.addAttribute("amountBets", 5
+        );
         if (!userNumbersService.isNewNumberApi(
                 userNumbersService.getUserApiNumber(userSession.getUser().getId()),
                 gameModel.getLastNumbers())) {
 
             return "redirect:/wyniki";
+        }
+
+        if (checkDate.isLottery()) {
+
+            return "redirect:/mojeliczby";
+        }
+
+        if (amountBetsToSend > userNumbersService.leftBetsToSend(userSession.getUser().getId()) ||
+                amountBetsToSend < 0) {
+            return "redirect:/mojeliczby";
+        } else {
+            for (int i = 0; i < amountBetsToSend; i++) {
+                userNumbersService.generateNumber(lottoNumbersDto);
+                userNumbersService.saveUserInputNumbers(gameModel.createNumbersOfNumbersForm(lottoNumbersDto),
+                        userSession.getUser().getId());
+            }
         }
 
         mainPageDisplay.displayGameStatus(model);

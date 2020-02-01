@@ -65,12 +65,10 @@ public class StatisticsService {
 
         switch (by) {
             case "ym poziomem":
-
                 sortByExperience(userDtos);
                 break;
 
             case "a iloscia gier":
-
                 sortByNumberGame(userDtos);
                 break;
 
@@ -120,4 +118,96 @@ public class StatisticsService {
                 thenComparing(UserDto::getNumberGame).
                 thenComparing(UserDto::getUsername).reversed());
     }
+
+    public int getAllSendedBets() {
+        List<UserDto> userDtos = new ArrayList<>();
+        getAllDtoUsers(userDtos);
+        int totalSendedBets = 0;
+
+        for(int i = 0; i < userRepository.getAllRegisterUsers(); i++) {
+
+            totalSendedBets += userDtos.get(i).getNumberGame();
+        }
+
+        return totalSendedBets;
+    }
+
+    public int getAllThrees() {
+        List<UserDto> userDtos = new ArrayList<>();
+        getAllDtoUsers(userDtos);
+        int totalThrees = 0;
+
+        for(int i = 0; i < userRepository.getAllRegisterUsers(); i++) {
+
+            totalThrees += userDtos.get(i).getAmountOfThree();
+        }
+
+        return totalThrees;
+    }
+
+    public int getAllFours() {
+        List<UserDto> userDtos = new ArrayList<>();
+        getAllDtoUsers(userDtos);
+        int totalFours = 0;
+
+        for(int i = 0; i < userRepository.getAllRegisterUsers(); i++) {
+
+            totalFours += userDtos.get(i).getAmountOfFour();
+        }
+
+        return totalFours;
+    }
+
+    public int getAllFives() {
+        List<UserDto> userDtos = new ArrayList<>();
+        getAllDtoUsers(userDtos);
+        int totalFives = 0;
+
+        for(int i = 0; i < userRepository.getAllRegisterUsers(); i++) {
+
+            totalFives += userDtos.get(i).getAmountOfFive();
+        }
+
+        return totalFives;
+    }
+
+    public int getAllSixes() {
+        List<UserDto> userDtos = new ArrayList<>();
+        getAllDtoUsers(userDtos);
+        int totalSixes = 0;
+
+        for(int i = 0; i < userRepository.getAllRegisterUsers(); i++) {
+
+            totalSixes += userDtos.get(i).getAmountOfSix();
+        }
+
+        return totalSixes;
+    }
+
+//    public void getAllBy(String by) {
+//        //List<UserDto> userDtos = new ArrayList<>();
+//        //getAllDtoUsers(userDtos);
+//
+//        switch(by) {
+//            case "trojek":
+//                getAllThrees();
+//                break;
+//
+//            case "czworek":
+//                getAllFours();
+//                break;
+//
+//            case "piatek":
+//                getAllFives();
+//                break;
+//
+//            case "szostek":
+//                getAllSixes();
+//                break;
+//
+//            default:
+//                getAllThrees();
+//                break;
+//        }
+//    }
 }

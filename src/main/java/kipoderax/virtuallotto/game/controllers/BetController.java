@@ -42,6 +42,7 @@ public class BetController {
 
     @GetMapping("/zaklady")
     public String saveInputNumbers(Model model, GameModel gameModel) {
+        CheckDate checkDate = new CheckDate();
 
         if (!userSession.isUserLogin()) {
 
@@ -53,7 +54,6 @@ public class BetController {
 
         model.addAttribute("saldo", userNumbersService.leftBetsToSend(userSession.getUser().getId()));
 
-        CheckDate checkDate = new CheckDate();
         if (checkDate.isLottery()) {
 
             return "redirect:/konto";

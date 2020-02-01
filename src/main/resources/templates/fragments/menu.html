@@ -53,8 +53,31 @@
             </li>
         </ul>
         <ul>
+            <li>
+                <span class="font_lightgreen" th:text="${sessionCounter} + ' online'"></span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <span style="color: #D6960B" th:text="${allSendedBets} + ' wyslanych zakladow'"></span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <span style="color: #D6960B" th:text="'Trafionych trojek: ' + ${allThrees}"></span>
+                <span class="pull-right" th:text="${percentThree} + '%'"></span>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <span style="color: #D6960B" th:text="'Trafionych czworek: ' + ${allFours}"></span>
+                <span class="pull-right" th:text="${percentFour} + '%'"></span>
+            </li>
+        </ul>
+        <ul>
             <li class="last">
-                <span class="font_lightgreen" th:text="${sessionCounter} + ' online'"> 7 online</span>
+                <span style="color: #D6960B" th:text="'Trafionych piatek: ' + ${allFives}"></span>
+                <span class="pull-right" th:text="${percentFive} + '%'"></span>
             </li>
         </ul>
     </div>
@@ -68,7 +91,7 @@
 
         <ul th:if="${top5level != null}" th:each="top_players : ${top5level}">
             <li>
-                <i th:text="${top_players.username}">-</i>
+                <span><i th:text="${top_players.username}">-</i></span>
                 <span class="pull-right" th:text="${top_players.level} + ' ' + lv">-</span>
             </li>
         </ul>
@@ -84,7 +107,7 @@
 
         <ul th:if="${toplastxp != null}" th:each="topxp : ${toplastxp}">
             <li>
-                <i th:text="${topxp.username}">-</i>
+                <span><i th:text="${topxp.username}"></i></span>
                 <span class="pull-right" th:text="'+ ' + ${topxp.experience}">-</span>
             </li>
         </ul>

@@ -7,7 +7,6 @@ import kipoderax.virtuallotto.game.entity.UserExperience;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 

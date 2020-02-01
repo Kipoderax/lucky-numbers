@@ -81,6 +81,7 @@ public class EmailController {
 
         if (existsMail.isPresent() && userTokenRepository.amountToken(existsMail.get().getId()) != 1) {
 
+            mainPageDisplay.displayGameStatus(model);
             emailSender.sendEmail(email);
             userTokenRepository.saveToken(existsMail.get().getId(), linkPassword, new Date(), 1);
             model.addAttribute("mailSended", mailSended);
